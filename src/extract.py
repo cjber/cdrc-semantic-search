@@ -8,7 +8,7 @@ import tabula
 import src.params as params
 
 
-def _extract_tables_from_docx(table):
+def _extract_tables_from_docx(table: docx.table.Table) -> pd.DataFrame:
     data = []
     keys = None
     for i, row in enumerate(table.rows):
@@ -22,12 +22,12 @@ def _extract_tables_from_docx(table):
     return pd.DataFrame(data).to_markdown()
 
 
-def _extract_tables_from_pdf(file_path: Path):
+def _extract_tables_from_pdf(file_path: Path) -> list[str]:
     tables = tabula.read_pdf(file_path, pages="all")
     return [table.to_markdown() for table in tables]
 
 
-def extract_text_from_document(file_path: Path):
+def extract_text_from_document(file_path: Path) -> str:
     if file_path.suffix == ".pdf":
         pdf = pypdf.PdfReader(open(file_path, "rb"))
         text = "\n\n".join([page.extract_text() for page in pdf.pages])

@@ -1,0 +1,49 @@
+schema: '2.0'
+stages:
+  api:
+    cmd: python -m src.api
+    deps:
+    - path: src/api.py
+      hash: md5
+      md5: 5f320e18f8b3080e535ae68780ab5e5d
+      size: 1712
+    - path: src/params.py
+      hash: md5
+      md5: 3f1acc00e5aa88d25f063c8cd9057860
+      size: 120
+    outs:
+    - path: data/catalogue-metadata.json
+      hash: md5
+      md5: 263a4fe27cc405c3339f1cbf722e7cba
+      size: 464524
+    - path: data/files-metadata.json
+      hash: md5
+      md5: ea0373edf27e27319643835962ab8673
+      size: 42187
+    - path: data/pdfs
+      hash: md5
+      md5: 305e9c37aee994ff7067481d3ca7f74a.dir
+      size: 26656939
+      nfiles: 68
+  extract:
+    cmd: python -m src.extract
+    deps:
+    - path: data/pdfs
+      hash: md5
+      md5: 305e9c37aee994ff7067481d3ca7f74a.dir
+      size: 26656939
+      nfiles: 68
+    - path: src/extract.py
+      hash: md5
+      md5: 5f8a2e03c30ceb9e787b7271bdcc2642
+      size: 1584
+    - path: src/params.py
+      hash: md5
+      md5: 3f1acc00e5aa88d25f063c8cd9057860
+      size: 120
+    outs:
+    - path: data/txts
+      hash: md5
+      md5: 7173e6b93e1b8127558b3f4f46ddd9d8.dir
+      size: 1889149
+      nfiles: 68

@@ -1,0 +1,18 @@
+stages:
+  api:
+    cmd: python -m src.api
+    deps:
+    - src/api.py
+    - src/params.py
+    outs:
+    - data/catalogue-metadata.json
+    - data/files-metadata.json
+    - data/pdfs
+  extract:
+    cmd: python -m src.extract
+    deps:
+    - src/extract.py
+    - src/params.py
+    - data/pdfs
+    outs:
+    - data/txts

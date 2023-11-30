@@ -35,8 +35,8 @@ stages:
       nfiles: 68
     - path: src/extract.py
       hash: md5
-      md5: 5f8a2e03c30ceb9e787b7271bdcc2642
-      size: 1584
+      md5: 88e72e9148ba44cb1c1ea7fb2f4054fc
+      size: 1638
     - path: src/params.py
       hash: md5
       md5: 3f1acc00e5aa88d25f063c8cd9057860

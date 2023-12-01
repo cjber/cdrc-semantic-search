@@ -1,31 +1,22 @@
 on: [push]
 
-name: Test Action
+name: CI Action
 
 jobs:
-  Testing:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        python-version: ["3.10", "3.11", "3.12"]
-        os: ["windows-latest", "ubuntu-latest", "macos-latest"]
-    name: Test the action
+ test:
+    name: Test PDM
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - name: Setup PDM
-        uses: pdm-project/setup-pdm@v3
-        id: setup-pdm
-        with:
-          python-version: ${{ matrix.python-version }}
-          cache: true
-          allow-python-prereleases: true
+        - uses: actions/checkout@v3
 
-      - name: Check output
-        run: |
-          echo ${{ steps.setup-pdm.outputs.pdm-bin }}
-          echo ${{ steps.setup-pdm.outputs.pdm-version }}
-          echo ${{ steps.setup-pdm.outputs.python-path }}
-          echo ${{ steps.setup-pdm.outputs.python-version }}
+        - name: Setup PDM
+          uses: pdm-project/setup-pdm@v3
+          with:
+            python-version: '3.12.0'
+            cache: true
 
-      - name: Install dependencies
-        run: pdm install -v && pdm info
+        - name: Install dependencies
+          run: pdm install -v && pdm info
+
+        - name: Display Python version
+          run: pdm run python -c "import sys; print(sys.version)"

@@ -12,6 +12,44 @@ The CDRC Semantic Search System is a project designed to enhance the search capa
 
 - **User-Friendly Interface:** A simple and user-friendly interface makes it easy for researchers and stakeholders to interact with the system.
 
+## System Architecture
+
+The CDRC Semantic Search System follows a modular architecture. Below is a detailed diagram illustrating the stages and components required for the system:
+
+```mermaid
+graph TB
+
+subgraph cluster_UI
+  UI[User Interface]
+  UIProc[User Input Processing]
+end
+
+subgraph cluster_Semantic
+  SP[Semantic Processor]
+  SA[Semantic Analysis]
+end
+
+subgraph cluster_Backend
+  DB(Vector Database)
+  LLM[Large Language Model]
+  DCS[Data Catalog Service]
+  RCD[Retrieve Catalog Data]
+end
+
+subgraph cluster_Results
+  SR[Search Results]
+end
+
+UI --> UIProc
+UIProc --> SP
+SP --> SA
+SA --> DB
+SA --> LLM
+DB --> DCS
+LLM --> DCS
+DCS --> RCD
+RCD --> SR
+
 ## Installation
 
 To get started with the CDRC Semantic Search System, follow these steps:

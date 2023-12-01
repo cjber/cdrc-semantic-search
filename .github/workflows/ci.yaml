@@ -1,0 +1,31 @@
+on: [push]
+
+name: Test Action
+
+jobs:
+  Testing:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        python-version: ["3.7", "3.8", "3.9", "3.10", "3.11", "3.12"]
+        os: ["windows-latest", "ubuntu-latest", "macos-latest"]
+    name: Test the action
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup PDM
+        uses: pdm-project/setup-pdm@v3
+        id: setup-pdm
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: true
+          allow-python-prereleases: true
+
+      - name: Check output
+        run: |
+          echo ${{ steps.setup-pdm.outputs.pdm-bin }}
+          echo ${{ steps.setup-pdm.outputs.pdm-version }}
+          echo ${{ steps.setup-pdm.outputs.python-path }}
+          echo ${{ steps.setup-pdm.outputs.python-version }}
+
+      - name: Install dependencies
+        run: pdm install -v && pdm info

@@ -2,11 +2,7 @@ import os
 
 from fastapi import FastAPI
 from haystack.document_stores import PineconeDocumentStore
-from haystack.nodes import (
-    EmbeddingRetriever,
-    FARMReader,
-    TableTextRetriever
-)
+from haystack.nodes import EmbeddingRetriever, FARMReader, TableTextRetriever
 from haystack.pipelines import ExtractiveQAPipeline
 
 document_store = PineconeDocumentStore(

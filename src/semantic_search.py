@@ -7,7 +7,7 @@ from haystack.nodes import (
     PromptNode,
     PromptTemplate,
     SentenceTransformersRanker,
-    TfidfRetriever
+    TfidfRetriever,
 )
 from haystack.pipelines import DocumentSearchPipeline, Pipeline
 

@@ -8,7 +8,7 @@ from haystack.nodes import (
     FileTypeClassifier,
     PDFToTextConverter,
     PreProcessor,
-    TextConverter
+    TextConverter,
 )
 
 from src.common.utils import Paths, _add_metadata_to_document

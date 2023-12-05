@@ -2,7 +2,11 @@ import os
 
 from fastapi import FastAPI
 from haystack.document_stores import PineconeDocumentStore
-from haystack.nodes import DensePassageRetriever, FARMReader
+from haystack.nodes import (
+    EmbeddingRetriever,
+    FARMReader,
+    TableTextRetriever
+)
 from haystack.pipelines import ExtractiveQAPipeline
 
 document_store = PineconeDocumentStore(
@@ -13,14 +17,13 @@ document_store = PineconeDocumentStore(
     index="cdrc",
     recreate_index=False,
 )
-retriever = DensePassageRetriever(
+retriever = TableTextRetriever(document_store=document_store, use_gpu=True)
+retriever = EmbeddingRetriever(
     document_store=document_store,
-    query_embedding_model="facebook/dpr-question_encoder-single-nq-base",
-    passage_embedding_model="facebook/dpr-ctx_encoder-single-nq-base",
+    embedding_model="sentence-transformers/multi-qa-mpnet-base-dot-v1",
     use_gpu=True,
-    embed_title=True,
 )
-reader = FARMReader(model_name_or_path="deepset/bert-base-cased-squad2", use_gpu=True)
+reader = FARMReader(model_name_or_path="deepset/roberta-base-squad2", use_gpu=True)
 
 pipeline = ExtractiveQAPipeline(reader, retriever)
 

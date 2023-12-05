@@ -3,16 +3,14 @@ stages:
     cmd: python -m src.api
     deps:
     - src/api.py
-    - src/params.py
+    - src/common/utils.py
     outs:
     - data/catalogue-metadata.json
     - data/files-metadata.json
-    - data/pdfs
-  extract:
-    cmd: python -m src.extract
+    - data/docs
+  datastore:
+    cmd: python -m src.datastore
     deps:
-    - src/extract.py
-    - src/params.py
-    - data/pdfs
-    outs:
-    - data/txts
+    - src/datastore.py
+    - src/common/utils.py
+    - data/docs

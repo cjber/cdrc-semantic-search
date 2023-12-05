@@ -1,10 +1,11 @@
 import json
 import os
+import re
 from urllib.request import urlopen
 
 import requests
 
-import src.params as params
+from src.common.utils import Paths
 
 
 def get_docs() -> list[dict]:
@@ -13,8 +14,18 @@ def get_docs() -> list[dict]:
     )
     data = json.loads(response.read())["result"][0]
 
-    params.DATA_DIR.mkdir(exist_ok=True, parents=True)
-    with open(params.DATA_DIR / "catalogue-metadata.json", "w") as f:
+    for item in data:
+        if "notes" in item:
+            out_file = Paths.DOCS_DIR / f"notes-{item['id']}.txt"
+            if not out_file.exists():
+                with open(out_file, "w") as f:
+                    f.write(
+                        f"Dataset Title: {item['title']} "
+                        "\n\n Description: \n\n "
+                        f"{re.sub('<[^<]+?>','', item['notes'])}"
+                    )
+
+    with open(Paths.DATA_DIR / "catalogue-metadata.json", "w") as f:
         json.dump(data, f)
 
     docs = []
@@ -27,7 +38,7 @@ def get_docs() -> list[dict]:
                 file["parent_id"] = item["id"]
                 docs.append(file)
 
-    with open(params.DATA_DIR / "files-metadata.json", "w") as f:
+    with open(Paths.DATA_DIR / "files-metadata.json", "w") as f:
         json.dump(docs, f)
     return docs
 
@@ -44,18 +55,19 @@ def get_files(docs: list[dict]) -> None:
             "op": "Log in",
         },
     )
-    params.PDF_DIR.mkdir(exist_ok=True, parents=True)
+    Paths.DOCS_DIR.mkdir(exist_ok=True, parents=True)
 
     for doc in docs:
         if doc["url"] != "":
-            if (params.PDF_DIR / doc["id"]).exists():
+            if (Paths.DOCS_DIR / doc["id"]).exists():
                 continue
             file = s.get(doc["url"])
-            with open(params.PDF_DIR / f"{doc["id"]}.{doc["format"]}", "wb") as f:
+            with open(Paths.DOCS_DIR / f"{doc['id']}.{doc['format']}", "wb") as f:
                 f.write(file.content)
 
 
 def main():
+    Paths.DOCS_DIR.mkdir(exist_ok=True, parents=True)
     docs = get_docs()
     get_files(docs)
 

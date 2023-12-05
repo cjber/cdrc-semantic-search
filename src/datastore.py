@@ -26,10 +26,10 @@ def create_docs(files):
         clean_empty_lines=True,
         clean_whitespace=True,
         clean_header_footer=True,
-        split_by="passage",
-        split_length=1,
-        split_overlap=0,
-        split_respect_sentence_boundary=False,
+        split_by="word",
+        split_length=100,
+        split_overlap=10,
+        split_respect_sentence_boundary=True,
     )
     retriever = EmbeddingRetriever(
         document_store=document_store,

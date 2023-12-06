@@ -37,6 +37,7 @@ click==8.1.7
 click-didyoumean==0.3.0
 click-plugins==1.1.1
 click-repl==0.3.0
+cohere==4.37
 colorama==0.4.6
 configobj==5.0.8
 cryptography==41.0.7
@@ -62,6 +63,7 @@ events==0.5
 executing==2.0.1
 farm-haystack==1.22.1
 fastapi==0.104.1
+fastavro==1.9.0
 filelock==3.13.1
 flatten-dict==0.4.2
 flufl-lock==7.1.1
@@ -90,6 +92,7 @@ jedi==0.19.1
 jinja2==3.1.2
 jmespath==1.0.1
 joblib==1.3.2
+jsonlines==4.0.0
 jsonschema==4.20.0
 jsonschema-specifications==2023.11.2
 kombu==5.3.4
@@ -110,6 +113,7 @@ multidict==6.0.4
 networkx==3.2.1
 nltk==3.8.1
 nodeenv==1.8.0
+nomic==2.0.16
 num2words==0.5.13
 numpy==1.26.2
 nvidia-cublas-cu12==12.1.3.1
@@ -135,6 +139,7 @@ pexpect==4.9.0
 pillow==10.1.0
 pinecone-client==2.2.4
 platformdirs==3.11.0
+polars==0.19.19
 posthog==3.1.0
 pre-commit==3.5.0
 prompt-toolkit==3.0.41
@@ -223,6 +228,7 @@ virtualenv==20.25.0
 voluptuous==0.14.1
 watchdog==3.0.0
 wcwidth==0.2.12
+wonderwords==2.2.0
 wrapt==1.16.0
 yarl==1.9.3
 zc-lockfile==3.0.post1

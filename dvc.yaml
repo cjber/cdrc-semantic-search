@@ -1,16 +1,16 @@
 stages:
-  api:
-    cmd: python -m src.api
+  query_api:
+    cmd: python -m src.query_api
     deps:
-    - src/api.py
+    - src/query_api.py
     - src/common/utils.py
     outs:
     - data/catalogue-metadata.json
     - data/files-metadata.json
-    - data/docs
+    - data/profiles
   datastore:
     cmd: python -m src.datastore
     deps:
     - src/datastore.py
     - src/common/utils.py
-    - data/docs
+    - data/profiles

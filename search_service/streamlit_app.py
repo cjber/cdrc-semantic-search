@@ -1,4 +1,5 @@
 from subprocess import Popen
+from time import sleep
 
 import polars as pl
 import requests
@@ -38,8 +39,6 @@ def process_answer(r):
 
 
 def main():
-    Popen(["uvicorn", "search_service.api:app", "--port", "8000"])
-
     st.title("CDRC Semantic Search App")
 
     with st.spinner("Loading..."):
@@ -49,18 +48,18 @@ def main():
                 if r.status_code == 200:
                     break
             except requests.exceptions.ConnectionError:
-                pass
+                Popen(["uvicorn", "search_service.api:app", "--port", "8000"])
+                sleep(5)
 
     text = st.text_input("Query")
-    while True:
-        st.spinner("Waiting for input...")
-        if text != "":
-            break
+    if text == "":
+        return None
 
     with st.spinner("Searching..."):
         r = requests.get("http://localhost:8000/query", params={"q": text})
-        while r.status_code != 200:
+        if r.status_code != 200:
             st.error("No results :(")
+            return None
         r = r.json()
 
         df = process_answer(r)

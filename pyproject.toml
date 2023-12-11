@@ -6,15 +6,17 @@ authors = [
     {name = "cjber", email = "cjberragan@gmail.com"},
 ]
 dependencies = [
-    "farm-haystack[file-conversion,inference,pinecone,preprocessing]>=1.22.1",
     "requests>=2.31.0",
+    "haystack-ai>=2.0.0b2",
+    "unstructured-fileconverter-haystack>=0.0.4",
     "fastapi>=0.104.1",
     "uvicorn>=0.24.0.post1",
     "streamlit>=1.29.0",
-    "pre-commit>=3.5.0",
     "polars>=0.19.19",
     "more-itertools>=10.1.0",
     "nomic>=2.0.16",
+    "chroma-haystack>=0.8.1",
+    "canals>=0.11.0",
 ]
 
 requires-python = ">=3.11"
@@ -27,4 +29,5 @@ dev = [
     "ipdb>=0.13.13",
     "dvc>=3.30.3",
     "dvc-s3>=2.23.0",
+    "pre-commit>=3.5.0",
 ]

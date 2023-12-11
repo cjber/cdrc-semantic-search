@@ -2,16 +2,12 @@ import json
 import os
 from argparse import ArgumentParser
 
-from haystack import Pipeline
-from haystack.document_stores import PineconeDocumentStore
-from haystack.nodes import (
-    DocxToTextConverter,
-    EmbeddingRetriever,
-    FileTypeClassifier,
-    PDFToTextConverter,
-    PreProcessor,
-    TextConverter,
-)
+from chroma_haystack import ChromaDocumentStore
+from haystack import Document, Pipeline
+from haystack.components.preprocessors import DocumentCleaner, DocumentSplitter
+from haystack.components.writers import DocumentWriter
+from haystack.document_stores import InMemoryDocumentStore
+from unstructured_fileconverter_haystack import UnstructuredFileConverter
 
 from src.common.utils import Paths, _add_metadata_to_document, validate_files
 
@@ -24,75 +20,35 @@ parser.add_argument(
 args = parser.parse_args()
 
 
+files = list(Paths.DOCS_DIR.iterdir())
+
+
 def create_docs(files, recreate_index: bool = False):
-    document_store = PineconeDocumentStore(
-        api_key=os.environ.get("PINECONE_API_KEY"),
-        environment="gcp-starter",
-        similarity="dot_product",
-        embedding_dim=768,
-        index="cdrc",
-        recreate_index=recreate_index,
+    unstructured_file_converter = UnstructuredFileConverter(
+        api_key=os.getenv("UNSTRUCTURED_API_KEY")
     )
-    preprocessor = PreProcessor(
-        clean_empty_lines=True,
-        clean_whitespace=True,
-        clean_header_footer=True,
-        split_by="word",
-        split_length=100,
-        split_overlap=10,
-        split_respect_sentence_boundary=True,
-    )
-    retriever = EmbeddingRetriever(
-        document_store=document_store,
-        embedding_model="sentence-transformers/multi-qa-mpnet-base-dot-v1",
-    )
+    splitter = DocumentSplitter(split_by="passage", split_length=1, split_overlap=0)
+    document_store = InMemoryDocumentStore()
 
-    indexing_pipeline = Pipeline()
-    indexing_pipeline.add_node(
-        FileTypeClassifier(), name="FileTypeClassifier", inputs=["File"]
+    indexing = Pipeline()
+    indexing.add_component(
+        instance=unstructured_file_converter,
+        name="converter",
     )
-    indexing_pipeline.add_node(
-        component=TextConverter(remove_numeric_tables=True, valid_languages=["en"]),
-        name="TextConverter",
-        inputs=["FileTypeClassifier.output_1"],
-    )
-    indexing_pipeline.add_node(
-        component=PDFToTextConverter(
-            remove_numeric_tables=True, valid_languages=["en"]
-        ),
-        name="PDFConverter",
-        inputs=["FileTypeClassifier.output_2"],
-    )
-    indexing_pipeline.add_node(
-        component=DocxToTextConverter(valid_languages=["en"]),
-        name="DocxConverter",
-        inputs=["FileTypeClassifier.output_4"],
-    )
-    indexing_pipeline.add_node(
-        component=preprocessor,
-        name="PreProcessor",
-        inputs=["TextConverter", "PDFConverter", "DocxConverter"],
-    )
-    indexing_pipeline.add_node(
-        component=retriever,
-        name="Retriever",
-        inputs=["PreProcessor"],
-    )
-    indexing_pipeline.add_node(
-        component=document_store,
-        name="DocumentStore",
-        inputs=["Retriever"],
-    )
+    indexing.add_component("writer", DocumentWriter(document_store))
+    indexing.connect("converter", "writer")
 
-    _remove_old_docs(document_store)
-    missing = _missing_docs(document_store)
+    indexing.run({"converter": {"paths": [str(file) for file in files]}})
 
-    for file in files:
-        filename = file.stem[:6] if file.stem.startswith("notes-") else file.stem
-        if filename not in missing and not recreate_index:
-            continue
-        metadata = _add_metadata_to_document(file.stem)
-        indexing_pipeline.run(file_paths=file, meta=metadata)
+    # _remove_old_docs(document_store)
+    # missing = _missing_docs(document_store)
+    #
+    # for file in files:
+    #     filename = file.stem[:6] if file.stem.startswith("notes-") else file.stem
+    #     if filename not in missing and not recreate_index:
+    #         continue
+    #     metadata = _add_metadata_to_document(file.stem)
+    #     indexing_pipeline.run(file_paths=file, meta=metadata)
 
 
 def _remove_old_docs(document_store):

@@ -6,7 +6,9 @@ authors = [
     {name = "cjber", email = "cjberragan@gmail.com"},
 ]
 dependencies = [
-    "farm-haystack[file-conversion,inference,pinecone,preprocessing]>=1.22.1",
+    "haystack-ai @ git+https://github.com/deepset-ai/haystack.git@main",
+    "unstructured-fileconverter-haystack>=0.0.4",
+    "chroma-haystack>=0.8.1",
     "requests>=2.31.0",
     "fastapi>=0.104.1",
     "uvicorn>=0.24.0.post1",

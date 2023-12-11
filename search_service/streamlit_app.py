@@ -7,34 +7,35 @@ import streamlit as st
 
 
 def process_answer(r):
-    titles = []
-    contexts = []
-    starts = []
-    ends = []
-    urls = []
-    for answer, doc in zip(r["answers"], r["documents"]):
-        offsets_in_context = answer["offsets_in_context"]
-        starts.append(offsets_in_context[0]["start"])
-        ends.append(offsets_in_context[0]["end"])
-        titles.append(doc["meta"]["title"])
-        contexts.append(answer["context"])
-        if "url" in doc["meta"]:
-            urls.append(doc["meta"]["url"])
-        else:
-            urls.append("None")
+    df = pl.from_dict(
+        {
+            key: [value]
+            for key, value in r.items()
+            if key in ["answers", "documents", "explanation"]
+        }
+    ).explode(["answers", "documents", "explanation"])
+    answers = (
+        df["answers"].struct.unnest().with_columns(pl.col("offsets_in_context").list[0])
+    )
+    offsets = answers["offsets_in_context"].struct.unnest()
+    documents = df["documents"].struct.unnest()
+    document_meta = documents["meta"].struct.unnest()
+    explanation = df["explanation"].to_frame()
+
+    df = pl.concat(
+        [
+            answers[["context"]],
+            offsets,
+            document_meta[["title", "url"]],
+            explanation,
+        ],
+        how="horizontal",
+    )
 
     return (
-        pl.DataFrame(
-            {
-                "title": titles,
-                "context": contexts,
-                "start": starts,
-                "end": ends,
-                "url": urls,
-            }
-        )
-        .group_by(["title", "url"])
-        .agg([pl.col("context"), pl.col("start"), pl.col("end")])
+        df.group_by(["title", "url"])
+        .agg([pl.col("context"), pl.col("start"), pl.col("end"), pl.col("explanation")])
+        .with_columns(pl.col("explanation").list.join("\n"))
     )
 
 
@@ -65,6 +66,10 @@ def main():
         df = process_answer(r)
         for row in df.rows(named=True):
             st.subheader(row["title"])
+            st.write(
+                f"_<span style ='color:lightgrey'>{row['explanation']}</span>_",
+                unsafe_allow_html=True,
+            )
             for context, start, end in zip(row["context"], row["start"], row["end"]):
                 st.write(
                     f"...{context[:start]} **<span style ='color:lightblue'><u>{context[start:end]}</u></span>** {context[end:]}...",

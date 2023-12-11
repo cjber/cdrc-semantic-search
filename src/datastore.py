@@ -38,7 +38,7 @@ def create_docs(files, recreate_index: bool = False):
         clean_whitespace=True,
         clean_header_footer=True,
         split_by="word",
-        split_length=100,
+        split_length=512,
         split_overlap=10,
         split_respect_sentence_boundary=True,
     )

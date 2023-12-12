@@ -6,10 +6,10 @@ authors = [
     {name = "cjber", email = "cjberragan@gmail.com"},
 ]
 dependencies = [
-    "haystack-ai @ git+https://github.com/deepset-ai/haystack.git@main",
-    "unstructured-fileconverter-haystack>=0.0.4",
-    "sentence-transformers>=2.2.2",
-    "elasticsearch-haystack>=0.1.1",
+    "llama-index>=0.9.14.post1",
+    "torch>=2.1.1",
+    "pinecone-client>=2.2.4",
+    "transformers>=4.36.0",
     "requests>=2.31.0",
     "fastapi>=0.104.1",
     "uvicorn>=0.24.0.post1",
@@ -17,7 +17,6 @@ dependencies = [
     "pre-commit>=3.5.0",
     "polars>=0.19.19",
     "more-itertools>=10.1.0",
-    "nomic>=2.0.16",
 ]
 
 requires-python = ">=3.11"

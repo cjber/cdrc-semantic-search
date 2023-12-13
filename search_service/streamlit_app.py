@@ -5,37 +5,7 @@ import polars as pl
 import requests
 import streamlit as st
 
-
-def process_answer(r):
-    titles = []
-    contexts = []
-    starts = []
-    ends = []
-    urls = []
-    for answer, doc in zip(r["answers"], r["documents"]):
-        offsets_in_context = answer["offsets_in_context"]
-        starts.append(offsets_in_context[0]["start"])
-        ends.append(offsets_in_context[0]["end"])
-        titles.append(doc["meta"]["title"])
-        contexts.append(answer["context"])
-        if "url" in doc["meta"]:
-            urls.append(doc["meta"]["url"])
-        else:
-            urls.append("None")
-
-    return (
-        pl.DataFrame(
-            {
-                "title": titles,
-                "context": contexts,
-                "start": starts,
-                "end": ends,
-                "url": urls,
-            }
-        )
-        .group_by(["title", "url"])
-        .agg([pl.col("context"), pl.col("start"), pl.col("end")])
-    )
+from src.common.utils import _add_metadata_to_document
 
 
 def main():
@@ -62,14 +32,19 @@ def main():
             return None
         r = r.json()
 
-        df = process_answer(r)
+        metadata = [
+            _add_metadata_to_document(item["file_name"].split(".")[0])
+            for key, item in r["metadata"].items()
+        ]
+        df = pl.DataFrame(metadata)
+
+        response = r["response"]
+        response_dataset = response.split("Response:")
+        response_dataset
+        st.write(f"{r['response']}")
+        st.write("----")
         for row in df.rows(named=True):
             st.subheader(row["title"])
-            for context, start, end in zip(row["context"], row["start"], row["end"]):
-                st.write(
-                    f"...{context[:start]} **<span style ='color:lightblue'><u>{context[start:end]}</u></span>** {context[end:]}...",
-                    unsafe_allow_html=True,
-                )
             if row["url"] != "None":
                 st.write(row["url"])
             st.write("----")

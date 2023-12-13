@@ -19,7 +19,7 @@ def get_docs() -> list[dict]:
         if "resources" not in item:
             continue
         for file in item["resources"]:
-            if "profile" in file["name"].lower():
+            if any(x in file["name"].lower() for x in ["profile", "flyer"]):
                 file["filename"] = file["url"].split("/")[-1]
                 file["parent_id"] = item["id"]
                 docs.append(file)

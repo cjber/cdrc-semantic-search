@@ -1,136 +1,127 @@
-import json
 import os
-from argparse import ArgumentParser
+from pathlib import Path
 
-from elasticsearch_haystack.document_store import ElasticsearchDocumentStore
-from elasticsearch_haystack.embedding_retriever import (
-    ElasticsearchEmbeddingRetriever
+import pinecone
+from llama_index import (
+    ServiceContext,
+    SimpleDirectoryReader,
+    StorageContext,
+    VectorStoreIndex,
+    download_loader
 )
-from haystack import Pipeline
-from haystack.components.embedders import (
-    SentenceTransformersDocumentEmbedder,
-    SentenceTransformersTextEmbedder
+from llama_index.embeddings import HuggingFaceEmbedding
+from llama_index.extractors import (
+    BaseExtractor,
+    EntityExtractor,
+    KeywordExtractor,
+    QuestionsAnsweredExtractor,
+    SummaryExtractor,
+    TitleExtractor
 )
-from haystack.components.preprocessors import DocumentCleaner, DocumentSplitter
-from haystack.components.rankers import TransformersSimilarityRanker
-from haystack.components.retrievers import InMemoryEmbeddingRetriever
-from haystack.components.writers import DocumentWriter
-from haystack.document_stores import DuplicatePolicy, InMemoryDocumentStore
-from unstructured_fileconverter_haystack import UnstructuredFileConverter
-
-from src.common.utils import Paths, _add_metadata_to_document, validate_files
-
-parser = ArgumentParser()
-parser.add_argument(
-    "--overwrite",
-    action="store_true",
-    help="Overwrite the existing index",
+from llama_index.llms import LlamaCPP
+from llama_index.llms.llama_utils import (
+    completion_to_prompt,
+    messages_to_prompt
 )
+from llama_index.prompts import PromptTemplate
+from llama_index.text_splitter import TokenTextSplitter
+from llama_index.vector_stores import PineconeVectorStore
 
-args = parser.parse_args()
-
-
-def _remove_old_docs(document_store):
-    docs_remove, notes_remove, docs_missing, notes_missing = validate_files()
-
-    if docs_remove:
-        document_store.delete_documents(filters={"id": {"$in": docs_remove}})
-    if notes_remove:
-        document_store.delete_documents(filters={"id": {"$in": notes_remove}})
+from src.common.utils import _add_metadata_to_document
 
 
-def _missing_docs(document_store):
-    with open(Paths.DATA_DIR / "files-metadata.json", "r") as f:
-        file_data = json.load(f)
-    with open(Paths.DATA_DIR / "catalogue-metadata.json", "r") as f:
-        catalogue_data = json.load(f)
-
-    file_ids = {file["id"] for file in file_data}
-    catalogue_ids = {catalogue["id"] for catalogue in catalogue_data}
-    docs = {doc.to_dict()["meta"]["id"] for doc in document_store._search_documents()}
-
-    return docs.difference(file_ids | catalogue_ids)
-
-
-def create_docs(files, meta, recreate_index: bool = False):
-    unstructured_file_converter = UnstructuredFileConverter(
-        api_key=os.getenv("UNSTRUCTURED_API_KEY")
+def build_service_context():
+    model_url = "https://huggingface.co/TheBloke/Llama-2-7B-Chat-GGUF/resolve/main/llama-2-7b-chat.Q4_K_M.gguf"
+    llm = LlamaCPP(
+        model_url=model_url,
+        temperature=0.1,
+        max_new_tokens=256,
+        context_window=3900,
+        generate_kwargs={},
+        model_kwargs={"n_gpu_layers": 50},
+        messages_to_prompt=messages_to_prompt,
+        completion_to_prompt=completion_to_prompt,
+        verbose=True,
     )
-    cleaner = DocumentCleaner(
-        remove_empty_lines=True,
-        remove_extra_whitespaces=True,
-        remove_repeated_substrings=True,
-    )
-    splitter = DocumentSplitter(split_by="passage", split_length=1, split_overlap=0)
-    embedding = SentenceTransformersDocumentEmbedder(device="cuda")
-    document_store = ElasticsearchDocumentStore(
-        hosts="http://localhost:9200",
-        basic_auth=(
-            os.environ.get("ELASTIC_USERNAME"),
-            os.environ.get("ELASTIC_PASSWORD"),
-        ),
-    )
-    if recreate_index:
-        from elasticsearch import Elasticsearch
 
-        es = Elasticsearch(
-            hosts="http://localhost:9200",
-            basic_auth=(
-                os.environ.get("ELASTIC_USERNAME"),
-                os.environ.get("ELASTIC_PASSWORD"),
-            ),
+    embed_model = HuggingFaceEmbedding()
+    text_splitter = TokenTextSplitter(separator=" ", chunk_size=512, chunk_overlap=128)
+    service_context = ServiceContext.from_defaults(
+        embed_model=embed_model,
+        llm=llm,
+        transformations=[text_splitter],
+    )
+    return service_context
+
+
+def create_vector_store(profiles_dir: Path, index_name: str = "cdrc-index"):
+    if index_name not in pinecone.list_indexes():
+        pinecone.init(
+            api_key=os.environ["PINECONE_API_KEY"],
+            environment=os.environ["PINECONE_ENVIRONMENT"],
         )
-        es.options(ignore_status=[400, 404]).indices.delete(index="default")
+        pinecone.create_index(index_name, dimension=384, metric="cosine")
 
-    index_pipeline = Pipeline(metadata=meta)
-    index_pipeline.add_component("converter", unstructured_file_converter)
-    index_pipeline.add_component("cleaner", cleaner)
-    index_pipeline.add_component("splitter", splitter)
-    index_pipeline.add_component("embedder", embedding)
-    index_pipeline.add_component(
-        "writer", DocumentWriter(document_store, policy=DuplicatePolicy.SKIP)
+        UnstructuredReader = download_loader("UnstructuredReader")
+        dir_reader = SimpleDirectoryReader(
+            profiles_dir,
+            recursive=True,
+            file_extractor={
+                ".pdf": UnstructuredReader(),
+                ".docx": UnstructuredReader(),
+                ".txt": UnstructuredReader(),
+            },
+            file_metadata=lambda name: _add_metadata_to_document(Path(name).stem),
+        )
+        docs = dir_reader.load_data()
+        docs[0]
+        service_context = build_service_context()
+        VectorStoreIndex.from_documents(docs, service_context=service_context)
+
+    pinecone_index = pinecone.Index(index_name)
+    vector_store = PineconeVectorStore(pinecone_index)
+    return vector_store
+
+
+def init_model(vector_store):
+    service_context = build_service_context()
+    storage_context = StorageContext.from_defaults(vector_store=vector_store)
+    index = VectorStoreIndex.from_vector_store(
+        vector_store,
+        storage_context=storage_context,
+        service_context=service_context,
+        show_progress=True,
     )
-    index_pipeline.connect("converter.documents", "cleaner.documents")
-    index_pipeline.connect("cleaner.documents", "splitter.documents")
-    index_pipeline.connect("splitter.documents", "embedder.documents")
-    index_pipeline.connect("embedder.documents", "writer.documents")
-
-    # _remove_old_docs(document_store)
-    # files = _missing_docs(document_store)
-    index_pipeline.run({"converter": {"paths": files}})
+    return index
 
 
-def query(query: str):
-    document_store = ElasticsearchDocumentStore(
-        hosts="http://localhost:9200",
-        basic_auth=("elastic", "q0BWGooOpPwY3pTAUEmn"),
+def build_response(index, query, llm=True):
+    template = (
+        "We have provided the following descriptions of datasets. \n"
+        "---------------------\n"
+        "{context_str}"
+        "\n---------------------\n"
+        "Using this context, please explain why each are relevant to the following query. Use one sentence. Do not repond as if I have asked you a question, just describe the dataset. For each dataset structure the reply using 'Dataset:' <dataset name>\n\n 'Response:\n\n<why the dataset is relevent>'\n\n Query: {query_str}\n"
     )
 
-    query_pipeline = Pipeline()
-    query_pipeline.add_component(
-        "text_embedder", SentenceTransformersTextEmbedder(device="cuda")
-    )
-    query_pipeline.add_component(
-        "retriever", ElasticsearchEmbeddingRetriever(document_store=document_store)
-    )
-    query_pipeline.connect("text_embedder.embedding", "retriever.query_embedding")
+    prompt = PromptTemplate(template)
+    if llm:
+        query_engine = index.as_query_engine(text_qa_template=prompt)
+        res = query_engine.query(query)
+    elif llm is None:
+        query_engine = index.as_retriever(text_qa_template=prompt)
+        res = query_engine.retrieve(query)
 
-    query = "housing"
-    return query_pipeline.run({"text_embedder": {"text": query}})
+    return res
 
 
-def main():
-    docs = list(Paths.DOCS_DIR.iterdir())
-    docs_meta = [_add_metadata_to_document(doc.stem) for doc in docs]
-    notes = list(Paths.NOTES_DIR.iterdir())
-    notes_meta = [_add_metadata_to_document(note.stem) for note in notes]
-
-    args.overwrite = True
-    create_docs(docs, docs_meta, recreate_index=args.overwrite)
-    create_docs(notes, notes_meta, recreate_index=False)  # never overwrite second run
+def pipeline(query):
+    profiles_dir = Path("./data/profiles")
+    vector_store = create_vector_store(profiles_dir, index_name="cdrc-index")
+    index = init_model(vector_store=vector_store)
+    res = build_response(index, query=query)
+    return res
 
 
 if __name__ == "__main__":
-    main()
-
-    query("healthcare")["retriever"]["documents"][0]
+    res = pipeline(query="test")

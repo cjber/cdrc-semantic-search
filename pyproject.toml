@@ -6,30 +6,22 @@ authors = [
     {name = "cjber", email = "cjberragan@gmail.com"},
 ]
 dependencies = [
-    "llama-index>=0.9.14.post1",
-    "torch>=2.1.1",
+    "llama-index>=0.9.15",
+    "llama-hub>=0.0.58",
     "pinecone-client>=2.2.4",
-    "transformers>=4.36.0",
+    "unstructured[all-docs]>=0.11.2",
     "requests>=2.31.0",
-    "fastapi>=0.104.1",
+    "fastapi>=0.105.0",
     "uvicorn>=0.24.0.post1",
     "streamlit>=1.29.0",
-    "pre-commit>=3.5.0",
     "polars>=0.19.19",
     "more-itertools>=10.1.0",
-    "llama-hub>=0.0.45",
-    "unstructured[docx]>=0.11.2",
-    "llama-cpp-python>=0.2.22",
+    "ipython>=8.18.1",
+    "pre-commit>=3.6.0",
+    "ipdb>=0.13.13",
+    "llama-cpp-python>=0.2.23",
 ]
-
 requires-python = ">=3.11,<3.12"
 readme = "README.md"
 license = {text = "MIT"}
 
-[tool.pdm.dev-dependencies]
-dev = [
-    "ipython>=8.18.1",
-    "ipdb>=0.13.13",
-    "dvc>=3.30.3",
-    "dvc-s3>=2.23.0",
-]

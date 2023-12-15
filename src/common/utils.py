@@ -9,6 +9,13 @@ class Paths:
     PROFILES_DIR = DATA_DIR / "profiles"
     DOCS_DIR = PROFILES_DIR / "docs"
     NOTES_DIR = PROFILES_DIR / "notes"
+    PIPELINE_STORAGE = Path("./pipeline_storage")
+
+
+class Consts:
+    INDEX_NAME = "cdrc-index"
+    HF_EMBED_MODEL = None
+    EMBED_DIM = 384
 
 
 def _add_metadata_to_document(doc_id: str) -> dict:
@@ -29,7 +36,7 @@ def _add_metadata_to_document(doc_id: str) -> dict:
         if main_id == catalogue_meta["id"]:
             return {
                 "title": catalogue_meta["title"],
-                "notes": catalogue_meta["notes"],
+                # "notes": catalogue_meta["notes"],
                 "id": catalogue_meta["id"],
                 "url": catalogue_meta["url"],
             }

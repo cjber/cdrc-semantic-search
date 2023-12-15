@@ -11,6 +11,13 @@ class Paths:
     NOTES_DIR = PROFILES_DIR / "notes"
 
 
+class Urls:
+    CATALOGUE = (
+        "https://data.cdrc.ac.uk/api/3/action/current_package_list_with_resources"
+    )
+    LOGIN = "https://data.cdrc.ac.uk/user/login"
+
+
 def _add_metadata_to_document(doc_id: str) -> dict:
     with open(Paths.DATA_DIR / "catalogue-metadata.json") as f:
         catalogue_metadata = json.load(f)

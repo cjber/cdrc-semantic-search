@@ -28,6 +28,4 @@ license = {text = "MIT"}
 dev = [
     "ipython>=8.18.1",
     "ipdb>=0.13.13",
-    "dvc>=3.30.3",
-    "dvc-s3>=2.23.0",
 ]

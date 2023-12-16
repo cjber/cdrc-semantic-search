@@ -1,16 +1,16 @@
 from fastapi import FastAPI
 
 from src.common.utils import Paths
-from src.model import build_index, build_response, process_response
+from src.model import LlamaIndexModel
 
 
 def create_app():
-    index = build_index(llm=True)
+    model = LlamaIndexModel(llm=True, top_k=5)
     app = FastAPI()
-    return app, index
+    return app, model
 
 
-app, index = create_app()
+app, model = create_app()
 
 
 @app.get("/")
@@ -20,5 +20,5 @@ async def root():
 
 @app.get("/query")
 async def query(q):
-    res = build_response(index, q, llm=True)
-    return process_response(res)
+    model.run(q)
+    return model.response

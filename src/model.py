@@ -1,103 +1,134 @@
-from llama_index import (
-    DocumentSummaryIndex,
-    ServiceContext,
-    StorageContext,
-    VectorStoreIndex
-)
+from abc import abstractmethod
+from collections import defaultdict
+from itertools import groupby
+from typing import Any, Optional, Sequence
+
+from llama_index import ServiceContext, VectorStoreIndex
 from llama_index.embeddings import HuggingFaceEmbedding
+from llama_index.indices.document_summary import DocumentSummaryIndex
 from llama_index.llms import LlamaCPP
 from llama_index.llms.llama_utils import (
     completion_to_prompt,
     messages_to_prompt
 )
+from llama_index.postprocessor.types import BaseNodePostprocessor
 from llama_index.prompts import PromptTemplate
 from llama_index.response import Response
+from llama_index.response_synthesizers import (
+    ResponseMode,
+    get_response_synthesizer
+)
+from llama_index.response_synthesizers.base import (
+    RESPONSE_TEXT_TYPE,
+    BaseSynthesizer
+)
+from llama_index.schema import Node, NodeWithScore
 
 from src.common.utils import Consts
-from src.datastore import setup_ingestion_pipeline
+from src.datastore import CreateDocStore
 
 
-def build_index(llm: bool):
-    # model_url = "https://huggingface.co/TheBloke/Llama-2-7B-Chat-GGUF/resolve/main/llama-2-7b-chat.Q4_K_M.gguf"
-    if llm:
-        llm = LlamaCPP(
-            # model_url=model_url,
-            model_path="/home/cjber/.cache/huggingface/hub/llama-2-7b-chat.Q4_K_M.gguf",
-            temperature=0.1,
-            max_new_tokens=256,
-            context_window=3900,
-            generate_kwargs={},
-            model_kwargs={"n_gpu_layers": 50},
-            messages_to_prompt=messages_to_prompt,
-            completion_to_prompt=completion_to_prompt,
-            verbose=True,
+class DocumentGroupingPostprocessor(BaseNodePostprocessor):
+    def _postprocess_nodes(
+        self,
+        nodes: list[NodeWithScore],
+        query_bundle,
+    ) -> list[NodeWithScore]:
+        nodes_by_document = {}
+
+        for node in nodes:
+            document_id = node.metadata["id"]
+            if document_id not in nodes_by_document:
+                nodes_by_document[document_id] = []
+            nodes_by_document[document_id].append(node)
+
+        out_nodes = []
+        for gid, group in nodes_by_document.items():
+            content = "\n".join([n.get_content() for n in group])
+            group[0].node.text = content
+            out_nodes.append(group[0])
+        return out_nodes
+
+
+class LlamaIndexModel:
+    def __init__(
+        self,
+        llm: bool = True,
+        prompt=Consts.PROMPT,
+        top_k=5,
+    ):
+        if llm:
+            llm_config = dict(
+                model_path="/home/cjber/.cache/huggingface/hub/llama-2-7b-chat.Q4_K_M.gguf",
+                temperature=0.1,
+                max_new_tokens=256,
+                context_window=3900,
+                generate_kwargs={},
+                model_kwargs={"n_gpu_layers": 50},
+                messages_to_prompt=messages_to_prompt,
+                completion_to_prompt=completion_to_prompt,
+                verbose=True,
+            )
+            self.llm = LlamaCPP(**llm_config)
+        else:
+            self.llm = None
+        self.prompt = prompt
+        self.top_k = top_k
+        self.index = self.build_index()
+
+    def run(self, query: str):
+        self.response = self.build_response(query)
+
+    def build_index(self):
+        service_context = ServiceContext.from_defaults(
+            embed_model=HuggingFaceEmbedding(model_name=Consts.HF_EMBED_MODEL),
+            llm=self.llm,
         )
-    else:
-        llm = None
-
-    pipeline = setup_ingestion_pipeline()
-    service_context = ServiceContext.from_defaults(
-        embed_model=HuggingFaceEmbedding(model_name=Consts.HF_EMBED_MODEL),
-        llm=llm,
-    )
-    return VectorStoreIndex.from_vector_store(
-        pipeline.vector_store,
-        service_context=service_context,
-        show_progress=True,
-    )
-
-
-def build_response(index, query, llm: bool = True):
-    text_qa_template_str = (
-        "Summarise the following information in under 50 words. Following this summary suggest a link with the users 'query', Using your own knowledge or the documents.\n"
-        "Query: {query_str}\n"
-        "Documents:\n"
-        "\n---------------------\n{context_str}\n---------------------\n"
-        "For each unique dataset, structure your answer as follows:\n\n"
-        "Dataset: <dataset name>\n"
-        "Summary: <dataset summary>\n"
-        "Link: <dataset link with query>\n\n"
-    )
-    text_qa_template = PromptTemplate(text_qa_template_str)
-
-    if llm:
-        query_engine = index.as_query_engine(
-            text_qa_template=text_qa_template,
-            vector_store_query_mode="hybrid",
-            alpha=0.5,
-            similarity_top_k=6,
+        docstore = CreateDocStore()
+        docstore.setup_ingestion_pipeline()
+        return VectorStoreIndex.from_vector_store(
+            docstore.vector_store,
+            service_context=service_context,
+            show_progress=True,
         )
-        res = query_engine.query(query)
-    else:
-        query_engine = index.as_retriever(
-            vector_store_query_mode="hybrid",
-            alpha=0.5,
-            similarity_top_k=10,
-        )
-        res = query_engine.retrieve(query)
-    return res
 
+    def build_response(self, query):
+        text_qa_template = PromptTemplate(self.prompt)
 
-def process_response(res):
-    if isinstance(res, list):
-        scores = [r.score for r in res]
-        out = [r.node.metadata for r in res]
-        for item in out:
-            item["score"] = scores.pop(0)
+        if self.llm:
+            retriever = self.index.as_query_engine(
+                text_qa_template=text_qa_template,
+                response_mode="accumulate",
+                vector_store_query_mode="hybrid",
+                alpha=0.5,
+                similarity_top_k=self.top_k,
+                node_postprocessors=[DocumentGroupingPostprocessor()],
+            )
+            self.response = retriever.query(query)
+        else:
+            retriever = self.index.as_retriever(
+                vector_store_query_mode="hybrid",
+                alpha=0.5,
+                similarity_top_k=self.top_k,
+            )
+            self.response = retriever.retrieve(query)
+        return self.process_response(self.response)
 
-    elif isinstance(res, Response):
-        response = {"response": res.response}
-        out = [response, res.metadata]
-    return out
+    @staticmethod
+    def process_response(response):
+        if isinstance(response, list):
+            scores = [r.score for r in response]
+            out = [r.node.metadata for r in response]
+            for item in out:
+                item["score"] = scores.pop(0)
 
-
-def main():
-    llm = False
-    index = build_index(llm=llm)
-    res = build_response(index, "diabetes", llm=llm)
-    res = process_response(res)
-    return res
+        elif isinstance(response, Response):
+            out = {"response": response.response}
+            out = [out, response.metadata]
+        return out
 
 
 if __name__ == "__main__":
-    res = main()
+    model = LlamaIndexModel(llm=True, top_k=10)
+    model.run("diabetes")
+    print(model.response[0]["response"])

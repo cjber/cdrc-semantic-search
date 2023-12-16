@@ -1,11 +1,5 @@
-from abc import abstractmethod
-from collections import defaultdict
-from itertools import groupby
-from typing import Any, Optional, Sequence
-
 from llama_index import ServiceContext, VectorStoreIndex
 from llama_index.embeddings import HuggingFaceEmbedding
-from llama_index.indices.document_summary import DocumentSummaryIndex
 from llama_index.llms import LlamaCPP
 from llama_index.llms.llama_utils import (
     completion_to_prompt,
@@ -14,15 +8,7 @@ from llama_index.llms.llama_utils import (
 from llama_index.postprocessor.types import BaseNodePostprocessor
 from llama_index.prompts import PromptTemplate
 from llama_index.response import Response
-from llama_index.response_synthesizers import (
-    ResponseMode,
-    get_response_synthesizer
-)
-from llama_index.response_synthesizers.base import (
-    RESPONSE_TEXT_TYPE,
-    BaseSynthesizer
-)
-from llama_index.schema import Node, NodeWithScore
+from llama_index.schema import NodeWithScore
 
 from src.common.utils import Consts
 from src.datastore import CreateDocStore
@@ -130,5 +116,5 @@ class LlamaIndexModel:
 
 if __name__ == "__main__":
     model = LlamaIndexModel(llm=True, top_k=10)
-    model.run("diabetes")
+    model.run("inequality")
     print(model.response[0]["response"])

@@ -1,15 +1,10 @@
-import json
 import os
 from pathlib import Path
 
 import pinecone
 from llama_index import SimpleDirectoryReader, download_loader
 from llama_index.embeddings import HuggingFaceEmbedding
-from llama_index.ingestion import (
-    DocstoreStrategy,
-    IngestionCache,
-    IngestionPipeline
-)
+from llama_index.ingestion import IngestionPipeline
 from llama_index.storage.docstore import SimpleDocumentStore
 from llama_index.text_splitter import SentenceSplitter
 from llama_index.vector_stores import PineconeVectorStore

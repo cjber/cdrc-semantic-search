@@ -814,6 +814,16 @@ files = [
 ]
 
 [[package]]
+name = "jsonpath-python"
+version = "1.0.6"
+requires_python = ">=3.6"
+summary = "A more powerful JSONPath implementation in modern python"
+files = [
+    {file = "jsonpath-python-1.0.6.tar.gz", hash = "sha256:dd5be4a72d8a2995c3f583cf82bf3cd1a9544cfdabf2d22595b67aff07349666"},
+    {file = "jsonpath_python-1.0.6-py3-none-any.whl", hash = "sha256:1e3b78df579f5efc23565293612decee04214609208a2335884b3ee3f786b575"},
+]
+
+[[package]]
 name = "jsonschema"
 version = "4.20.0"
 requires_python = ">=3.8"
@@ -947,7 +957,7 @@ files = [
 
 [[package]]
 name = "llama-hub"
-version = "0.0.58"
+version = "0.0.58.post1"
 requires_python = ">=3.8.1,<3.12"
 summary = "A library of community-driven data loaders for LLMs. Use with LlamaIndex and/or LangChain. "
 dependencies = [
@@ -958,13 +968,13 @@ dependencies = [
     "retrying",
 ]
 files = [
-    {file = "llama_hub-0.0.58-py3-none-any.whl", hash = "sha256:a1b09c45807ee727aa62ce8b583ad5d505a190959ef0ae5b0a641abc8cfab54e"},
-    {file = "llama_hub-0.0.58.tar.gz", hash = "sha256:6a6d778d675d533a87e5bcc5fdaa13ec25c8badcff193f989261a3cb28e80568"},
+    {file = "llama_hub-0.0.58.post1-py3-none-any.whl", hash = "sha256:7c752d6a7d08e8bda2997c526fa4a554ffb3c201f3edc72ba515986663cb2b35"},
+    {file = "llama_hub-0.0.58.post1.tar.gz", hash = "sha256:56d611230a9af47708371a9b7ca37c57fc417071a6e91d21205b7319c49542a9"},
 ]
 
 [[package]]
 name = "llama-index"
-version = "0.9.15"
+version = "0.9.15.post2"
 requires_python = ">=3.8.1,<4.0"
 summary = "Interface between LLMs and your data"
 dependencies = [
@@ -988,8 +998,8 @@ dependencies = [
     "typing-inspect>=0.8.0",
 ]
 files = [
-    {file = "llama_index-0.9.15-py3-none-any.whl", hash = "sha256:ea73c1c37745f62b7363e69b992cde21ea1d26add3190d7ad2112acc70acd4b1"},
-    {file = "llama_index-0.9.15.tar.gz", hash = "sha256:0f6501db61a6b72ed8c293353331b58d16db202323c9312241b071ce1f78a655"},
+    {file = "llama_index-0.9.15.post2-py3-none-any.whl", hash = "sha256:58b230318a7143a70a81cd2f8053cfbea9d90a9b9b922812fb9333b054b02c1f"},
+    {file = "llama_index-0.9.15.post2.tar.gz", hash = "sha256:954a2f26f80a78b470c0406fabeef3e7c04f603713344297ecf4a9b470c90257"},
 ]
 
 [[package]]
@@ -2864,7 +2874,7 @@ files = [
 
 [[package]]
 name = "unstructured"
-version = "0.11.2"
+version = "0.11.4"
 requires_python = ">=3.7.0"
 summary = "A library that prepares raw documents for downstream ML tasks."
 dependencies = [
@@ -2884,16 +2894,43 @@ dependencies = [
     "requests",
     "tabulate",
     "typing-extensions",
+    "unstructured-client",
     "wrapt",
 ]
 files = [
-    {file = "unstructured-0.11.2-py3-none-any.whl", hash = "sha256:4c77696f159afb1ac8d0806ec4e22d473dc7440b775728709a535f660fb2cd13"},
-    {file = "unstructured-0.11.2.tar.gz", hash = "sha256:68292dfd1616a3e428ac314d6efd4e473c9363c1b2b0ae799031916eee3cc0a4"},
+    {file = "unstructured-0.11.4-py3-none-any.whl", hash = "sha256:ed683898bcfb738276fc97826d66c485270638096ea5137a6e19a31443de1919"},
+    {file = "unstructured-0.11.4.tar.gz", hash = "sha256:50fd482efc6961ca81e180082fd751a0e6c96925c5bfbfda78a34d066c27b89f"},
+]
+
+[[package]]
+name = "unstructured-client"
+version = "0.15.0"
+requires_python = ">=3.8"
+summary = "Python Client SDK for Unstructured API"
+dependencies = [
+    "certifi>=2023.7.22",
+    "charset-normalizer>=3.2.0",
+    "dataclasses-json>=0.6.1",
+    "idna>=3.4",
+    "jsonpath-python>=1.0.6",
+    "marshmallow>=3.19.0",
+    "mypy-extensions>=1.0.0",
+    "packaging>=23.1",
+    "python-dateutil>=2.8.2",
+    "requests>=2.31.0",
+    "six>=1.16.0",
+    "typing-extensions>=4.7.1",
+    "typing-inspect>=0.9.0",
+    "urllib3>=1.26.18",
+]
+files = [
+    {file = "unstructured-client-0.15.0.tar.gz", hash = "sha256:d091e0dcd926f24a356c3cf80e4e3151668c60322fa357bb66419ac59a5672a5"},
+    {file = "unstructured_client-0.15.0-py3-none-any.whl", hash = "sha256:7b8640be5b163a8554870959be411ca7c5f39ba5a5c31d83cb7fecda974f5042"},
 ]
 
 [[package]]
 name = "unstructured-inference"
-version = "0.7.15"
+version = "0.7.18"
 requires_python = ">=3.7.0"
 summary = "A library for performing inference using trained models."
 dependencies = [
@@ -2907,8 +2944,8 @@ dependencies = [
     "transformers>=4.25.1",
 ]
 files = [
-    {file = "unstructured_inference-0.7.15-py3-none-any.whl", hash = "sha256:505fbbca955aa32c589a9ba1898bab3071f3089491fe17cd6ccceed86fa33083"},
-    {file = "unstructured_inference-0.7.15.tar.gz", hash = "sha256:422543d9411e79abe2508cf0c9d154aa9c49081b1041e36309f9b28d5cd00c33"},
+    {file = "unstructured_inference-0.7.18-py3-none-any.whl", hash = "sha256:86e1e5bfab0c1729d7309eb847cde743c4a32924ef1bdeb9043f99e06ec9fd9f"},
+    {file = "unstructured_inference-0.7.18.tar.gz", hash = "sha256:ad4d4c94cb40525456b5857348004b077bc0b27d6acce3ccb1a12b66017d5d26"},
 ]
 
 [[package]]
@@ -2927,7 +2964,7 @@ files = [
 
 [[package]]
 name = "unstructured"
-version = "0.11.2"
+version = "0.11.4"
 extras = ["all-docs"]
 requires_python = ">=3.7.0"
 summary = "A library that prepares raw documents for downstream ML tasks."
@@ -2945,14 +2982,14 @@ dependencies = [
     "pypdf",
     "python-docx>=1.1.0",
     "python-pptx<=0.6.23",
-    "unstructured-inference==0.7.15",
+    "unstructured-inference==0.7.18",
     "unstructured-pytesseract>=0.3.12",
-    "unstructured==0.11.2",
+    "unstructured==0.11.4",
     "xlrd",
 ]
 files = [
-    {file = "unstructured-0.11.2-py3-none-any.whl", hash = "sha256:4c77696f159afb1ac8d0806ec4e22d473dc7440b775728709a535f660fb2cd13"},
-    {file = "unstructured-0.11.2.tar.gz", hash = "sha256:68292dfd1616a3e428ac314d6efd4e473c9363c1b2b0ae799031916eee3cc0a4"},
+    {file = "unstructured-0.11.4-py3-none-any.whl", hash = "sha256:ed683898bcfb738276fc97826d66c485270638096ea5137a6e19a31443de1919"},
+    {file = "unstructured-0.11.4.tar.gz", hash = "sha256:50fd482efc6961ca81e180082fd751a0e6c96925c5bfbfda78a34d066c27b89f"},
 ]
 
 [[package]]

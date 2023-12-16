@@ -39,11 +39,16 @@ class CDRCQuery:
 
     def run(self):
         self.files_meta, self.catalogue_meta = self.get_metadata()
+        self.file_ids = {file["id"] for file in self.files_meta}
+        self.catalogue_ids = {catalogue["id"] for catalogue in self.catalogue_meta}
+
         self.write_metadata()
         self.download_files()
 
         if self._remove_old_files:
-            self.remove_old_files()
+            self.remove_old_files("profile", self.file_ids)
+            self.remove_old_files("flyer", self.file_ids)
+            self.remove_old_files("notes", self.catalogue_ids)
 
     def get_metadata(self) -> list[dict]:
         response = urlopen(self.api_url)
@@ -86,7 +91,11 @@ class CDRCQuery:
         )
 
         for meta in tqdm(self.files_meta, desc="Downloading files"):
-            filename = f"{meta['id']}.{meta['format']}"
+            filename = (
+                f"profile-{meta['id']}.{meta['format']}"
+                if "profile" in meta["name"].lower()
+                else f"flyer-{meta['id']}.{meta['format']}"
+            )
             if (meta["url"] == "") or (self.profiles_dir / filename).exists():
                 logging.info(f"Skipping {filename} as it already exists")
                 continue
@@ -100,31 +109,15 @@ class CDRCQuery:
         with open(self.data_dir / "files-metadata.json", "w") as f:
             json.dump(self.files_meta, f)
 
-    def remove_old_files(self):
-        file_ids = {file["id"] for file in self.files_meta}
-        catalogue_ids = {catalogue["id"] for catalogue in self.catalogue_meta}
-
-        docs = [
-            file
-            for file in self.profiles_dir.iterdir()
-            if not file.stem.startswith("notes-")
+    def remove_old_files(self, kind, meta):
+        files = [
+            file for file in self.profiles_dir.iterdir() if file.stem.startswith(kind)
         ]
-        notes = [
-            file
-            for file in self.profiles_dir.iterdir()
-            if file.stem.startswith("notes-")
-        ]
-        doc_ids = {doc.stem for doc in docs}
-        note_ids = {note.stem[6:] for note in notes}
+        ids = {file.stem.split("-", maxsplit=1)[1] for file in files}
 
-        docs_remove = doc_ids.difference(file_ids)
-        notes_remove = note_ids.difference(catalogue_ids)
-
-        logging.info(f"Removing {len(docs_remove)} old documents")
-        consume(f.unlink() for f in docs if f.stem in docs_remove)
-
-        logging.info(f"Removing {len(notes_remove)} old notes")
-        consume(f.unlink() for f in notes if f.stem[6:] in notes_remove)
+        remove = ids - meta
+        logging.info(f"Removing {len(remove)} old {kind}.")
+        consume(f.unlink() for f in files if f.stem.split("-", maxsplit=1)[1] in remove)
 
 
 if __name__ == "__main__":

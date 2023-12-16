@@ -42,11 +42,11 @@ def _add_metadata_to_document(doc_id: str) -> dict:
     with open(Paths.DATA_DIR / "files-metadata.json") as f:
         files_metadata = json.load(f)
 
-    if doc_id.startswith("notes-"):
-        main_id = doc_id[6:]
-    else:
+    format, main_id = doc_id.split("-", maxsplit=1)
+
+    if format != "notes":
         for file_meta in files_metadata:
-            if doc_id == file_meta["id"]:
+            if main_id == file_meta["id"]:
                 main_id = file_meta["parent_id"]
                 break
 

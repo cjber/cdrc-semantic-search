@@ -5,7 +5,7 @@
 groups = ["default"]
 strategy = ["cross_platform"]
 lock_version = "4.4"
-content_hash = "sha256:f277c596c02f085c0214830429752ac28d352d3b00b5274bca858c740be86c83"
+content_hash = "sha256:03beebb143a5d1dbd2fa1b17620ff90282e9bb7c2b80276b8d355003e49cbebc"
 
 [[package]]
 name = "aiohttp"
@@ -957,7 +957,7 @@ files = [
 
 [[package]]
 name = "llama-hub"
-version = "0.0.58.post1"
+version = "0.0.60"
 requires_python = ">=3.8.1,<3.12"
 summary = "A library of community-driven data loaders for LLMs. Use with LlamaIndex and/or LangChain. "
 dependencies = [
@@ -968,8 +968,8 @@ dependencies = [
     "retrying",
 ]
 files = [
-    {file = "llama_hub-0.0.58.post1-py3-none-any.whl", hash = "sha256:7c752d6a7d08e8bda2997c526fa4a554ffb3c201f3edc72ba515986663cb2b35"},
-    {file = "llama_hub-0.0.58.post1.tar.gz", hash = "sha256:56d611230a9af47708371a9b7ca37c57fc417071a6e91d21205b7319c49542a9"},
+    {file = "llama_hub-0.0.60-py3-none-any.whl", hash = "sha256:0818351b5660118c3fa3af5951fda490bf03f65e5892713dc226070469431f1f"},
+    {file = "llama_hub-0.0.60.tar.gz", hash = "sha256:5a77968c17ebb4897b762d1e936ba740e9786f595b7a012117b1db1e14e2615a"},
 ]
 
 [[package]]
@@ -1716,16 +1716,16 @@ files = [
 
 [[package]]
 name = "polars"
-version = "0.19.19"
+version = "0.20.0"
 requires_python = ">=3.8"
 summary = "Blazingly fast DataFrame library"
 files = [
-    {file = "polars-0.19.19-cp38-abi3-macosx_10_12_x86_64.whl", hash = "sha256:812dbb0cc7027fd41ce6b3eaf100b94828fc082fab026409d48792e3e7014095"},
-    {file = "polars-0.19.19-cp38-abi3-macosx_11_0_arm64.whl", hash = "sha256:21a334e18c83a259211ca6ec182498f3a89297fde9b8f75021c6881ff4411201"},
-    {file = "polars-0.19.19-cp38-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:d383fac392b08a6d5830c99f6e735a48e390c1535c8f1e67707fcaab6863ade5"},
-    {file = "polars-0.19.19-cp38-abi3-manylinux_2_24_aarch64.whl", hash = "sha256:eec0e72dce84b85c427bbf395d2e181f33e60677695b95ee2e87fed51043bdea"},
-    {file = "polars-0.19.19-cp38-abi3-win_amd64.whl", hash = "sha256:6c9e597efac74f00ef9cdfd9ba8a9128ed24276916bd3d60adc6e604530e4b37"},
-    {file = "polars-0.19.19.tar.gz", hash = "sha256:3e904d197aabf36e37fda263470eaf51ec92fb865cdea4f93947713480199303"},
+    {file = "polars-0.20.0-cp38-abi3-macosx_10_12_x86_64.whl", hash = "sha256:813707e28bdbdf00a849a72d856cad48a4063a1e7f4487bc7068f957988107ce"},
+    {file = "polars-0.20.0-cp38-abi3-macosx_11_0_arm64.whl", hash = "sha256:7504c63e9783de6cec289f89383b797a5e1fd72c10abc137bba7ee022d34f193"},
+    {file = "polars-0.20.0-cp38-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:e01beb3e3ad2c3efff209fafd5eff785489d1a6fb196aee2e29237d969389255"},
+    {file = "polars-0.20.0-cp38-abi3-manylinux_2_24_aarch64.whl", hash = "sha256:1d78313386fb46ab516eebb521c8612a9acb86c9972af195e771f468c0e5e77d"},
+    {file = "polars-0.20.0-cp38-abi3-win_amd64.whl", hash = "sha256:8b8856c7368b605b77e9cf231340ab39a4af86a1dafddde92a2b913c0c47007e"},
+    {file = "polars-0.20.0.tar.gz", hash = "sha256:cc70f7e4f195b438de54f51d411fa831d032d8528fc01fea186c8784f06d0f04"},
 ]
 
 [[package]]
@@ -1949,6 +1949,20 @@ files = [
 ]
 
 [[package]]
+name = "pydantic-settings"
+version = "2.1.0"
+requires_python = ">=3.8"
+summary = "Settings management using Pydantic"
+dependencies = [
+    "pydantic>=2.3.0",
+    "python-dotenv>=0.21.0",
+]
+files = [
+    {file = "pydantic_settings-2.1.0-py3-none-any.whl", hash = "sha256:7621c0cb5d90d1140d2f0ef557bdf03573aac7035948109adf2574770b77605a"},
+    {file = "pydantic_settings-2.1.0.tar.gz", hash = "sha256:26b1492e0a24755626ac5e6d715e9077ab7ad4fb5f19a8b7ed7011d52f36141c"},
+]
+
+[[package]]
 name = "pydeck"
 version = "0.8.1b0"
 requires_python = ">=3.7"
@@ -2071,6 +2085,16 @@ dependencies = [
 files = [
     {file = "python-docx-1.1.0.tar.gz", hash = "sha256:5829b722141cf1ab79aedf0c34d9fe9924b29764584c0f2164eb2b02dcdf17c9"},
     {file = "python_docx-1.1.0-py3-none-any.whl", hash = "sha256:bac9773278098a1ddc43a52d84e22f5909c4a3080a624530b3ecb3771b07c6cd"},
+]
+
+[[package]]
+name = "python-dotenv"
+version = "1.0.0"
+requires_python = ">=3.8"
+summary = "Read key-value pairs from a .env file and set them as environment variables"
+files = [
+    {file = "python-dotenv-1.0.0.tar.gz", hash = "sha256:a8df96034aae6d2d50a4ebe8216326c61c3eb64836776504fcca410e5937a3ba"},
+    {file = "python_dotenv-1.0.0-py3-none-any.whl", hash = "sha256:f5971a9226b701070a4bf2c38c89e5a3f0d64de8debda981d1db98583009122a"},
 ]
 
 [[package]]
@@ -2874,7 +2898,7 @@ files = [
 
 [[package]]
 name = "unstructured"
-version = "0.11.4"
+version = "0.11.5"
 requires_python = ">=3.7.0"
 summary = "A library that prepares raw documents for downstream ML tasks."
 dependencies = [
@@ -2898,8 +2922,8 @@ dependencies = [
     "wrapt",
 ]
 files = [
-    {file = "unstructured-0.11.4-py3-none-any.whl", hash = "sha256:ed683898bcfb738276fc97826d66c485270638096ea5137a6e19a31443de1919"},
-    {file = "unstructured-0.11.4.tar.gz", hash = "sha256:50fd482efc6961ca81e180082fd751a0e6c96925c5bfbfda78a34d066c27b89f"},
+    {file = "unstructured-0.11.5-py3-none-any.whl", hash = "sha256:90c4d027ba8462776c22880daacedd8e379af285c8df7c42598379e258f2a600"},
+    {file = "unstructured-0.11.5.tar.gz", hash = "sha256:b50f2d9ca665a000ff8462a9eb57bda997257c7d3df6c2d5bace1569f7f0ebf7"},
 ]
 
 [[package]]
@@ -2964,7 +2988,7 @@ files = [
 
 [[package]]
 name = "unstructured"
-version = "0.11.4"
+version = "0.11.5"
 extras = ["all-docs"]
 requires_python = ">=3.7.0"
 summary = "A library that prepares raw documents for downstream ML tasks."
@@ -2984,12 +3008,12 @@ dependencies = [
     "python-pptx<=0.6.23",
     "unstructured-inference==0.7.18",
     "unstructured-pytesseract>=0.3.12",
-    "unstructured==0.11.4",
+    "unstructured==0.11.5",
     "xlrd",
 ]
 files = [
-    {file = "unstructured-0.11.4-py3-none-any.whl", hash = "sha256:ed683898bcfb738276fc97826d66c485270638096ea5137a6e19a31443de1919"},
-    {file = "unstructured-0.11.4.tar.gz", hash = "sha256:50fd482efc6961ca81e180082fd751a0e6c96925c5bfbfda78a34d066c27b89f"},
+    {file = "unstructured-0.11.5-py3-none-any.whl", hash = "sha256:90c4d027ba8462776c22880daacedd8e379af285c8df7c42598379e258f2a600"},
+    {file = "unstructured-0.11.5.tar.gz", hash = "sha256:b50f2d9ca665a000ff8462a9eb57bda997257c7d3df6c2d5bace1569f7f0ebf7"},
 ]
 
 [[package]]

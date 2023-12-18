@@ -1,5 +1,8 @@
+from typing import Optional
+
 from llama_index import ServiceContext, VectorStoreIndex
 from llama_index.embeddings import HuggingFaceEmbedding
+from llama_index.indices.query.schema import QueryBundle
 from llama_index.llms import LlamaCPP
 from llama_index.llms.llama_utils import (
     completion_to_prompt,
@@ -9,16 +12,26 @@ from llama_index.postprocessor.types import BaseNodePostprocessor
 from llama_index.prompts import PromptTemplate
 from llama_index.response import Response
 from llama_index.schema import NodeWithScore
+from pydantic import Field
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 from src.common.utils import Consts
 from src.datastore import CreateDocStore
+
+
+class ModelSettings(BaseSettings):
+    model_config = SettingsConfigDict(env_prefix="model_")
+    top_k: int = Field(5)
+    llm: bool = Field(True)
+    vector_store_query_mode: str = Field("hybrid", pattern="default|sparse|hybrid")
+    alpha: float = Field(0.5)
 
 
 class DocumentGroupingPostprocessor(BaseNodePostprocessor):
     def _postprocess_nodes(
         self,
         nodes: list[NodeWithScore],
-        query_bundle,
+        query_bundle: Optional[QueryBundle],
     ) -> list[NodeWithScore]:
         nodes_by_document = {}
 
@@ -39,9 +52,11 @@ class DocumentGroupingPostprocessor(BaseNodePostprocessor):
 class LlamaIndexModel:
     def __init__(
         self,
-        llm: bool = True,
+        llm: bool,
+        top_k: int,
+        vector_store_query_mode: str,
+        alpha: float,
         prompt=Consts.PROMPT,
-        top_k=5,
     ):
         if llm:
             llm_config = dict(
@@ -93,8 +108,8 @@ class LlamaIndexModel:
             self.response = retriever.query(query)
         else:
             retriever = self.index.as_retriever(
-                vector_store_query_mode="hybrid",
-                alpha=0.5,
+                vector_store_query_mode=self.vector_store_query_mode,
+                alpha=self.alpha,
                 similarity_top_k=self.top_k,
             )
             self.response = retriever.retrieve(query)
@@ -115,6 +130,7 @@ class LlamaIndexModel:
 
 
 if __name__ == "__main__":
-    model = LlamaIndexModel(llm=True, top_k=10)
+    model_settings = ModelSettings.parse_file("./config/model.json")
+    model = LlamaIndexModel(**model_settings.model_dump())
     model.run("inequality")
     print(model.response[0]["response"])

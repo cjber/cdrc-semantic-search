@@ -2,6 +2,7 @@
 .direnv
 
 pipeline_storage/
+data/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

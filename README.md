@@ -8,10 +8,6 @@ The CDRC Semantic Search System is a project designed to enhance the search capa
 
 - **Semantic Search:** Utilizes advanced natural language processing techniques to understand the meaning behind user queries, enabling a more intuitive and precise search experience.
 
-- **Data Catalog Integration:** Seamlessly integrates with the CDRC data catalogue, ensuring comprehensive coverage of available datasets.
-
-- **User-Friendly Interface:** A simple and user-friendly interface makes it easy for researchers and stakeholders to interact with the system.
-
 ## System Architecture
 
 The CDRC Semantic Search System follows a modular architecture. Below is a detailed diagram illustrating the stages and components required for the system:
@@ -65,37 +61,27 @@ To get started with the CDRC Semantic Search System, follow these steps:
 
 _With pip:_
 
-   ```bash
-   cd cdrc-semantic-search
-   pip install -r requirements.txt
-   ```
+```bash
+cd cdrc-semantic-search
+pip install -r requirements.txt
+```
 
 _With pdm:_
 
-   ```bash
-   cd cdrc-semantic-search
-   pdm install
-   ```
+```bash
+cd cdrc-semantic-search
+pdm install
+```
 
 3. Configure the system:
 
-   Edit the `config.yml` file to customize settings such as API keys, data catalog endpoints, etc.
+   Edit the `config` json files to customize settings such as API keys, or model settings.
 
-4. Run the system:
+4. Run the system using a DVC pipeline.
 
    ```bash
-   python main.py
+   dvc repro
    ```
-
-Visit [our website](https://cdrc-semantic-search.com) for more detailed instructions and documentation.
-
-## Contributing
-
-We welcome contributions from the community. If you have ideas for improvement, bug reports, or want to contribute code, please check out our [Contribution Guidelines](CONTRIBUTING.md).
-
-## License
-
-This project is licensed under the [MIT License](LICENSE).
 
 ---
 

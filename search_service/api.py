@@ -1,11 +1,10 @@
 from fastapi import FastAPI
 
-from src.common.utils import Paths
 from src.model import LlamaIndexModel
 
 
 def create_app():
-    model = LlamaIndexModel(llm=True, top_k=5)
+    model = LlamaIndexModel()
     app = FastAPI()
     return app, model
 

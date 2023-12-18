@@ -1,7 +1,8 @@
 import json
 from pathlib import Path
 
-from more_itertools import consume
+from pydantic import Field
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Paths:
@@ -34,6 +35,14 @@ class Consts:
 class Urls:
     API_URL = "https://data.cdrc.ac.uk/api/3/action/current_package_list_with_resources"
     LOGIN_URL = "https://data.cdrc.ac.uk/user/login"
+
+
+class ModelSettings(BaseSettings):
+    model_config = SettingsConfigDict(env_prefix="model_")
+    top_k: int = Field(5)
+    llm: bool = Field(True)
+    vector_store_query_mode: str = Field("hybrid", pattern="default|sparse|hybrid")
+    alpha: float = Field(0.5)
 
 
 def _add_metadata_to_document(doc_id: str) -> dict:

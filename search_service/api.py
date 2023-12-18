@@ -1,10 +1,12 @@
 from fastapi import FastAPI
 
+from src.common.utils import ModelSettings
 from src.model import LlamaIndexModel
 
 
 def create_app():
-    model = LlamaIndexModel()
+    model_settings = ModelSettings.parse_file("./config/model.json")
+    model = LlamaIndexModel(**model_settings.model_dump())
     app = FastAPI()
     return app, model
 

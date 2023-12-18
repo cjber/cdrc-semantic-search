@@ -12,19 +12,9 @@ from llama_index.postprocessor.types import BaseNodePostprocessor
 from llama_index.prompts import PromptTemplate
 from llama_index.response import Response
 from llama_index.schema import NodeWithScore
-from pydantic import Field
-from pydantic_settings import BaseSettings, SettingsConfigDict
 
-from src.common.utils import Consts
+from src.common.utils import Consts, ModelSettings
 from src.datastore import CreateDocStore
-
-
-class ModelSettings(BaseSettings):
-    model_config = SettingsConfigDict(env_prefix="model_")
-    top_k: int = Field(5)
-    llm: bool = Field(True)
-    vector_store_query_mode: str = Field("hybrid", pattern="default|sparse|hybrid")
-    alpha: float = Field(0.5)
 
 
 class DocumentGroupingPostprocessor(BaseNodePostprocessor):
@@ -42,7 +32,7 @@ class DocumentGroupingPostprocessor(BaseNodePostprocessor):
             nodes_by_document[document_id].append(node)
 
         out_nodes = []
-        for gid, group in nodes_by_document.items():
+        for group in nodes_by_document.values():
             content = "\n".join([n.get_content() for n in group])
             group[0].node.text = content
             out_nodes.append(group[0])

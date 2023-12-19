@@ -112,7 +112,6 @@ class LlamaIndexModel:
                 vector_store_query_mode=self.vector_store_query_mode,
                 alpha=self.alpha,
                 similarity_top_k=self.top_k,
-                node_postprocessors=[DocumentGroupingPostprocessor()],
             )
             response = retriever.retrieve(query)
             postprocessor = DocumentGroupingPostprocessor()

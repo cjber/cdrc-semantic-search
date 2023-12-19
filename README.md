@@ -12,42 +12,9 @@ The CDRC Semantic Search System is a project designed to enhance the search capa
 
 ## System Architecture
 
-The CDRC Semantic Search System follows a modular architecture. Below is a detailed diagram illustrating the stages and components required for the system:
+The CDRC Semantic Search System follows a standard Retrieval Augmented Generation (RAG) architecture:
 
-```mermaid
-graph TB
-
-subgraph cluster_UI
-  UI[User Interface]
-  UIProc[User Input Processing]
-end
-
-subgraph cluster_Semantic
-  SP[Semantic Processor]
-  SA[Semantic Analysis]
-end
-
-subgraph cluster_Backend
-  DB(Vector Database)
-  LLM[Large Language Model]
-  DCS[Data Catalog Service]
-  RCD[Retrieve Catalog Data]
-end
-
-subgraph cluster_Results
-  SR[Search Results]
-end
-
-UI --> UIProc
-UIProc --> SP
-SP --> SA
-SA --> DB
-SA --> LLM
-DB --> DCS
-LLM --> DCS
-DCS --> RCD
-RCD --> SR
-```
+![Credit to Heiko Hotz (https://towardsdatascience.com/rag-vs-finetuning-which-is-the-best-tool-to-boost-your-llm-application-94654b1eaba7)](https://miro.medium.com/v2/resize:fit:720/format:webp/1*Jq9bEbitg1Pv4oASwEQwJg.png)
 
 ## Installation
 
@@ -77,7 +44,7 @@ pdm install
 
 3. Configure the system:
 
-   Edit the `config` json files to customize settings such as API keys, or model settings.
+   Edit the `config/config.toml` file to customize settings such as API keys, or model settings.
 
 4. Run the system using a DVC pipeline.
 

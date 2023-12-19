@@ -8,14 +8,14 @@ login_url = "https://data.cdrc.ac.uk/user/login"
 [datastore]
 index_name = "cdrc-index"
 hf_embed_dim = 768
-chunk_size = 512
-chunk_overlap = 128
+chunk_size = 256
+chunk_overlap = 16
 overwrite = true
 
 [model]
 top_k = 10
 vector_store_query_mode = "hybrid"
-alpha = 0.5
+alpha = 0.25
 prompt = """
   Below is the data profile for a dataset from the CDRC Data Catalogue.
   Summarise the data profile in under 50 words.

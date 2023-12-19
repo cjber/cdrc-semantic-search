@@ -1,11 +1,8 @@
 from subprocess import Popen
 from time import sleep
 
-import polars as pl
 import requests
 import streamlit as st
-
-from src.common.utils import _add_metadata_to_document
 
 
 def main():
@@ -19,35 +16,41 @@ def main():
                     break
             except requests.exceptions.ConnectionError:
                 Popen(["uvicorn", "search_service.api:app", "--port", "8000"])
-                sleep(5)
+                sleep(10)
 
+    use_llm = st.toggle("Activate LLM")
     text = st.text_input("Query")
     if text == "":
         return None
 
-    with st.spinner("Searching..."):
-        r = requests.get("http://localhost:8000/query", params={"q": text})
-        if r.status_code != 200:
-            st.error("No results :(")
-            return None
-        r = r.json()
+    r = requests.get(
+        "http://localhost:8000/query", params={"q": text, "use_llm": use_llm}
+    )
+    if r.status_code != 200:
+        st.error("No results :(")
+        return None
 
-        metadata = [
-            _add_metadata_to_document(item["file_name"].split(".")[0])
-            for key, item in r["metadata"].items()
-        ]
-        df = pl.DataFrame(metadata)
+    if use_llm:
+        response, metadata = r.json()
+        responses = response["response"].split("---------------------")
 
-        response = r["response"]
-        response_dataset = response.split("Response:")
-        response_dataset
-        st.write(f"{r['response']}")
-        st.write("----")
-        for row in df.rows(named=True):
-            st.subheader(row["title"])
-            if row["url"] != "None":
-                st.write(row["url"])
-            st.write("----")
+        for res, meta in zip(responses, metadata.values()):
+            summary, relevance = res.split("Summary: ")[1].split("Relevance: ")
+            st.subheader(meta["title"])
+            st.caption(summary)
+            st.caption(f":red[{relevance}]")
+            # st.caption(f":red[{meta['score']}]")
+            if meta["url"] != "None":
+                st.write(meta["url"])
+            st.divider()
+    else:
+        metadata = r.json()
+        for meta in metadata:
+            st.subheader(meta["title"])
+            # st.caption(f":red[{meta['score']}]")
+            if meta["url"] != "None":
+                st.write(meta["url"])
+            st.divider()
 
 
 if __name__ == "__main__":

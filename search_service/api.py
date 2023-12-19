@@ -6,7 +6,10 @@ from src.model import LlamaIndexModel
 
 def create_app():
     app = FastAPI()
-    model = LlamaIndexModel(**Settings().model)
+    model = LlamaIndexModel(
+        **Settings().model.model_dump(),
+        **Settings().shared.model_dump(),
+    )
     return app, model
 
 

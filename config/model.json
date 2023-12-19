@@ -1,6 +1,0 @@
-{
-  "top_k": 5,
-  "llm": true,
-  "vector_store_query_mode": "hybrid",
-  "alpha": 0.5
-}

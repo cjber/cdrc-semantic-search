@@ -1,0 +1,31 @@
+[shared]
+hf_embed_model = "BAAI/bge-base-en-v1.5"
+
+[cdrc-api]
+api_url = "https://data.cdrc.ac.uk/api/3/action/current_package_list_with_resources"
+login_url = "https://data.cdrc.ac.uk/user/login"
+
+[datastore]
+index_name = "cdrc-index"
+hf_embed_dim = 768
+chunk_size = 512
+chunk_overlap = 128
+overwrite = true
+
+[model]
+top_k = 10
+vector_store_query_mode = "hybrid"
+alpha = 0.5
+prompt = """
+  Below is the data profile for a dataset from the CDRC Data Catalogue.
+  Summarise the data profile in under 50 words.
+  Explain the relevance of the dataset to the following query, using your own knowledge or the data profile.\n\n
+  Structure your answer as follows, do not include any other information:\n\n
+  Title: <dataset title>\n\n
+  Summary: <dataset summary>\n\n
+  Relevance: <dataset relevance to 'Query'>\n\n
+  \n---------------------\n
+  Query: {query_str}\n\n
+  Data profile:\n
+  \n---------------------\n{context_str}\n---------------------\n\n
+"""

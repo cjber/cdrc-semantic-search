@@ -1,48 +1,51 @@
 import json
+import tomllib
 from pathlib import Path
 
 from pydantic import Field
-from pydantic_settings import BaseSettings, SettingsConfigDict
+from pydantic_settings import BaseSettings
+
+with open("./config/config.toml", "rb") as f:
+    Config = tomllib.load(f)
 
 
-class Paths:
-    DATA_DIR = Path("data")
-    PROFILES_DIR = DATA_DIR / "profiles"
-    DOCS_DIR = PROFILES_DIR / "docs"
-    NOTES_DIR = PROFILES_DIR / "notes"
-    PIPELINE_STORAGE = Path("./pipeline_storage")
+class CDRCSettings(BaseSettings):
+    api_url: str
+    login_url: str
 
 
-class Consts:
-    INDEX_NAME = "cdrc-index"
-    HF_EMBED_MODEL = None
-    EMBED_DIM = 384
-    PROMPT = (
-        "Below is the data profile for a dataset from the CDRC Data Catalogue.\n"
-        "1. Summarise the data profile in under 50 words.\n"
-        "2. Explain the relevance of the dataset to the following query, using your own knowledge or the documents.\n\n"
-        "For each unique dataset, structure your answer as follows:\n\n"
-        "Title: <dataset title>\n\n"
-        "Summary: <dataset summary>\n\n"
-        "Relevance: <dataset relevance to 'Query'>\n\n"
-        "\n---------------------\n"
-        "Query: {query_str}\n\n"
-        "Data profile:\n"
-        "\n---------------------\n{context_str}\n---------------------\n\n"
-    )
-
-
-class Urls:
-    API_URL = "https://data.cdrc.ac.uk/api/3/action/current_package_list_with_resources"
-    LOGIN_URL = "https://data.cdrc.ac.uk/user/login"
+class DataStoreSettings(BaseSettings):
+    index_name: str = Field(min_length=1)
+    hf_embed_dim: int = Field(gt=0, le=10_000)
+    chunk_size: int = Field(gt=0, le=10_000)
+    chunk_overlap: int = Field(ge=0, le=10_000)
+    overwrite: bool
 
 
 class ModelSettings(BaseSettings):
-    model_config = SettingsConfigDict(env_prefix="model_")
-    top_k: int = Field(5)
-    llm: bool = Field(True)
-    vector_store_query_mode: str = Field("hybrid", pattern="default|sparse|hybrid")
-    alpha: float = Field(0.5)
+    top_k: int = Field(gt=0, le=20)
+    vector_store_query_mode: str = Field(pattern="default|sparse|hybrid")
+    alpha: float = Field(gt=0, le=1)
+    prompt: str = Field(min_length=1)
+
+
+class SharedSettings(BaseSettings):
+    hf_embed_model: str = Field(min_length=1)
+
+
+class Settings(BaseSettings):
+    model: ModelSettings = ModelSettings.model_validate(Config["model"])
+    datastore: DataStoreSettings = DataStoreSettings.model_validate(Config["datastore"])
+    cdrc: CDRCSettings = CDRCSettings.model_validate(Config["cdrc-api"])
+    shared: SharedSettings = SharedSettings.model_validate(Config["shared"])
+
+
+class Paths:
+    DATA_DIR: Path = Path("data")
+    PROFILES_DIR: Path = DATA_DIR / "profiles"
+    DOCS_DIR: Path = PROFILES_DIR / "docs"
+    NOTES_DIR: Path = PROFILES_DIR / "notes"
+    PIPELINE_STORAGE: Path = Path("./pipeline_storage")
 
 
 def _add_metadata_to_document(doc_id: str) -> dict:

@@ -9,7 +9,7 @@ import requests
 from more_itertools import consume
 from tqdm import tqdm
 
-from src.common.utils import Paths, Urls
+from src.common.utils import Paths, Settings
 
 logging.getLogger().setLevel(logging.INFO)
 
@@ -17,17 +17,20 @@ logging.getLogger().setLevel(logging.INFO)
 class CDRCQuery:
     def __init__(
         self,
-        api_url: str = Urls.API_URL,
-        login_url: str = Urls.LOGIN_URL,
+        api_url: str,
+        login_url: str,
         data_dir: Path = Paths.DATA_DIR,
         profiles_dir: Path = Paths.PROFILES_DIR,
-        login_details: dict = {
-            "name": os.getenv("name"),
-            "pass": os.getenv("pass"),
-            "form_build_id": os.getenv("form_build_id"),
-        },
+        login_details: dict = None,
         _remove_old_files: bool = True,
     ):
+        if login_details is None:
+            # TODO: Move to config file (dotenv)
+            login_details = {
+                "name": os.getenv("name"),
+                "pass": os.getenv("pass"),
+                "form_build_id": os.getenv("form_build_id"),
+            }
         self.api_url = api_url
         self.login_url = login_url
         self.data_dir = data_dir
@@ -121,5 +124,5 @@ class CDRCQuery:
 
 
 if __name__ == "__main__":
-    query = CDRCQuery()
+    query = CDRCQuery(**Settings().cdrc.model_dump())
     query.run()

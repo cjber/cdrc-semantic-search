@@ -1,13 +1,12 @@
 from fastapi import FastAPI
 
-from src.common.utils import ModelSettings
+from src.common.utils import Settings
 from src.model import LlamaIndexModel
 
 
 def create_app():
-    model_settings = ModelSettings.parse_file("./config/model.json")
-    model = LlamaIndexModel(**model_settings.model_dump())
     app = FastAPI()
+    model = LlamaIndexModel(**Settings().model)
     return app, model
 
 
@@ -20,6 +19,6 @@ async def root():
 
 
 @app.get("/query")
-async def query(q):
-    model.run(q)
+async def query(q: str, use_llm: bool):
+    model.run(q, use_llm)
     return model.response

@@ -36,6 +36,10 @@ apache_queries = [
 ]
 
 drupal_queries.extend(apache_queries)
-len(Counter(drupal_queries))
-len(drupal_queries)
+counts = Counter(drupal_queries)
 
+pl.DataFrame(counts).transpose(include_header=True).rename({"column_0": "count"}).sort(
+    "count", descending=True
+).write_csv("./data/logs/queries.csv")
+
+pl.read_csv("./data/logs/queries.csv").head(5)

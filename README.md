@@ -15,6 +15,7 @@ The CDRC Semantic Search System is a project designed to enhance the search capa
 The CDRC Semantic Search System follows a standard Retrieval Augmented Generation (RAG) architecture:
 
 ![Credit to Heiko Hotz (https://towardsdatascience.com/rag-vs-finetuning-which-is-the-best-tool-to-boost-your-llm-application-94654b1eaba7)](https://miro.medium.com/v2/resize:fit:720/format:webp/1*Jq9bEbitg1Pv4oASwEQwJg.png)
+*Credit to Heiko Hotz (https://towardsdatascience.com/rag-vs-finetuning-which-is-the-best-tool-to-boost-your-llm-application-94654b1eaba7)*
 
 ## Installation
 

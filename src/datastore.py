@@ -1,18 +1,19 @@
 import os
+import shutil
 from pathlib import Path
 
 import pinecone
-from llama_index import SimpleDirectoryReader, download_loader
+from llama_hub.file.unstructured import UnstructuredReader
+from llama_index import SimpleDirectoryReader
 from llama_index.embeddings import HuggingFaceEmbedding
 from llama_index.ingestion import IngestionPipeline
 from llama_index.storage.docstore import SimpleDocumentStore
 from llama_index.text_splitter import SentenceSplitter
 from llama_index.vector_stores import PineconeVectorStore
-from pydantic_settings import BaseSettings
 
-from src.common.utils import Config, Paths, Settings, _add_metadata_to_document
+from src.common.utils import Paths, Settings, _add_metadata_to_document
 
-UnstructuredReader = download_loader("UnstructuredReader")
+reader = UnstructuredReader(api_key=os.environ["UNSTRUCTURED_API_KEY"])
 
 
 class CreateDataStore:
@@ -43,6 +44,7 @@ class CreateDataStore:
         self.setup_directory_reader()
         self.setup_ingestion_pipeline()
         self.load_and_preprocess_documents()
+        # shutil.rmtree(self.profiles_dir) FIX: removes directory after files loaded
 
     def initialise_pinecone_index(self):
         # TODO: Move to config file (dotenv)
@@ -69,9 +71,9 @@ class CreateDataStore:
             self.profiles_dir,
             recursive=True,
             file_extractor={
-                ".pdf": UnstructuredReader(),
-                ".docx": UnstructuredReader(),
-                ".txt": UnstructuredReader(),
+                ".pdf": reader,
+                ".docx": reader,
+                ".txt": reader,
             },
             file_metadata=lambda name: _add_metadata_to_document(Path(name).stem),
         )

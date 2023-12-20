@@ -11,7 +11,6 @@ dependencies = [
     "llama-cpp-python>=0.2.23",
     "accelerate>=0.25.0",
     "pinecone-client>=2.2.4",
-    "unstructured[all-docs]>=0.11.2",
     "requests>=2.31.0",
     "fastapi>=0.105.0",
     "uvicorn>=0.24.0.post1",

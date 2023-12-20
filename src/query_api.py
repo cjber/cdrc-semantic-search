@@ -22,7 +22,7 @@ class CDRCQuery:
         data_dir: Path = Paths.DATA_DIR,
         profiles_dir: Path = Paths.PROFILES_DIR,
         login_details: dict = None,
-        _remove_old_files: bool = True,
+        # _remove_old_files: bool = True,
     ):
         if login_details is None:
             # TODO: Move to config file (dotenv)
@@ -36,7 +36,7 @@ class CDRCQuery:
         self.data_dir = data_dir
         self.profiles_dir = profiles_dir
         self.login_details = login_details
-        self._remove_old_files = _remove_old_files
+        # self._remove_old_files = _remove_old_files
 
         self.profiles_dir.mkdir(exist_ok=True, parents=True)
 
@@ -112,15 +112,15 @@ class CDRCQuery:
         with open(self.data_dir / "files-metadata.json", "w") as f:
             json.dump(self.files_meta, f)
 
-    def remove_old_files(self, kind, meta):
-        files = [
-            file for file in self.profiles_dir.iterdir() if file.stem.startswith(kind)
-        ]
-        ids = {file.stem.split("-", maxsplit=1)[1] for file in files}
-
-        remove = ids - meta
-        logging.info(f"Removing {len(remove)} old {kind}.")
-        consume(f.unlink() for f in files if f.stem.split("-", maxsplit=1)[1] in remove)
+    # def remove_old_files(self, kind, meta):
+    #     files = [
+    #         file for file in self.profiles_dir.iterdir() if file.stem.startswith(kind)
+    #     ]
+    #     ids = {file.stem.split("-", maxsplit=1)[1] for file in files}
+    #
+    #     remove = ids - meta
+    #     logging.info(f"Removing {len(remove)} old {kind}.")
+    #     consume(f.unlink() for f in files if f.stem.split("-", maxsplit=1)[1] in remove)
 
 
 if __name__ == "__main__":

@@ -3,6 +3,12 @@ from time import sleep
 
 import requests
 import streamlit as st
+from pydantic import BaseModel
+
+
+class QueryResponse(BaseModel):
+    summary: str
+    relevance: str
 
 
 def main():
@@ -32,14 +38,22 @@ def main():
 
     if use_llm:
         response, metadata = r.json()
-        responses = response["response"].split("---------------------")
+        responses = []
+        for r in response["response"].split("---------------------"):
+            if all(x in r for x in ["Summary: ", "Relevance: "]):
+                responses.append(r)
+            else:
+                responses.append(None)
 
         for res, meta in zip(responses, metadata.values()):
-            summary, relevance = res.split("Summary: ")[1].split("Relevance: ")
             st.subheader(meta["title"])
-            st.caption(summary)
-            st.caption(f":red[{relevance}]")
-            # st.caption(f":red[{meta['score']}]")
+            if res:
+                summary, relevance = res.split("Summary: ")[1].split("Relevance: ")
+                st.caption(summary)
+                st.caption(f":red[{relevance}]")
+            # st.caption(f"Score: :red[{meta['score']:.3f}]")
+            else:
+                st.caption("LLM did not return a response.")
             if meta["url"] != "None":
                 st.write(meta["url"])
             st.divider()
@@ -47,7 +61,7 @@ def main():
         metadata = r.json()
         for meta in metadata:
             st.subheader(meta["title"])
-            # st.caption(f":red[{meta['score']}]")
+            st.caption(f"Score: :red[{meta['score']:.3f}]")
             if meta["url"] != "None":
                 st.write(meta["url"])
             st.divider()

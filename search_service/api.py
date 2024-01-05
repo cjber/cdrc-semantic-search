@@ -25,3 +25,9 @@ async def root():
 async def query(q: str, use_llm: bool):
     model.run(q, use_llm)
     return model.response
+
+
+if __name__ == "__main__":
+    import uvicorn
+
+    uvicorn.run(app, host="0.0.0.0", port=8000)

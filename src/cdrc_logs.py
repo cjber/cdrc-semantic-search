@@ -3,43 +3,46 @@ from collections import Counter
 
 import polars as pl
 
-p = re.compile("https?:\/\/data.cdrc.ac.uk\/search\/type\/dataset\?query=\S*")
-with open(
-    "./data/logs/url_column_accesslog_drupaldb_table_grep_search.csv", mode="r"
-) as f:
-    file = f.read()
-    query_matches = p.findall(file)
+if __name__ == "__main__":
+    p = re.compile("https?:\/\/data.cdrc.ac.uk\/search\/type\/dataset\?query=\S*")
+    with open(
+        "./data/logs/url_column_accesslog_drupaldb_table_grep_search.csv", mode="r"
+    ) as f:
+        file = f.read()
+        query_matches = p.findall(file)
 
-drupal_queries = [
-    query.split("=")[1]
-    .lower()
-    .replace("%20", " ")
-    .replace("&sort_by", "")
-    .replace("+", " ")
-    .strip()
-    for query in query_matches
-]
+    drupal_queries = [
+        query.split("=")[1]
+        .lower()
+        .replace("%20", " ")
+        .replace("&sort_by", "")
+        .replace("+", " ")
+        .strip()
+        for query in query_matches
+    ]
 
-p = re.compile('\[.*\]\s"GET\s\/search\/type\/dataset\?query=\S*')
-with open("./data/logs/apache_access_grep_query.log", mode="r") as f:
-    file = f.read()
-    date_matches = p.findall(file)
+    p = re.compile('\[.*\]\s"GET\s\/search\/type\/dataset\?query=\S*')
+    with open("./data/logs/apache_access_grep_query.log", mode="r") as f:
+        file = f.read()
+        date_matches = p.findall(file)
 
-apache_queries = [
-    query.split("=")[1]
-    .lower()
-    .replace("%20", " ")
-    .replace("&sort_by", "")
-    .replace("+", " ")
-    .strip()
-    for query in date_matches
-]
+    apache_queries = [
+        query.split("=")[1]
+        .lower()
+        .replace("%20", " ")
+        .replace("&sort_by", "")
+        .replace("+", " ")
+        .strip()
+        for query in date_matches
+    ]
 
-drupal_queries.extend(apache_queries)
-counts = Counter(drupal_queries)
+    drupal_queries.extend(apache_queries)
+    counts = Counter(drupal_queries)
 
-pl.DataFrame(counts).transpose(include_header=True).rename({"column_0": "count"}).sort(
-    "count", descending=True
-).write_csv("./data/logs/queries.csv")
-
-pl.read_csv("./data/logs/queries.csv").head(5)
+    (
+        pl.DataFrame(counts)
+        .transpose(include_header=True)
+        .rename({"column_0": "count"})
+        .sort("count", descending=True)
+        .write_csv("./data/logs/queries.csv")
+    )

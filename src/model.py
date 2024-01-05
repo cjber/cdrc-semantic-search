@@ -36,7 +36,7 @@ class DocumentGroupingPostprocessor(BaseNodePostprocessor):
 
         out_nodes = []
         for group in nodes_by_document.values():
-            content = "\n\n".join([n.get_content() for n in group])
+            content = "\n--------------------\n".join([n.get_content() for n in group])
             score = mean([n.score for n in group])
             group[0].node.text = content
             group[0].score = score
@@ -53,21 +53,20 @@ class LlamaIndexModel:
         alpha: float,
         prompt: str,
     ):
-        # llm_config = dict(
-        #     n_ctx=3900,
-        #     n_threads=8,
-        #     n_gpu_layers=35,
-        # )
-        # self.model = LlamaCPP(
-        #     model_path="/home/cjber/.cache/huggingface/hub/mistral-7b-instruct-v0.2.Q4_K_M.gguf",
-        #     temperature=0.1,
-        #     max_new_tokens=256,
-        #     messages_to_prompt=messages_to_prompt,
-        #     completion_to_prompt=completion_to_prompt,
-        #     model_kwargs=llm_config,
-        #     verbose=True,
-        # )
-        self.model = None
+        llm_config = dict(
+            n_ctx=3900,
+            n_threads=8,
+            n_gpu_layers=35,
+        )
+        self.model = LlamaCPP(
+            model_path="/home/cjber/.cache/huggingface/hub/mistral-7b-instruct-v0.2.Q4_K_M.gguf",
+            temperature=0.1,
+            max_new_tokens=256,
+            messages_to_prompt=messages_to_prompt,
+            completion_to_prompt=completion_to_prompt,
+            model_kwargs=llm_config,
+            verbose=True,
+        )
         self.top_k = top_k
         self.hf_embed_model = hf_embed_model
         self.vector_store_query_mode = vector_store_query_mode
@@ -76,8 +75,9 @@ class LlamaIndexModel:
 
         self.index = self.build_index()
 
-    def run(self, query: str, use_llm=True):
-        self.response = self.build_response(query, use_llm)
+    def run(self, query: str, use_llm: bool):
+        self.use_llm = use_llm
+        self.response = self.build_response(query)
 
     def build_index(self):
         service_context = ServiceContext.from_defaults(
@@ -96,14 +96,13 @@ class LlamaIndexModel:
             use_async=True,
         )
 
-    def build_response(self, query, use_llm=True):
+    def build_response(self, query):
         text_qa_template = PromptTemplate(self.prompt)
 
-        if use_llm:
+        if self.use_llm:
             retriever = self.index.as_query_engine(
                 text_qa_template=text_qa_template,
                 response_mode="accumulate",
-                # response_mode="simple_summarize",
                 vector_store_query_mode=self.vector_store_query_mode,
                 alpha=self.alpha,
                 similarity_top_k=self.top_k,
@@ -142,5 +141,5 @@ if __name__ == "__main__":
         **Settings().model.model_dump(),
         **Settings().shared.model_dump(),
     )
-    model.run("diabetes", use_llm=True)
-    model.response
+    model.run("social mobility datasets", use_llm=True)
+    print(model.response[0]["response"])

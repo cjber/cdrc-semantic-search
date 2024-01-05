@@ -1,9 +1,23 @@
-import json
-import tomllib
+import logging
+import sys
+import traceback
 from pathlib import Path
 
+import tomllib
+from dotenv import load_dotenv
 from pydantic import Field
 from pydantic_settings import BaseSettings
+
+load_dotenv()
+
+
+def log_uncaught_exceptions(ex_cls, ex, tb):
+    logging.critical("".join(traceback.format_tb(tb)))
+    logging.critical("{0}: {1}".format(ex_cls, ex))
+
+
+sys.excepthook = log_uncaught_exceptions
+
 
 with open("./config/config.toml", "rb") as f:
     Config = tomllib.load(f)
@@ -46,26 +60,3 @@ class Paths:
     DOCS_DIR: Path = PROFILES_DIR / "docs"
     NOTES_DIR: Path = PROFILES_DIR / "notes"
     PIPELINE_STORAGE: Path = Path("./pipeline_storage")
-
-
-def _add_metadata_to_document(doc_id: str) -> dict:
-    with open(Paths.DATA_DIR / "catalogue-metadata.json") as f:
-        catalogue_metadata = json.load(f)
-    with open(Paths.DATA_DIR / "files-metadata.json") as f:
-        files_metadata = json.load(f)
-
-    format, main_id = doc_id.split("-", maxsplit=1)
-
-    if format != "notes":
-        for file_meta in files_metadata:
-            if main_id == file_meta["id"]:
-                main_id = file_meta["parent_id"]
-                break
-
-    for catalogue_meta in catalogue_metadata:
-        if main_id == catalogue_meta["id"]:
-            return {
-                "title": catalogue_meta["title"],
-                "id": catalogue_meta["id"],
-                "url": catalogue_meta["url"],
-            }

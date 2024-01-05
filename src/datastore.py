@@ -30,6 +30,7 @@ def _add_metadata_to_document(doc_id: str) -> dict:
                 break
 
     for catalogue_meta in catalogue_metadata:
+        # NOTE: Add date information to metadata
         if main_id == catalogue_meta["id"]:
             return {
                 "title": catalogue_meta["title"],

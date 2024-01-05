@@ -8,14 +8,14 @@ login_url = "https://data.cdrc.ac.uk/user/login"
 [datastore]
 index_name = "cdrc-index"
 hf_embed_dim = 768
-chunk_size = 256
-chunk_overlap = 16
+chunk_size = 512
+chunk_overlap = 64
 overwrite = true
 
 [model]
-top_k = 10
+top_k = 20
 vector_store_query_mode = "hybrid"
-alpha = 0.25
+alpha = 0.50
 prompt = """
   Below is the data profile for a dataset from the CDRC Data Catalogue.
   Summarise the data profile in under 50 words.
@@ -29,3 +29,11 @@ prompt = """
   Data profile:\n
   \n---------------------\n{context_str}\n---------------------\n\n
 """
+# prompt = """
+#   Below are a collection data profiles for datasets from the CDRC Data Catalogue.
+#   In a short paragraph explain how the datasets relate to the users query.
+#   \n---------------------\n
+#   Query: {query_str}\n\n
+#   Data profile:\n
+#   \n---------------------\n{context_str}\n---------------------\n\n
+# """

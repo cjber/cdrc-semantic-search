@@ -1,23 +1,23 @@
+import logging
+import sys
 from statistics import mean
 from typing import Optional
 
 from llama_index import ServiceContext, VectorStoreIndex
 from llama_index.embeddings import HuggingFaceEmbedding
 from llama_index.indices.query.schema import QueryBundle
-from llama_index.llms import LlamaCPP
-from llama_index.llms.llama_utils import (
-    completion_to_prompt,
-    messages_to_prompt
-)
+from llama_index.llms import HuggingFaceLLM, LlamaCPP
+from llama_index.llms.llama_utils import completion_to_prompt, messages_to_prompt
 from llama_index.postprocessor.types import BaseNodePostprocessor
 from llama_index.prompts import PromptTemplate
 from llama_index.response import Response
 from llama_index.schema import NodeWithScore
-from pydantic import Field
-from pydantic_settings import BaseSettings
 
-from src.common.utils import Config, Settings
+from src.common.utils import Settings
 from src.datastore import CreateDataStore
+
+logging.basicConfig(level=logging.ERROR, filename="logs/model.log", filemode="w")
+logging.getLogger().addHandler(logging.StreamHandler(stream=sys.stdout))
 
 
 class DocumentGroupingPostprocessor(BaseNodePostprocessor):
@@ -53,20 +53,21 @@ class LlamaIndexModel:
         alpha: float,
         prompt: str,
     ):
-        llm_config = dict(
-            n_ctx=3900,
-            n_threads=8,
-            n_gpu_layers=35,
-        )
-        self.model = LlamaCPP(
-            model_path="/home/cjber/.cache/huggingface/hub/mistral-7b-instruct-v0.2.Q4_K_M.gguf",
-            temperature=0.1,
-            max_new_tokens=256,
-            messages_to_prompt=messages_to_prompt,
-            completion_to_prompt=completion_to_prompt,
-            model_kwargs=llm_config,
-            verbose=True,
-        )
+        # llm_config = dict(
+        #     n_ctx=3900,
+        #     n_threads=8,
+        #     n_gpu_layers=35,
+        # )
+        # self.model = LlamaCPP(
+        #     model_path="/home/cjber/.cache/huggingface/hub/mistral-7b-instruct-v0.2.Q4_K_M.gguf",
+        #     temperature=0.1,
+        #     max_new_tokens=256,
+        #     messages_to_prompt=messages_to_prompt,
+        #     completion_to_prompt=completion_to_prompt,
+        #     model_kwargs=llm_config,
+        #     verbose=True,
+        # )
+        self.model = None
         self.top_k = top_k
         self.hf_embed_model = hf_embed_model
         self.vector_store_query_mode = vector_store_query_mode
@@ -92,6 +93,7 @@ class LlamaIndexModel:
             docstore.vector_store,
             service_context=service_context,
             show_progress=True,
+            use_async=True,
         )
 
     def build_response(self, query, use_llm=True):
@@ -101,6 +103,7 @@ class LlamaIndexModel:
             retriever = self.index.as_query_engine(
                 text_qa_template=text_qa_template,
                 response_mode="accumulate",
+                # response_mode="simple_summarize",
                 vector_store_query_mode=self.vector_store_query_mode,
                 alpha=self.alpha,
                 similarity_top_k=self.top_k,
@@ -133,8 +136,11 @@ class LlamaIndexModel:
 
 
 if __name__ == "__main__":
+    logging.basicConfig(level=logging.ERROR, filename="logs/model.log", filemode="w")
+
     model = LlamaIndexModel(
         **Settings().model.model_dump(),
         **Settings().shared.model_dump(),
     )
     model.run("diabetes", use_llm=True)
+    model.response

@@ -17,17 +17,23 @@ top_k = 20
 vector_store_query_mode = "hybrid"
 alpha = 0.50
 prompt = """
-  Below is the data profile for a dataset from the CDRC Data Catalogue.
-  Summarise the data profile in under 50 words.
-  Explain the relevance of the dataset to the following query, using your own knowledge or the data profile.\n\n
-  Structure your answer as follows, do not include any other information:\n\n
-  Title: <dataset title>\n\n
-  Summary: <dataset summary>\n\n
-  Relevance: <dataset relevance to 'Query'>\n\n
-  \n---------------------\n
-  Query: {query_str}\n\n
-  Data profile:\n
-  \n---------------------\n{context_str}\n---------------------\n\n
+Below is the data profile for a dataset from the CDRC Data Catalogue.
+Summarise the data profile in under 50 words.
+Explain the relevance of the dataset to the following query, using your own knowledge or the data profile.
+
+Structure your answer as follows, do not include any other information:
+
+Title: <dataset title>
+Summary: <dataset summary>
+Relevance: <dataset relevance to 'Query'>
+
+---------------------
+Query: "{query_str}"
+
+Data profile:
+
+{context_str}
+---------------------
 """
 # prompt = """
 #   Below are a collection data profiles for datasets from the CDRC Data Catalogue.

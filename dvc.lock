@@ -52,28 +52,23 @@ stages:
     deps:
     - path: config/config.toml
       hash: md5
-      md5: 4cfa69b3bb73eee55d84b28e53914840
-      size: 952
-    - path: data/profiles
-      hash: md5
-      md5: 867372fae11adf71c83d35748c913a51.dir
-      size: 28928038
-      nfiles: 174
+      md5: c0ec739e2750ca005515492240c262af
+      size: 1206
     - path: src/common/utils.py
       hash: md5
-      md5: 06362b8ab701613d4423576271552049
-      size: 1392
+      md5: 370b33167234e78775243bddf6ac625e
+      size: 1679
     - path: src/datastore.py
       hash: md5
-      md5: 460c3be286cdaafcb718137b0cbbf677
-      size: 5043
+      md5: 0dea604c89fb4fd636ea81f2dc016000
+      size: 4451
   query_api:
     cmd: python -m src.query_api
     deps:
     - path: config/config.toml
       hash: md5
-      md5: 247e3621055ded4ec246850314bb241f
-      size: 1291
+      md5: c0ec739e2750ca005515492240c262af
+      size: 1206
     - path: src/common/utils.py
       hash: md5
       md5: 370b33167234e78775243bddf6ac625e
@@ -85,14 +80,14 @@ stages:
     outs:
     - path: data/catalogue-metadata.json
       hash: md5
-      md5: 0b921a61bc9838a139299d57d944f3a4
-      size: 487762
+      md5: ee4f0f31231e7d967cd986403f16b170
+      size: 491264
     - path: data/files-metadata.json
       hash: md5
-      md5: fe3f4cfbeaa52895856ff655197b93b2
-      size: 46778
+      md5: c8bc8a0c7d9216e87256691069f1e13d
+      size: 47320
     - path: data/profiles
       hash: md5
-      md5: 867372fae11adf71c83d35748c913a51.dir
-      size: 28928038
-      nfiles: 174
+      md5: 5bf075cc0b99b864a56d2430a812515e.dir
+      size: 29105914
+      nfiles: 176

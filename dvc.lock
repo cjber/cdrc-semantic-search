@@ -72,16 +72,16 @@ stages:
     deps:
     - path: config/config.toml
       hash: md5
-      md5: 4cfa69b3bb73eee55d84b28e53914840
-      size: 952
+      md5: 247e3621055ded4ec246850314bb241f
+      size: 1291
     - path: src/common/utils.py
       hash: md5
-      md5: 06362b8ab701613d4423576271552049
-      size: 1392
+      md5: 370b33167234e78775243bddf6ac625e
+      size: 1679
     - path: src/query_api.py
       hash: md5
-      md5: bd2c2c50d9a617668a2dee42cd06840a
-      size: 3709
+      md5: b1679020945dde96ba15d16ffc7274e6
+      size: 3643
     outs:
     - path: data/catalogue-metadata.json
       hash: md5

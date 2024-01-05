@@ -4,8 +4,8 @@
 [metadata]
 groups = ["default", "dev"]
 strategy = ["cross_platform"]
-lock_version = "4.4"
-content_hash = "sha256:a9b6e8a2265f5c149753484f072077ecee37e8ab58f9afae71a6a710b58ea1d3"
+lock_version = "4.4.1"
+content_hash = "sha256:b51a7cd8f112cef60d981dc7d908c63f97c3bd6dfc83694a57e437e31ae2908a"
 
 [[package]]
 name = "accelerate"
@@ -647,7 +647,7 @@ files = [
 
 [[package]]
 name = "dvc"
-version = "3.34.0"
+version = "3.38.0"
 requires_python = ">=3.8"
 summary = "Git for data scientists - manage your code and data together"
 dependencies = [
@@ -655,7 +655,7 @@ dependencies = [
     "configobj>=5.0.6",
     "distro>=1.3",
     "dpath<3,>=2.1.0",
-    "dvc-data<3.1,>=3",
+    "dvc-data<3.7,>=3.6",
     "dvc-http>=2.29.0",
     "dvc-render<2,>=1.0.0",
     "dvc-studio-client<1,>=0.17.1",
@@ -688,13 +688,13 @@ dependencies = [
     "zc-lockfile>=1.2.1",
 ]
 files = [
-    {file = "dvc-3.34.0-py3-none-any.whl", hash = "sha256:3052fb984af2985144d1de4893a6edb3970fc2ca7e885e26d77a5098015205da"},
-    {file = "dvc-3.34.0.tar.gz", hash = "sha256:264020cacd2ebf3234fdc3c1af327d81426aca41ac06d7eb0cc9d99a81127ea0"},
+    {file = "dvc-3.38.0-py3-none-any.whl", hash = "sha256:0b4ffa7226b056f6baa93daea56f136cf75f2568692b031ac056baf29647f1c2"},
+    {file = "dvc-3.38.0.tar.gz", hash = "sha256:61294ffc71e5263bd12c3a0b410f606e4d6f7808b1d6d2a998fec0b07b1476ad"},
 ]
 
 [[package]]
 name = "dvc-data"
-version = "3.0.1"
+version = "3.6.0"
 requires_python = ">=3.8"
 summary = "DVC's data management subsystem"
 dependencies = [
@@ -705,12 +705,12 @@ dependencies = [
     "funcy>=1.14",
     "pygtrie>=2.3.2",
     "shortuuid>=0.5.0",
-    "sqltrie<1,>=0.9.0",
+    "sqltrie<1,>=0.11.0",
     "tqdm<5,>=4.63.1",
 ]
 files = [
-    {file = "dvc-data-3.0.1.tar.gz", hash = "sha256:4ec9f7a254ab0c89dafddf1a27de2f45d7eb65467235a67543b9556eb6de0fee"},
-    {file = "dvc_data-3.0.1-py3-none-any.whl", hash = "sha256:caff884c17ab7c604467c5f35ed5dd2c1256bc0b0015dd7553435673cb178a72"},
+    {file = "dvc-data-3.6.0.tar.gz", hash = "sha256:85a37501a883764a68eafb0c13cabcf7408eb0d1de028706fbc01afd263e56f7"},
+    {file = "dvc_data-3.6.0-py3-none-any.whl", hash = "sha256:379e6cdca76b5eafc2a21429e3a3bf5289015c41a57256ba75639fac4627ffd7"},
 ]
 
 [[package]]
@@ -822,18 +822,17 @@ files = [
 
 [[package]]
 name = "fastapi"
-version = "0.105.0"
+version = "0.108.0"
 requires_python = ">=3.8"
 summary = "FastAPI framework, high performance, easy to learn, fast to code, ready for production"
 dependencies = [
-    "anyio<4.0.0,>=3.7.1",
     "pydantic!=1.8,!=1.8.1,!=2.0.0,!=2.0.1,!=2.1.0,<3.0.0,>=1.7.4",
-    "starlette<0.28.0,>=0.27.0",
+    "starlette<0.33.0,>=0.29.0",
     "typing-extensions>=4.8.0",
 ]
 files = [
-    {file = "fastapi-0.105.0-py3-none-any.whl", hash = "sha256:f19ebf6fdc82a3281d10f2cb4774bdfa90238e3b40af3525a0c09fd08ad1c480"},
-    {file = "fastapi-0.105.0.tar.gz", hash = "sha256:4d12838819aa52af244580675825e750ad67c9df4614f557a769606af902cf22"},
+    {file = "fastapi-0.108.0-py3-none-any.whl", hash = "sha256:8c7bc6d315da963ee4cdb605557827071a9a7f95aeb8fcdd3bde48cdc8764dd7"},
+    {file = "fastapi-0.108.0.tar.gz", hash = "sha256:5056e504ac6395bf68493d71fcfc5352fdbd5fda6f88c21f6420d80d81163296"},
 ]
 
 [[package]]
@@ -1143,8 +1142,8 @@ files = [
 
 [[package]]
 name = "ipython"
-version = "8.18.1"
-requires_python = ">=3.9"
+version = "8.19.0"
+requires_python = ">=3.10"
 summary = "IPython: Productive Interactive Computing"
 dependencies = [
     "colorama; sys_platform == \"win32\"",
@@ -1158,8 +1157,8 @@ dependencies = [
     "traitlets>=5",
 ]
 files = [
-    {file = "ipython-8.18.1-py3-none-any.whl", hash = "sha256:e8267419d72d81955ec1177f8a29aaa90ac80ad647499201119e2f05e99aa397"},
-    {file = "ipython-8.18.1.tar.gz", hash = "sha256:ca6f079bb33457c66e233e4580ebfc4128855b4cf6370dddd73842a9563e8a27"},
+    {file = "ipython-8.19.0-py3-none-any.whl", hash = "sha256:2f55d59370f59d0d2b2212109fe0e6035cfea436b1c0e6150ad2244746272ec5"},
+    {file = "ipython-8.19.0.tar.gz", hash = "sha256:ac4da4ecf0042fb4e0ce57c60430c2db3c719fa8bdf92f8631d6bd8a5785d1f0"},
 ]
 
 [[package]]
@@ -1269,7 +1268,7 @@ files = [
 
 [[package]]
 name = "llama-cpp-python"
-version = "0.2.24"
+version = "0.2.26"
 requires_python = ">=3.8"
 summary = "Python bindings for the llama.cpp library"
 dependencies = [
@@ -1278,12 +1277,12 @@ dependencies = [
     "typing-extensions>=4.5.0",
 ]
 files = [
-    {file = "llama_cpp_python-0.2.24.tar.gz", hash = "sha256:85f8fd110b4b90599d5ff427bd4a1a4db6e70817c60ba8aa609fa5c645761ec1"},
+    {file = "llama_cpp_python-0.2.26.tar.gz", hash = "sha256:b808f3346c3c602096dc567b5a1c03540f4ad213498878bf72496e01a81af40b"},
 ]
 
 [[package]]
 name = "llama-hub"
-version = "0.0.60"
+version = "0.0.65"
 requires_python = ">=3.8.1,<3.12"
 summary = "A library of community-driven data loaders for LLMs. Use with LlamaIndex and/or LangChain. "
 dependencies = [
@@ -1294,13 +1293,13 @@ dependencies = [
     "retrying",
 ]
 files = [
-    {file = "llama_hub-0.0.60-py3-none-any.whl", hash = "sha256:0818351b5660118c3fa3af5951fda490bf03f65e5892713dc226070469431f1f"},
-    {file = "llama_hub-0.0.60.tar.gz", hash = "sha256:5a77968c17ebb4897b762d1e936ba740e9786f595b7a012117b1db1e14e2615a"},
+    {file = "llama_hub-0.0.65-py3-none-any.whl", hash = "sha256:eb19486ef8a597853649ca603f74f47e852d09a2003089d891736f55da5492ea"},
+    {file = "llama_hub-0.0.65.tar.gz", hash = "sha256:8bb097ced14829abf6b360cc4f4b63dd7c23c1a4e0802e9b21d309c6820a6625"},
 ]
 
 [[package]]
 name = "llama-index"
-version = "0.9.17"
+version = "0.9.25.post1"
 requires_python = ">=3.8.1,<4.0"
 summary = "Interface between LLMs and your data"
 dependencies = [
@@ -1323,8 +1322,8 @@ dependencies = [
     "typing-inspect>=0.8.0",
 ]
 files = [
-    {file = "llama_index-0.9.17-py3-none-any.whl", hash = "sha256:983bda860b7c62dfa1c3b2a2249c1c8f93333d3c45cd3e6cb6545f5c8204e2c6"},
-    {file = "llama_index-0.9.17.tar.gz", hash = "sha256:450662e6a6788209d6f06db6c2de190e74b08a92af78f0247bebc0ecf64654d0"},
+    {file = "llama_index-0.9.25.post1-py3-none-any.whl", hash = "sha256:8f79fa5072fbbe0ab61d5983ab51adf92449788a2e68f79bb717576a3706f547"},
+    {file = "llama_index-0.9.25.post1.tar.gz", hash = "sha256:2de8e2055a19f29db33d828196fa3e42b5a5e06a537c27057b78ca034eec1bbc"},
 ]
 
 [[package]]
@@ -1407,16 +1406,6 @@ summary = "Markdown URL utilities"
 files = [
     {file = "mdurl-0.1.2-py3-none-any.whl", hash = "sha256:84008a41e51615a49fc9966191ff91509e3c40b939176e643fd50a5c2196b8f8"},
     {file = "mdurl-0.1.2.tar.gz", hash = "sha256:bb413d29f5eea38f31dd4754dd7377d4465116fb207585f97bf925588687c1ba"},
-]
-
-[[package]]
-name = "more-itertools"
-version = "10.1.0"
-requires_python = ">=3.8"
-summary = "More routines for operating on iterables, beyond itertools"
-files = [
-    {file = "more-itertools-10.1.0.tar.gz", hash = "sha256:626c369fa0eb37bac0291bce8259b332fd59ac792fa5497b59837309cd5b114a"},
-    {file = "more_itertools-10.1.0-py3-none-any.whl", hash = "sha256:64e0735fcfdc6f3464ea133afe8ea4483b1c5fe3a3d69852e6503b43a0b222e6"},
 ]
 
 [[package]]
@@ -1834,16 +1823,16 @@ files = [
 
 [[package]]
 name = "polars"
-version = "0.20.1"
+version = "0.20.3"
 requires_python = ">=3.8"
 summary = "Blazingly fast DataFrame library"
 files = [
-    {file = "polars-0.20.1-cp38-abi3-macosx_10_12_x86_64.whl", hash = "sha256:d26ce66090a0094f10d9fa8c6989df685f39b4a908d13729c46050d6ea10332f"},
-    {file = "polars-0.20.1-cp38-abi3-macosx_11_0_arm64.whl", hash = "sha256:92cb6abd2ff7fdb3ed20ae3ea22b4de41a70cf1c8bd23158b1dad6d5178b4b15"},
-    {file = "polars-0.20.1-cp38-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:8fe552e685cd3d51902c82c374332168709938b7256de0c21a90f189461a6aae"},
-    {file = "polars-0.20.1-cp38-abi3-manylinux_2_24_aarch64.whl", hash = "sha256:df085fbdda636b7a31b3e9d770ed55e795d04b227148cc4c779bd32397088aec"},
-    {file = "polars-0.20.1-cp38-abi3-win_amd64.whl", hash = "sha256:9a83151b5073e881ac3f4e12d9d5e724feb7bab3072e68012bd49d0da39d70a5"},
-    {file = "polars-0.20.1.tar.gz", hash = "sha256:74334cde9a365158b74628476fb04f83bf406a141ec5649e3d5deaa691afa024"},
+    {file = "polars-0.20.3-cp38-abi3-macosx_10_12_x86_64.whl", hash = "sha256:ff5ad360f5fab35cbc608eccaea583e387fe4e629f44d4ebfa752dc79502d3f5"},
+    {file = "polars-0.20.3-cp38-abi3-macosx_11_0_arm64.whl", hash = "sha256:6450d62becd40175661c5143c4e967d89e46104771aded951d1f0faadc63709e"},
+    {file = "polars-0.20.3-cp38-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:c89848562e3176d0e7bc517d1761c6fb5a9fca57ca2950cb58d3d001958dc285"},
+    {file = "polars-0.20.3-cp38-abi3-manylinux_2_24_aarch64.whl", hash = "sha256:dc685edd2d8742c71ffb238c2c25c17354631ddcfc8e9a105aaf9c228c1a0eb3"},
+    {file = "polars-0.20.3-cp38-abi3-win_amd64.whl", hash = "sha256:89e08f669b63017124f1ea197ab4c14730cc5edee32d9bf2bddb2753b2726091"},
+    {file = "polars-0.20.3.tar.gz", hash = "sha256:8562bffe602b131036e996e0161d96ea7ba1c004e513e49cbec55debc8b5fada"},
 ]
 
 [[package]]
@@ -2531,7 +2520,7 @@ version = "2.0.23"
 requires_python = ">=3.7"
 summary = "Database Abstraction Library"
 dependencies = [
-    "greenlet!=0.4.17; platform_machine == \"aarch64\" or (platform_machine == \"ppc64le\" or (platform_machine == \"x86_64\" or (platform_machine == \"amd64\" or (platform_machine == \"AMD64\" or (platform_machine == \"win32\" or platform_machine == \"WIN32\")))))",
+    "greenlet!=0.4.17; platform_machine == \"win32\" or platform_machine == \"WIN32\" or platform_machine == \"AMD64\" or platform_machine == \"amd64\" or platform_machine == \"x86_64\" or platform_machine == \"ppc64le\" or platform_machine == \"aarch64\"",
     "typing-extensions>=4.2.0",
 ]
 files = [
@@ -2572,7 +2561,7 @@ files = [
 
 [[package]]
 name = "sqltrie"
-version = "0.10.0"
+version = "0.11.0"
 requires_python = ">=3.8"
 summary = "SQL-based prefix tree inspired by pygtrie and python-diskcache"
 dependencies = [
@@ -2581,8 +2570,8 @@ dependencies = [
     "pygtrie",
 ]
 files = [
-    {file = "sqltrie-0.10.0-py3-none-any.whl", hash = "sha256:f09902425a30428bc6924535c14648881bf57450050cfb22bcdc473caf8d4031"},
-    {file = "sqltrie-0.10.0.tar.gz", hash = "sha256:ce25bd13ee1865fba2f7f5429c9881ea777f9cdc10d4a5291310516b0465d26b"},
+    {file = "sqltrie-0.11.0-py3-none-any.whl", hash = "sha256:132c3d2675dd14970093e2f8dcde906f7a3c900c4477641da71c0c8627eb5a0e"},
+    {file = "sqltrie-0.11.0.tar.gz", hash = "sha256:e613a74843e2b55ce1d20d333100d6a41127a1d6c12f835915f58fbd13944a82"},
 ]
 
 [[package]]
@@ -2601,15 +2590,15 @@ files = [
 
 [[package]]
 name = "starlette"
-version = "0.27.0"
-requires_python = ">=3.7"
+version = "0.32.0.post1"
+requires_python = ">=3.8"
 summary = "The little ASGI library that shines."
 dependencies = [
     "anyio<5,>=3.4.0",
 ]
 files = [
-    {file = "starlette-0.27.0-py3-none-any.whl", hash = "sha256:918416370e846586541235ccd38a474c08b80443ed31c578a418e2209b3eef91"},
-    {file = "starlette-0.27.0.tar.gz", hash = "sha256:6a6b0d042acb8d469a01eba54e9cda6cbd24ac602c4cd016723117d6a7e73b75"},
+    {file = "starlette-0.32.0.post1-py3-none-any.whl", hash = "sha256:cd0cb10ddb49313f609cedfac62c8c12e56c7314b66d89bb077ba228bada1b09"},
+    {file = "starlette-0.32.0.post1.tar.gz", hash = "sha256:e54e2b7e2fb06dff9eac40133583f10dfa05913f5a85bf26f427c7a40a9a3d02"},
 ]
 
 [[package]]
@@ -2891,7 +2880,7 @@ files = [
 
 [[package]]
 name = "uvicorn"
-version = "0.24.0.post1"
+version = "0.25.0"
 requires_python = ">=3.8"
 summary = "The lightning-fast ASGI server."
 dependencies = [
@@ -2899,8 +2888,8 @@ dependencies = [
     "h11>=0.8",
 ]
 files = [
-    {file = "uvicorn-0.24.0.post1-py3-none-any.whl", hash = "sha256:7c84fea70c619d4a710153482c0d230929af7bcf76c7bfa6de151f0a3a80121e"},
-    {file = "uvicorn-0.24.0.post1.tar.gz", hash = "sha256:09c8e5a79dc466bdf28dead50093957db184de356fcdc48697bad3bde4c2588e"},
+    {file = "uvicorn-0.25.0-py3-none-any.whl", hash = "sha256:ce107f5d9bd02b4636001a77a4e74aab5e1e2b146868ebbad565237145af444c"},
+    {file = "uvicorn-0.25.0.tar.gz", hash = "sha256:6dddbad1d7ee0f5140aba5ec138ddc9612c5109399903828b4874c9937f009c2"},
 ]
 
 [[package]]

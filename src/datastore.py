@@ -1,3 +1,5 @@
+import json
+import logging
 import os
 import shutil
 from pathlib import Path
@@ -7,13 +9,33 @@ from llama_hub.file.unstructured import UnstructuredReader
 from llama_index import SimpleDirectoryReader
 from llama_index.embeddings import HuggingFaceEmbedding
 from llama_index.ingestion import IngestionPipeline
-from llama_index.storage.docstore import SimpleDocumentStore
 from llama_index.text_splitter import SentenceSplitter
 from llama_index.vector_stores import PineconeVectorStore
 
-from src.common.utils import Paths, Settings, _add_metadata_to_document
+from src.common.utils import Paths, Settings
 
-reader = UnstructuredReader(api_key=os.environ["UNSTRUCTURED_API_KEY"])
+
+def _add_metadata_to_document(doc_id: str) -> dict:
+    with open(Paths.DATA_DIR / "catalogue-metadata.json") as f:
+        catalogue_metadata = json.load(f)
+    with open(Paths.DATA_DIR / "files-metadata.json") as f:
+        files_metadata = json.load(f)
+
+    format, main_id = doc_id.split("-", maxsplit=1)
+
+    if format != "notes":
+        for file_meta in files_metadata:
+            if main_id == file_meta["id"]:
+                main_id = file_meta["parent_id"]
+                break
+
+    for catalogue_meta in catalogue_metadata:
+        if main_id == catalogue_meta["id"]:
+            return {
+                "title": catalogue_meta["title"],
+                "id": catalogue_meta["id"],
+                "url": catalogue_meta["url"],
+            }
 
 
 class CreateDataStore:
@@ -44,10 +66,10 @@ class CreateDataStore:
         self.setup_directory_reader()
         self.setup_ingestion_pipeline()
         self.load_and_preprocess_documents()
-        # shutil.rmtree(self.profiles_dir) FIX: removes directory after files loaded
+
+        shutil.rmtree(self.profiles_dir)
 
     def initialise_pinecone_index(self):
-        # TODO: Move to config file (dotenv)
         pinecone.init(
             api_key=os.environ["PINECONE_API_KEY"],
             environment=os.environ["PINECONE_ENVIRONMENT"],
@@ -67,6 +89,7 @@ class CreateDataStore:
             )
 
     def setup_directory_reader(self):
+        reader = UnstructuredReader(api_key=os.environ["UNSTRUCTURED_API_KEY"])
         self.dir_reader = SimpleDirectoryReader(
             self.profiles_dir,
             recursive=True,
@@ -90,7 +113,6 @@ class CreateDataStore:
                 HuggingFaceEmbedding(model_name=self.hf_embed_model),
             ],
             vector_store=self.vector_store,
-            docstore=SimpleDocumentStore(),
         )
 
     def load_and_preprocess_documents(self):
@@ -99,13 +121,14 @@ class CreateDataStore:
             doc.excluded_embed_metadata_keys.extend(["id", "url", "filename"])
             doc.excluded_llm_metadata_keys.extend(["id", "url", "filename"])
 
-        if self.pipeline_storage.exists() and not self.overwrite:
-            self.pipeline.load(self.pipeline_storage)
         self.pipeline.run(documents=self.docs)
-        self.pipeline.persist(self.pipeline_storage)
 
 
 if __name__ == "__main__":
+    logging.basicConfig(
+        level=logging.ERROR, filename="logs/datastore.log", filemode="w"
+    )
+
     datastore = CreateDataStore(
         **Settings().datastore.model_dump(),
         **Settings().shared.model_dump(),

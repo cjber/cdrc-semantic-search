@@ -30,6 +30,7 @@ class CDRCSettings(BaseSettings):
 
 class DataStoreSettings(BaseSettings):
     index_name: str = Field(min_length=1)
+    hf_embed_model: str = Field(min_length=1)
     hf_embed_dim: int = Field(gt=0, le=10_000)
     chunk_size: int = Field(gt=0, le=10_000)
     chunk_overlap: int = Field(ge=0, le=10_000)
@@ -39,19 +40,19 @@ class DataStoreSettings(BaseSettings):
 class ModelSettings(BaseSettings):
     top_k: int = Field(gt=0, le=20)
     vector_store_query_mode: str = Field(pattern="default|sparse|hybrid")
+    hf_embed_model: str = Field(min_length=1)
     alpha: float = Field(gt=0, le=1)
     prompt: str = Field(min_length=1)
-
-
-class SharedSettings(BaseSettings):
-    hf_embed_model: str = Field(min_length=1)
 
 
 class Settings(BaseSettings):
     model: ModelSettings = ModelSettings.model_validate(Config["model"])
     datastore: DataStoreSettings = DataStoreSettings.model_validate(Config["datastore"])
     cdrc: CDRCSettings = CDRCSettings.model_validate(Config["cdrc-api"])
-    shared: SharedSettings = SharedSettings.model_validate(Config["shared"])
+
+    assert (
+        model.hf_embed_model == datastore.hf_embed_model
+    ), "hf_embed_model must be the same for model and datastore"
 
 
 class Paths:

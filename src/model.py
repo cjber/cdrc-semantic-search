@@ -52,46 +52,54 @@ class LlamaIndexModel:
         vector_store_query_mode: str,
         alpha: float,
         prompt: str,
+        response_mode: str,
+        load_model: bool = True,
     ):
         llm_config = dict(
             n_ctx=3900,
             n_threads=8,
             n_gpu_layers=35,
         )
-        self.model = LlamaCPP(
-            model_path="/home/cjber/.cache/huggingface/hub/mistral-7b-instruct-v0.2.Q4_K_M.gguf",
-            temperature=0.1,
-            max_new_tokens=256,
-            messages_to_prompt=messages_to_prompt,
-            completion_to_prompt=completion_to_prompt,
-            model_kwargs=llm_config,
-            verbose=True,
-        )
+        if load_model:
+            self.model = LlamaCPP(
+                model_path="/home/cjber/.cache/huggingface/hub/mistral-7b-instruct-v0.2.Q4_K_M.gguf",
+                temperature=0.1,
+                max_new_tokens=256,
+                messages_to_prompt=messages_to_prompt,
+                completion_to_prompt=completion_to_prompt,
+                model_kwargs=llm_config,
+                verbose=False,
+            )
+        else:
+            self.model = None
+        # self.model = HuggingFaceLLM(
+        #     model_name="TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+        #     tokenizer_name="TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+        # )
         self.top_k = top_k
         self.hf_embed_model = hf_embed_model
         self.vector_store_query_mode = vector_store_query_mode
         self.alpha = alpha
         self.prompt = prompt
+        self.response_mode = response_mode
 
         self.index = self.build_index()
 
     def run(self, query: str, use_llm: bool):
         self.use_llm = use_llm
         self.response = self.build_response(query)
+        self.processed_response = self.process_response(self.response)
 
     def build_index(self):
-        service_context = ServiceContext.from_defaults(
+        self.service_context = ServiceContext.from_defaults(
             embed_model=HuggingFaceEmbedding(model_name=self.hf_embed_model),
             llm=self.model,
         )
-        docstore = CreateDataStore(
-            **Settings().datastore.model_dump(),
-            **Settings().shared.model_dump(),
-        )
+        docstore = CreateDataStore(**Settings().datastore.model_dump())
         docstore.setup_ingestion_pipeline()
         return VectorStoreIndex.from_vector_store(
             docstore.vector_store,
-            service_context=service_context,
+            service_context=self.service_context,
             show_progress=True,
             use_async=True,
         )
@@ -102,7 +110,7 @@ class LlamaIndexModel:
         if self.use_llm:
             retriever = self.index.as_query_engine(
                 text_qa_template=text_qa_template,
-                response_mode="accumulate",
+                response_mode=self.response_mode,
                 vector_store_query_mode=self.vector_store_query_mode,
                 alpha=self.alpha,
                 similarity_top_k=self.top_k,
@@ -118,7 +126,7 @@ class LlamaIndexModel:
             response = retriever.retrieve(query)
             postprocessor = DocumentGroupingPostprocessor()
             response = postprocessor.postprocess_nodes(response)
-        return self.process_response(response)
+        return response
 
     @staticmethod
     def process_response(response):
@@ -137,9 +145,7 @@ class LlamaIndexModel:
 if __name__ == "__main__":
     logging.basicConfig(level=logging.ERROR, filename="logs/model.log", filemode="w")
 
-    model = LlamaIndexModel(
-        **Settings().model.model_dump(),
-        **Settings().shared.model_dump(),
-    )
-    model.run("social mobility datasets", use_llm=True)
-    print(model.response[0]["response"])
+    model = LlamaIndexModel(**Settings().model.model_dump())
+    model.run("social mobility datasets", use_llm=False)
+    # print(model.response[0]["response"])
+    model.response

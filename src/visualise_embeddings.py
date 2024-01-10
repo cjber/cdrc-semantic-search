@@ -14,7 +14,7 @@ ids = [
 ][:1000]
 result = index.fetch(ids=ids)
 result.to_dict()["vectors"].keys()
-ids = [r for r in result.to_dict()["vectors"].keys()]
+ids = list(result.to_dict()["vectors"].keys())
 embeddings = np.array([r["values"] for r in result.to_dict()["vectors"].values()])
 titles = np.array(
     [r["metadata"]["title"] for r in result.to_dict()["vectors"].values()]

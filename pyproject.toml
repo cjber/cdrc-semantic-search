@@ -17,6 +17,7 @@ dependencies = [
     "pydantic-settings>=2.1.0",
     "seaborn>=0.13.1",
     "prefect>=2.14.13",
+    "sourcery-cli>=1.15.0",
 ]
 requires-python = ">=3.11,<3.12"
 readme = "README.md"

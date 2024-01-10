@@ -5,7 +5,7 @@
 groups = ["default", "dev"]
 strategy = ["cross_platform"]
 lock_version = "4.4.1"
-content_hash = "sha256:413b3c88847440f358eaffb79b1c070d7be8073ab5f870549bb678aa98e57f09"
+content_hash = "sha256:e677d67d9a82d30509d7b4e613ecf0bbd052bad4c2a42a47a656d4572adf9b09"
 
 [[package]]
 name = "accelerate"
@@ -3157,6 +3157,16 @@ summary = "A modern CSS selector implementation for Beautiful Soup."
 files = [
     {file = "soupsieve-2.5-py3-none-any.whl", hash = "sha256:eaa337ff55a1579b6549dc679565eac1e3d000563bcb1c8ab0d0fefbc0c2cdc7"},
     {file = "soupsieve-2.5.tar.gz", hash = "sha256:5663d5a7b3bfaeee0bc4372e7fc48f9cff4940b3eec54a6451cc5299f1097690"},
+]
+
+[[package]]
+name = "sourcery-cli"
+version = "1.15.0"
+summary = "Magically refactor Python"
+files = [
+    {file = "sourcery_cli-1.15.0-py2.py3-none-macosx_10_9_universal2.whl", hash = "sha256:5ce0101cf252550763ce64dbf2313d5b1a8e5111ea73f71e79555e850d4ff1e0"},
+    {file = "sourcery_cli-1.15.0-py2.py3-none-manylinux1_x86_64.whl", hash = "sha256:d48597cf0147bb7b49818860bab6c04cea4a7249948ea7f34735dda4b6329dc3"},
+    {file = "sourcery_cli-1.15.0-py2.py3-none-win_amd64.whl", hash = "sha256:42224b7117341af62ae54a490606da58270c876efbb1ca28610160e035814fff"},
 ]
 
 [[package]]

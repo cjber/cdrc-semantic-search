@@ -4,17 +4,16 @@ login_url = "https://data.cdrc.ac.uk/user/login"
 
 [datastore]
 index_name = "cdrc-index"
-hf_embed_dim = 768
-hf_embed_model = "BAAI/bge-base-en-v1.5"
-chunk_size = 512
-chunk_overlap = 64
+embed_dim = 1536
+chunk_size = 4096
+chunk_overlap = 128
 overwrite = true
 
 [model]
-top_k = 2
-hf_embed_model = "BAAI/bge-base-en-v1.5"
+top_k = 20
 vector_store_query_mode = "hybrid" # default|sparse|hybrid
 alpha = 0.75 # lower values favour sparse vectors, higher values favour dense vectors
+response_mode = "no_text"
 prompt = """
 Below is the data profile for a dataset from the CDRC Data Catalogue.
 Summarise the data profile in under 50 words.

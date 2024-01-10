@@ -1,13 +1,12 @@
 import logging
+import os
 import sys
 from statistics import mean
 from typing import Optional
 
 from llama_index import ServiceContext, VectorStoreIndex
-from llama_index.embeddings import HuggingFaceEmbedding
+from llama_index.embeddings.openai import OpenAIEmbedding, OpenAIEmbeddingMode
 from llama_index.indices.query.schema import QueryBundle
-from llama_index.llms import HuggingFaceLLM, LlamaCPP
-from llama_index.llms.llama_utils import completion_to_prompt, messages_to_prompt
 from llama_index.postprocessor.types import BaseNodePostprocessor
 from llama_index.prompts import PromptTemplate
 from llama_index.response import Response
@@ -48,36 +47,14 @@ class LlamaIndexModel:
     def __init__(
         self,
         top_k: int,
-        hf_embed_model: str,
         vector_store_query_mode: str,
         alpha: float,
         prompt: str,
         response_mode: str,
-        load_model: bool = True,
+        load_model: bool = False,
     ):
-        llm_config = dict(
-            n_ctx=3900,
-            n_threads=8,
-            n_gpu_layers=35,
-        )
-        if load_model:
-            self.model = LlamaCPP(
-                model_path="/home/cjber/.cache/huggingface/hub/mistral-7b-instruct-v0.2.Q4_K_M.gguf",
-                temperature=0.1,
-                max_new_tokens=256,
-                messages_to_prompt=messages_to_prompt,
-                completion_to_prompt=completion_to_prompt,
-                model_kwargs=llm_config,
-                verbose=False,
-            )
-        else:
-            self.model = None
-        # self.model = HuggingFaceLLM(
-        #     model_name="TinyLlama/TinyLlama-1.1B-Chat-v1.0",
-        #     tokenizer_name="TinyLlama/TinyLlama-1.1B-Chat-v1.0",
-        # )
+        self.model = None  # for now just not going to use an LLM
         self.top_k = top_k
-        self.hf_embed_model = hf_embed_model
         self.vector_store_query_mode = vector_store_query_mode
         self.alpha = alpha
         self.prompt = prompt
@@ -92,7 +69,10 @@ class LlamaIndexModel:
 
     def build_index(self):
         self.service_context = ServiceContext.from_defaults(
-            embed_model=HuggingFaceEmbedding(model_name=self.hf_embed_model),
+            embed_model=OpenAIEmbedding(
+                mode=OpenAIEmbeddingMode.SIMILARITY_MODE,
+                api_key=os.environ["OPENAI_API_KEY"],
+            ),
             llm=self.model,
         )
         docstore = CreateDataStore(**Settings().datastore.model_dump())
@@ -146,6 +126,4 @@ if __name__ == "__main__":
     logging.basicConfig(level=logging.ERROR, filename="logs/model.log", filemode="w")
 
     model = LlamaIndexModel(**Settings().model.model_dump())
-    model.run("social mobility datasets", use_llm=False)
-    # print(model.response[0]["response"])
-    model.response
+    model.run("diabetes", use_llm=False)

@@ -7,7 +7,7 @@ from pathlib import Path
 import pinecone
 from llama_hub.file.unstructured import UnstructuredReader
 from llama_index import SimpleDirectoryReader
-from llama_index.embeddings import HuggingFaceEmbedding
+from llama_index.embeddings.openai import OpenAIEmbedding, OpenAIEmbeddingMode
 from llama_index.ingestion import IngestionPipeline
 from llama_index.text_splitter import SentenceSplitter
 from llama_index.vector_stores import PineconeVectorStore
@@ -30,7 +30,7 @@ def _add_metadata_to_document(doc_id: str) -> dict:
                 break
 
     for catalogue_meta in catalogue_metadata:
-        # NOTE: Add date information to metadata
+        # TODO: Add date information to metadata
         if main_id == catalogue_meta["id"]:
             return {
                 "title": catalogue_meta["title"],
@@ -43,21 +43,19 @@ class CreateDataStore:
     def __init__(
         self,
         index_name: str,
-        hf_embed_model: str,
-        hf_embed_dim: int,
         chunk_size: int,
         chunk_overlap: int,
         overwrite: bool,
+        embed_dim: int,
         profiles_dir: str = Paths.PROFILES_DIR,
         data_dir: str = Paths.DATA_DIR,
         pipeline_storage: Path = Paths.PIPELINE_STORAGE,
     ):
         self.index_name = index_name
         self.overwrite = overwrite
-        self.hf_embed_dim = hf_embed_dim
-        self.hf_embed_model = hf_embed_model
         self.profiles_dir = profiles_dir
         self.data_dir = data_dir
+        self.embed_dim = embed_dim
         self.chunk_size = chunk_size
         self.chunk_overlap = chunk_overlap
         self.pipeline_storage = pipeline_storage
@@ -68,7 +66,7 @@ class CreateDataStore:
         self.setup_ingestion_pipeline()
         self.load_and_preprocess_documents()
 
-        shutil.rmtree(self.profiles_dir)
+        # shutil.rmtree(self.profiles_dir)
 
     def initialise_pinecone_index(self):
         pinecone.init(
@@ -78,14 +76,14 @@ class CreateDataStore:
         if self.index_name not in pinecone.list_indexes():
             pinecone.create_index(
                 self.index_name,
-                dimension=self.hf_embed_dim,
+                dimension=self.embed_dim,
                 metric="cosine",
             )
         elif self.overwrite:
             pinecone.delete_index(self.index_name)
             pinecone.create_index(
                 self.index_name,
-                dimension=self.hf_embed_dim,
+                dimension=self.embed_dim,
                 metric="cosine",
             )
 
@@ -111,7 +109,10 @@ class CreateDataStore:
                     chunk_size=self.chunk_size,
                     chunk_overlap=self.chunk_overlap,
                 ),
-                HuggingFaceEmbedding(model_name=self.hf_embed_model),
+                OpenAIEmbedding(
+                    mode=OpenAIEmbeddingMode.SIMILARITY_MODE,
+                    api_key=os.environ["OPENAI_API_KEY"],
+                ),
             ],
             vector_store=self.vector_store,
         )

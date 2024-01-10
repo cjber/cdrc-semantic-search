@@ -10,6 +10,8 @@ from tqdm import tqdm
 
 from src.common.utils import Paths, Settings
 
+# TODO: Add check to see if files have changed using existing metadata
+
 
 class CDRCQuery:
     def __init__(

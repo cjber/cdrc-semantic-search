@@ -67,27 +67,31 @@ stages:
     deps:
     - path: config/config.toml
       hash: md5
-      md5: c0ec739e2750ca005515492240c262af
-      size: 1206
+      md5: a46bfcd468706b5bb1d295989de11c29
+      size: 1278
     - path: src/common/utils.py
       hash: md5
-      md5: 370b33167234e78775243bddf6ac625e
-      size: 1679
+      md5: ff3a3b98a1bad8be0adb0c8ad1d82db0
+      size: 1560
     - path: src/query_api.py
       hash: md5
-      md5: b1679020945dde96ba15d16ffc7274e6
-      size: 3643
+      md5: 65cec7ec3b7bf307dc47c8ec307b42b8
+      size: 4274
     outs:
     - path: data/catalogue-metadata.json
       hash: md5
-      md5: ee4f0f31231e7d967cd986403f16b170
-      size: 491264
+      md5: 969cff8b18f3503a49196902e965e43c
+      size: 491252
     - path: data/files-metadata.json
       hash: md5
-      md5: c8bc8a0c7d9216e87256691069f1e13d
+      md5: 0d3532bbf956ebb3d719f2b1c8bd3a3b
       size: 47320
     - path: data/profiles
       hash: md5
       md5: 5bf075cc0b99b864a56d2430a812515e.dir
       size: 29105914
       nfiles: 176
+    - path: data/response.json
+      hash: md5
+      md5: 544f8553ead81c4c165a5a3f5248d753
+      size: 483071

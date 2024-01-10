@@ -6,10 +6,7 @@ from src.model import LlamaIndexModel
 
 def create_app():
     app = FastAPI()
-    model = LlamaIndexModel(
-        **Settings().model.model_dump(),
-        **Settings().shared.model_dump(),
-    )
+    model = LlamaIndexModel(**Settings().model.model_dump())
     return app, model
 
 
@@ -24,7 +21,7 @@ async def root():
 @app.get("/query")
 async def query(q: str, use_llm: bool):
     model.run(q, use_llm)
-    return model.response
+    return model.processed_response
 
 
 if __name__ == "__main__":

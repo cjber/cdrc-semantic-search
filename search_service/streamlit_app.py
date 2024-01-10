@@ -3,12 +3,6 @@ from time import sleep
 
 import requests
 import streamlit as st
-from pydantic import BaseModel
-
-
-class QueryResponse(BaseModel):
-    summary: str
-    relevance: str
 
 
 def main():
@@ -24,7 +18,8 @@ def main():
                 Popen(["uvicorn", "search_service.api:app", "--port", "8000"])
                 sleep(10)
 
-    use_llm = st.toggle("Activate LLM")
+    # use_llm = st.toggle("Activate LLM")
+    use_llm = False
     text = st.text_input("Query")
     if text == "":
         return None

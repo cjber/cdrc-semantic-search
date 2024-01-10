@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import polars as pl
 import seaborn as sns
-from llama_index.evaluation import FaithfulnessEvaluator, RelevancyEvaluator
+from llama_index.evaluation import RelevancyEvaluator
 from tqdm import tqdm
 
 from src.common.utils import Settings
@@ -11,9 +11,9 @@ pl.Config.set_tbl_formatting("NOTHING")
 pl.Config.set_tbl_rows(4)
 
 settings = Settings().model.model_dump()
-settings["top_k"] = 10
-settings["response_mode"] = "no_text"
-model = LlamaIndexModel(**settings)
+settings["top_k"] = 5  # reduce cost of evaluation
+
+model = LlamaIndexModel(**Settings().model.model_dump(), load_model=True)
 
 
 past_queries = (
@@ -37,9 +37,6 @@ queries.extend([f"datasets relating to {query}" for query in queries])
 queries.extend(past_queries["column"].to_list())
 alpha_values = [0.0, 0.5, 1.0]
 
-# TODO: Use search evaluation/change to evaluate on pure context rather than using the response. Probably needs a custom approach.
-# E.g. Feed context into feedback prompt
-# See relevancy evaluator
 results = []
 for alpha in tqdm(alpha_values):
     for query in tqdm(queries):

@@ -15,6 +15,5 @@ stages:
     deps:
       - src/datastore.py
       - src/common/utils.py
-      - data/profiles
 
       - config/config.toml

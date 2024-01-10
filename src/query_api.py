@@ -10,8 +10,6 @@ from tqdm import tqdm
 
 from src.common.utils import Paths, Settings
 
-# TODO: Add check to see if files have changed using existing metadata
-
 
 class CDRCQuery:
     def __init__(
@@ -37,6 +35,16 @@ class CDRCQuery:
         self.profiles_dir.mkdir(exist_ok=True, parents=True)
 
     def run(self):
+        self.response = json.loads(urlopen(self.api_url).read())["result"][0]
+
+        if self.check_if_files_changed():
+            self.files_changed = True
+            self.process_metadata()
+        else:
+            logging.info("No files have changed; exiting.")
+            self.files_changed = False
+
+    def process_metadata(self):
         self.files_meta, self.catalogue_meta = self.get_metadata()
         self.file_ids = {file["id"] for file in self.files_meta}
         self.catalogue_ids = {catalogue["id"] for catalogue in self.catalogue_meta}
@@ -44,9 +52,19 @@ class CDRCQuery:
         self.write_metadata()
         self.download_files()
 
+    def check_if_files_changed(self) -> bool:
+        response_file = self.data_dir / "response.json"
+        if not response_file.exists():
+            with open(response_file, "w") as f:
+                json.dump(self.response, f)
+                return True
+        else:
+            with open(response_file) as f:
+                old_response = json.load(f)
+            return old_response != self.response
+
     def get_metadata(self) -> list[dict]:
-        response = urlopen(self.api_url)
-        catalogue_meta = json.loads(response.read())["result"][0]
+        catalogue_meta = self.response
 
         files_meta = []
         for item in catalogue_meta:

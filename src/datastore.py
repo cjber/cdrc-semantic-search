@@ -1,4 +1,5 @@
 import json
+import dateparser
 import logging
 import os
 import shutil
@@ -30,12 +31,14 @@ def _add_metadata_to_document(doc_id: str) -> dict:
                 break
 
     for catalogue_meta in catalogue_metadata:
-        # TODO: Add date information to metadata
         if main_id == catalogue_meta["id"]:
             return {
                 "title": catalogue_meta["title"],
                 "id": catalogue_meta["id"],
                 "url": catalogue_meta["url"],
+                "date_created": dateparser.parse(
+                    catalogue_metadata[0]["metadata_created"]
+                ).isoformat(),
             }
 
 
@@ -66,7 +69,7 @@ class CreateDataStore:
         self.setup_ingestion_pipeline()
         self.load_and_preprocess_documents()
 
-        # shutil.rmtree(self.profiles_dir)
+        shutil.rmtree(self.profiles_dir)
 
     def initialise_pinecone_index(self):
         pinecone.init(
@@ -120,8 +123,12 @@ class CreateDataStore:
     def load_and_preprocess_documents(self):
         self.docs = self.dir_reader.load_data(show_progress=True)
         for doc in self.docs:
-            doc.excluded_embed_metadata_keys.extend(["id", "url", "filename"])
-            doc.excluded_llm_metadata_keys.extend(["id", "url", "filename"])
+            doc.excluded_embed_metadata_keys.extend(
+                ["id", "url", "filename", "date_created"]
+            )
+            doc.excluded_llm_metadata_keys.extend(
+                ["id", "url", "filename", "date_created"]
+            )
 
         self.pipeline.run(documents=self.docs)
 

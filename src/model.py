@@ -7,6 +7,7 @@ from typing import Optional
 from llama_index import ServiceContext, VectorStoreIndex
 from llama_index.embeddings.openai import OpenAIEmbedding, OpenAIEmbeddingMode
 from llama_index.indices.query.schema import QueryBundle
+from llama_index.llms import OpenAI
 from llama_index.postprocessor.types import BaseNodePostprocessor
 from llama_index.prompts import PromptTemplate
 from llama_index.response import Response
@@ -53,7 +54,7 @@ class LlamaIndexModel:
         response_mode: str,
         load_model: bool = False,
     ):
-        self.model = None  # for now just not going to use an LLM
+        self.model = OpenAI(temperature=0) if load_model else None
         self.top_k = top_k
         self.vector_store_query_mode = vector_store_query_mode
         self.alpha = alpha
@@ -127,3 +128,4 @@ if __name__ == "__main__":
 
     model = LlamaIndexModel(**Settings().model.model_dump())
     model.run("diabetes", use_llm=False)
+    print(model.processed_response)

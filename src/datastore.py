@@ -130,8 +130,5 @@ if __name__ == "__main__":
         level=logging.ERROR, filename="logs/datastore.log", filemode="w"
     )
 
-    datastore = CreateDataStore(
-        **Settings().datastore.model_dump(),
-        **Settings().shared.model_dump(),
-    )
+    datastore = CreateDataStore(**Settings().datastore.model_dump())
     datastore.run()

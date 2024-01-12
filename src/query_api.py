@@ -53,7 +53,6 @@ class CDRCQuery:
         self.download_files()
 
     def check_if_files_changed(self) -> bool:
-        __import__("ipdb").set_trace()
         response_file = self.data_dir / "response.json"
         if not response_file.exists():
             with open(response_file, "w") as f:

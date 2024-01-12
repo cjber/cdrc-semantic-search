@@ -35,7 +35,7 @@ class CDRCQuery:
         self.profiles_dir.mkdir(exist_ok=True, parents=True)
 
     def run(self):
-        self.response = json.loads(urlopen(self.api_url).read())["result"][0]
+        self.catalogue_metadata = json.loads(urlopen(self.api_url).read())["result"][0]
 
         if self.check_if_files_changed():
             self.files_changed = True
@@ -45,36 +45,37 @@ class CDRCQuery:
             self.files_changed = False
 
     def process_metadata(self):
-        self.files_meta, self.catalogue_meta = self.get_metadata()
-        self.file_ids = {file["id"] for file in self.files_meta}
-        self.catalogue_ids = {catalogue["id"] for catalogue in self.catalogue_meta}
+        self.get_metadata()
+        self.file_ids = {file["id"] for file in self.files_metadata}
+        self.catalogue_ids = {catalogue["id"] for catalogue in self.catalogue_metadata}
 
         self.write_metadata()
         self.download_files()
 
     def check_if_files_changed(self) -> bool:
+        __import__("ipdb").set_trace()
         response_file = self.data_dir / "response.json"
         if not response_file.exists():
             with open(response_file, "w") as f:
-                json.dump(self.response, f)
+                json.dump(self.catalogue_metadata, f)
                 return True
         else:
             with open(response_file) as f:
                 old_response = json.load(f)
-            return old_response != self.response
+        with open(response_file, "w") as f:
+            json.dump(self.catalogue_metadata, f)
+            return old_response != self.catalogue_metadata
 
     def get_metadata(self) -> list[dict]:
-        catalogue_meta = self.response
-
-        files_meta = []
-        for item in catalogue_meta:
+        self.files_metadata = []
+        for item in self.catalogue_metadata:
             if "resources" not in item:
                 continue
             for file in item["resources"]:
                 if any(x in file["name"].lower() for x in ["profile", "flyer"]):
                     file["filename"] = file["url"].split("/")[-1]
                     file["parent_id"] = item["id"]
-                    files_meta.append(file)
+                    self.files_metadata.append(file)
 
             if "notes" not in item:
                 continue
@@ -89,8 +90,6 @@ class CDRCQuery:
                     f"{re.sub('<[^<]+?>','', item['notes'])}"
                 )
 
-        return files_meta, catalogue_meta
-
     def download_files(self) -> None:
         s = requests.Session()
         s.post(
@@ -102,7 +101,7 @@ class CDRCQuery:
             },
         )
 
-        for meta in tqdm(self.files_meta, desc="Downloading files"):
+        for meta in tqdm(self.files_metadata, desc="Downloading files"):
             filename = (
                 f"profile-{meta['id']}.{meta['format']}"
                 if "profile" in meta["name"].lower()
@@ -117,9 +116,9 @@ class CDRCQuery:
 
     def write_metadata(self) -> None:
         with open(self.data_dir / "catalogue-metadata.json", "w") as f:
-            json.dump(self.catalogue_meta, f)
+            json.dump(self.catalogue_metadata, f)
         with open(self.data_dir / "files-metadata.json", "w") as f:
-            json.dump(self.files_meta, f)
+            json.dump(self.files_metadata, f)
 
 
 if __name__ == "__main__":

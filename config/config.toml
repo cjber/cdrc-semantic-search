@@ -5,8 +5,8 @@ login_url = "https://data.cdrc.ac.uk/user/login"
 [datastore]
 index_name = "cdrc-index"
 embed_dim = 1536
-chunk_size = 1024
-chunk_overlap = 200
+chunk_size = 512
+chunk_overlap = 100
 overwrite = true
 
 [model]

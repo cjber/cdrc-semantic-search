@@ -10,34 +10,19 @@ chunk_overlap = 100
 overwrite = true
 
 [model]
-top_k = 20
+top_k = 5
 vector_store_query_mode = "hybrid" # default|sparse|hybrid
 alpha = 0.75 # lower values favour sparse vectors, higher values favour dense vectors
 response_mode = "no_text"
 prompt = """
-Below is the data profile for a dataset from the CDRC Data Catalogue.
-Summarise the data profile in under 50 words.
-Explain the relevance of the dataset to the following query, using your own knowledge or the data profile.
-
-Structure your answer as follows, do not include any other information:
-
-Title: <dataset title>
-Summary: <dataset summary>
-Relevance: <dataset relevance to 'Query'>
+Below are data profiles for datasets from the CDRC Data Catalogue.
+Explain the relevance of these datasets to the following query in under 50 words. Use your own knowledge or the data profile.
 
 ---------------------
 Query: "{query_str}"
 
-Data profile:
+Data profiles:
 
 {context_str}
 ---------------------
 """
-# prompt = """
-#   Below are a collection data profiles for datasets from the CDRC Data Catalogue.
-#   In a short paragraph explain how the datasets relate to the users query.
-#   \n---------------------\n
-#   Query: {query_str}\n\n
-#   Data profile:\n
-#   \n---------------------\n{context_str}\n---------------------\n\n
-# """

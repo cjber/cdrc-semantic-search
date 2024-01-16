@@ -19,8 +19,8 @@ async def root():
 
 
 @app.get("/query")
-async def query(q: str, use_llm: bool):
-    model.run(q, use_llm)
+async def query(q: str):
+    model.run(q)
     return model.processed_response
 
 

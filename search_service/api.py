@@ -22,9 +22,3 @@ async def root():
 async def query(q: str):
     model.run(q)
     return model.processed_response
-
-
-if __name__ == "__main__":
-    import uvicorn
-
-    uvicorn.run(app, host="0.0.0.0", port=8000)

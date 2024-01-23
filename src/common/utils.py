@@ -11,14 +11,6 @@ from pydantic_settings import BaseSettings
 load_dotenv()
 
 
-def log_uncaught_exceptions(ex_cls, ex, tb):
-    logging.critical("".join(traceback.format_tb(tb)))
-    logging.critical("{0}: {1}".format(ex_cls, ex))
-
-
-sys.excepthook = log_uncaught_exceptions
-
-
 with open("./config/config.toml", "rb") as f:
     Config = tomllib.load(f)
 
@@ -37,7 +29,7 @@ class DataStoreSettings(BaseSettings):
 
 
 class ModelSettings(BaseSettings):
-    top_k: int = Field(gt=0, le=20)
+    top_k: int = Field(gt=0, le=100)
     vector_store_query_mode: str = Field(pattern="default|sparse|hybrid")
     alpha: float = Field(gt=0, le=1)
     prompt: str = Field(min_length=1)

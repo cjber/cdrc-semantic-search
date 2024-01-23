@@ -7,7 +7,11 @@ from typing import Optional
 from llama_index import ServiceContext, VectorStoreIndex
 from llama_index.embeddings.openai import OpenAIEmbedding, OpenAIEmbeddingMode
 from llama_index.indices.query.schema import QueryBundle
-from llama_index.llms import OpenAI
+from llama_index.llms import LlamaCPP, OpenAI
+from llama_index.llms.llama_utils import (
+    completion_to_prompt,
+    messages_to_prompt,
+)
 from llama_index.postprocessor.types import BaseNodePostprocessor
 from llama_index.prompts import PromptTemplate
 from llama_index.response import Response
@@ -37,7 +41,8 @@ class DocumentGroupingPostprocessor(BaseNodePostprocessor):
         out_nodes = []
         for group in nodes_by_document.values():
             content = "\n--------------------\n".join([n.get_content() for n in group])
-            score = mean([n.score for n in group])
+            # score = mean([n.score for n in group])
+            score = max(n.score for n in group)
             group[0].node.text = content
             group[0].score = score
             out_nodes.append(group[0])
@@ -52,9 +57,9 @@ class LlamaIndexModel:
         alpha: float,
         prompt: str,
         response_mode: str,
-        load_model: bool = False,
+        load_model: bool = True,
     ):
-        self.model = OpenAI(temperature=0) if load_model else None
+        self.model = OpenAI() if load_model else None
         self.top_k = top_k
         self.vector_store_query_mode = vector_store_query_mode
         self.alpha = alpha
@@ -63,9 +68,10 @@ class LlamaIndexModel:
 
         self.index = self.build_index()
 
-    def run(self, query: str, use_llm: bool):
-        self.use_llm = use_llm
-        self.response = self.build_response(query)
+    def run(self, query: str):
+        self.query = query
+
+        self.response = self.build_response()
         self.processed_response = self.process_response(self.response)
 
     def build_index(self):
@@ -85,28 +91,15 @@ class LlamaIndexModel:
             use_async=True,
         )
 
-    def build_response(self, query):
-        text_qa_template = PromptTemplate(self.prompt)
-
-        if self.use_llm:
-            retriever = self.index.as_query_engine(
-                text_qa_template=text_qa_template,
-                response_mode=self.response_mode,
-                vector_store_query_mode=self.vector_store_query_mode,
-                alpha=self.alpha,
-                similarity_top_k=self.top_k,
-                node_postprocessors=[DocumentGroupingPostprocessor()],
-            )
-            response = retriever.query(query)
-        else:
-            retriever = self.index.as_retriever(
-                vector_store_query_mode=self.vector_store_query_mode,
-                alpha=self.alpha,
-                similarity_top_k=self.top_k,
-            )
-            response = retriever.retrieve(query)
-            postprocessor = DocumentGroupingPostprocessor()
-            response = postprocessor.postprocess_nodes(response)
+    def build_response(self):
+        retriever = self.index.as_retriever(
+            vector_store_query_mode=self.vector_store_query_mode,
+            alpha=self.alpha,
+            similarity_top_k=self.top_k,
+        )
+        response = retriever.retrieve(self.query)
+        postprocessor = DocumentGroupingPostprocessor()
+        response = postprocessor.postprocess_nodes(response)
         return response
 
     @staticmethod
@@ -122,10 +115,20 @@ class LlamaIndexModel:
             out = [out, response.metadata]
         return out
 
+    def explain_dataset(self, response_num: int):
+        if not self.response:
+            raise ValueError("No response to explain")
+        # text_qa_template = PromptTemplate(self.prompt)
+
+        response = self.response[response_num]
+        query_engine = self.index.as_query_engine(nodes=response)
+        response = query_engine.query(self.query)
+        self.explained_response = response.response
+
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.ERROR, filename="logs/model.log", filemode="w")
 
     model = LlamaIndexModel(**Settings().model.model_dump())
-    model.run("diabetes", use_llm=False)
-    print(model.processed_response)
+    model.run("diabetes")
+    model.explain_dataset(1)

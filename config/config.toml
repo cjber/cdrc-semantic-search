@@ -10,7 +10,7 @@ chunk_overlap = 100
 overwrite = true
 
 [model]
-top_k = 5
+top_k = 10
 vector_store_query_mode = "hybrid" # default|sparse|hybrid
 alpha = 0.75 # lower values favour sparse vectors, higher values favour dense vectors
 response_mode = "no_text"

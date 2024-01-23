@@ -6,22 +6,15 @@ from typing import Optional
 
 from llama_index import ServiceContext, VectorStoreIndex
 from llama_index.embeddings.openai import OpenAIEmbedding, OpenAIEmbeddingMode
-from llama_index.indices.query.schema import QueryBundle
-from llama_index.llms import LlamaCPP, OpenAI
-from llama_index.llms.llama_utils import (
-    completion_to_prompt,
-    messages_to_prompt,
-)
-from llama_index.postprocessor.types import BaseNodePostprocessor
 from llama_index.prompts import PromptTemplate
+from llama_index.indices.query.schema import QueryBundle
+from llama_index.llms import OpenAI
+from llama_index.postprocessor.types import BaseNodePostprocessor
 from llama_index.response import Response
 from llama_index.schema import NodeWithScore
 
 from src.common.utils import Settings
 from src.datastore import CreateDataStore
-
-logging.basicConfig(level=logging.ERROR, filename="logs/model.log", filemode="w")
-logging.getLogger().addHandler(logging.StreamHandler(stream=sys.stdout))
 
 
 class DocumentGroupingPostprocessor(BaseNodePostprocessor):
@@ -104,31 +97,28 @@ class LlamaIndexModel:
 
     @staticmethod
     def process_response(response):
-        if isinstance(response, list):
-            scores = [r.score for r in response]
-            out = [r.node.metadata for r in response]
-            for item in out:
-                item["score"] = scores.pop(0)
+        scores = [r.score for r in response]
+        out = [r.node.metadata for r in response]
+        for item in out:
+            item["score"] = scores.pop(0)
 
-        elif isinstance(response, Response):
-            out = {"response": response.response}
-            out = [out, response.metadata]
         return out
 
     def explain_dataset(self, response_num: int):
         if not self.response:
             raise ValueError("No response to explain")
-        # text_qa_template = PromptTemplate(self.prompt)
 
+        text_qa_template = PromptTemplate(self.prompt)
         response = self.response[response_num]
-        query_engine = self.index.as_query_engine(nodes=response)
+        index = VectorStoreIndex(nodes=[response.node])
+        query_engine = index.as_query_engine(text_qa_template=text_qa_template)
         response = query_engine.query(self.query)
         self.explained_response = response.response
 
 
 if __name__ == "__main__":
-    logging.basicConfig(level=logging.ERROR, filename="logs/model.log", filemode="w")
-
     model = LlamaIndexModel(**Settings().model.model_dump())
     model.run("diabetes")
-    model.explain_dataset(1)
+    model.explain_dataset(2)
+    model.processed_response
+    model.explained_response

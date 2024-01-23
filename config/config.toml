@@ -15,13 +15,14 @@ vector_store_query_mode = "hybrid" # default|sparse|hybrid
 alpha = 0.75 # lower values favour sparse vectors, higher values favour dense vectors
 response_mode = "no_text"
 prompt = """
-Below are data profiles for datasets from the CDRC Data Catalogue.
-Explain the relevance of these datasets to the following query in under 50 words. Use your own knowledge or the data profile.
+Below is a dataset descripton that is relevant to a researchers query.
+
+Explain the relevance of this dataset to the query in under 50 words. Use your own knowledge or the data profile. Do not say it is not relevant, attempt to find a research link.
 
 ---------------------
 Query: "{query_str}"
 
-Data profiles:
+Dataset description:
 
 {context_str}
 ---------------------

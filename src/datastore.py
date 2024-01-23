@@ -4,8 +4,8 @@ import logging
 import os
 import shutil
 from pathlib import Path
+from pinecone import Pinecone, PodSpec
 
-import pinecone
 from llama_hub.file.unstructured import UnstructuredReader
 from llama_index import SimpleDirectoryReader
 from llama_index.embeddings.openai import OpenAIEmbedding, OpenAIEmbeddingMode
@@ -63,7 +63,13 @@ class CreateDataStore:
         self.chunk_overlap = chunk_overlap
         self.pipeline_storage = pipeline_storage
 
+        self.pc = Pinecone(api_key=os.environ["PINECONE_API_KEY"])
+
     def run(self):
+        if not self.profiles_dir.exists():
+            return logging.error(
+                f"Profiles directory {self.profiles_dir} does not exist."
+            )
         self.initialise_pinecone_index()
         self.setup_directory_reader()
         self.setup_ingestion_pipeline()
@@ -72,22 +78,20 @@ class CreateDataStore:
         shutil.rmtree(self.profiles_dir)
 
     def initialise_pinecone_index(self):
-        pinecone.init(
-            api_key=os.environ["PINECONE_API_KEY"],
-            environment=os.environ["PINECONE_ENVIRONMENT"],
-        )
-        if self.index_name not in pinecone.list_indexes():
-            pinecone.create_index(
-                self.index_name,
+        if self.index_name not in self.pc.list_indexes().names():
+            self.pc.create_index(
+                name=self.index_name,
                 dimension=self.embed_dim,
                 metric="cosine",
+                spec=PodSpec(environment=os.environ["PINECONE_ENVIRONMENT"]),
             )
         elif self.overwrite:
-            pinecone.delete_index(self.index_name)
-            pinecone.create_index(
-                self.index_name,
+            self.pc.delete_index(self.index_name)
+            self.pc.create_index(
+                name=self.index_name,
                 dimension=self.embed_dim,
                 metric="cosine",
+                spec=PodSpec(environment=os.environ["PINECONE_ENVIRONMENT"]),
             )
 
     def setup_directory_reader(self):
@@ -106,8 +110,12 @@ class CreateDataStore:
         )
 
     def setup_ingestion_pipeline(self):
-        self.pinecone_index = pinecone.Index(self.index_name)
-        self.vector_store = PineconeVectorStore(self.pinecone_index)
+        self.vector_store = PineconeVectorStore(
+            self.pc.Index(
+                self.index_name,
+                host="https://cdrc-index-afz2q2b.svc.gcp-starter.pinecone.io",
+            )
+        )
         self.pipeline = IngestionPipeline(
             transformations=[
                 SentenceSplitter(

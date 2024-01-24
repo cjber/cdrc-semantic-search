@@ -36,34 +36,38 @@ class CDRCQuery:
 
     def run(self):
         self.catalogue_metadata = json.loads(urlopen(self.api_url).read())["result"][0]
+        self.process_metadata()
 
         if self.check_if_files_changed():
+            print("Files have changed.")
             self.files_changed = True
-            self.process_metadata()
+            self.download_files()
         else:
-            logging.info("No files have changed; exiting.")
+            print("No files have changed.")
             self.files_changed = False
 
     def process_metadata(self):
         self.get_metadata()
         self.file_ids = {file["id"] for file in self.files_metadata}
         self.catalogue_ids = {catalogue["id"] for catalogue in self.catalogue_metadata}
-
         self.write_metadata()
-        self.download_files()
 
     def check_if_files_changed(self) -> bool:
-        response_file = self.data_dir / "response.json"
-        if not response_file.exists():
-            with open(response_file, "w") as f:
-                json.dump(self.catalogue_metadata, f)
+        current_files = self.data_dir / "file_list.json"
+        file_names = {
+            file["name"]: file["last_modified"] for file in self.files_metadata
+        }
+
+        if not current_files.exists():
+            with open(current_files, "w") as f:
+                json.dump(file_names, f)
                 return True
         else:
-            with open(response_file) as f:
+            with open(current_files) as f:
                 old_response = json.load(f)
-        with open(response_file, "w") as f:
-            json.dump(self.catalogue_metadata, f)
-            return old_response != self.catalogue_metadata
+            with open(current_files, "w") as f:
+                json.dump(file_names, f)
+            return old_response != file_names
 
     def get_metadata(self) -> list[dict]:
         self.files_metadata = []

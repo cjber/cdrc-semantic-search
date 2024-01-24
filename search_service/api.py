@@ -33,14 +33,18 @@ async def query(q: str):
 @app.get("/explain/{results_id}")
 async def explain(response_num: int, results_id: UUID):
     model.explain_dataset(response_num)
-    return model.explained_response
+    return (
+        [{"results_id": results_id}]
+        + model.explained_response
+        + model.processed_response
+    )
 
 
 @app.get("/results/{results_id}")
 async def results(results_id: UUID):
-    return model.processed_response
+    return [{"results_id": results_id}] + model.processed_response
 
 
 @app.post("/query_str/{results_id}")
 async def query_str(results_id: UUID):
-    return model.query
+    return [{"results_id": results_id}] + model.query

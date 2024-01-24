@@ -47,4 +47,4 @@ async def results(results_id: UUID):
 
 @app.post("/query_str/{results_id}")
 async def query_str(results_id: UUID):
-    return [{"results_id": results_id}] + model.query
+    return [{"results_id": results_id}] + [model.query]

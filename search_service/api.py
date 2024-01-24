@@ -35,8 +35,8 @@ async def explain(response_num: int, results_id: UUID):
     model.explain_dataset(response_num)
     return (
         [{"results_id": results_id}]
-        + model.explained_response
-        + model.processed_response
+        + [model.explained_response]
+        + [model.processed_response[response_num]]
     )
 
 

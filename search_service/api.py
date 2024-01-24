@@ -25,26 +25,26 @@ def index():
 
 
 @app.post("/query")
-async def query(q: str):
+async def query(q: str) -> list[dict]:
     model.run(q)
     return [{"results_id": uuid4()}] + model.processed_response
 
 
 @app.get("/explain/{results_id}")
-async def explain(response_num: int, results_id: UUID):
+async def explain(response_num: int, results_id: UUID) -> dict:
     model.explain_dataset(response_num)
-    return (
-        [{"results_id": results_id}]
-        + [model.explained_response]
-        + [model.processed_response[response_num]]
-    )
+    return {
+        "results_id": results_id,
+        "explained_response": model.explained_response,
+        "related_dataset": model.processed_response[response_num],
+    }
 
 
 @app.get("/results/{results_id}")
-async def results(results_id: UUID):
+async def results(results_id: UUID) -> list[dict]:
     return [{"results_id": results_id}] + model.processed_response
 
 
 @app.post("/query_str/{results_id}")
-async def query_str(results_id: UUID):
-    return [{"results_id": results_id}] + [model.query]
+async def query_str(results_id: UUID) -> dict:
+    return {"results_id": results_id, "query": model.query}

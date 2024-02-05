@@ -96,7 +96,7 @@ class CreateDataStore:
 
     def setup_directory_reader(self):
         reader = UnstructuredReader(
-            # api=True, api_key=os.environ["UNSTRUCTURED_API_KEY"]
+            api=True, api_key=os.environ["UNSTRUCTURED_API_KEY"]
         )
         self.dir_reader = SimpleDirectoryReader(
             self.profiles_dir,

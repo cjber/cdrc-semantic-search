@@ -123,7 +123,8 @@ class CreateDataStore:
                     chunk_overlap=self.chunk_overlap,
                 ),
                 OpenAIEmbedding(
-                    mode=OpenAIEmbeddingMode.SIMILARITY_MODE,
+                    mode=OpenAIEmbeddingMode.TEXT_SEARCH_MODE,
+                    model="text-embedding-3-large",
                     api_key=os.environ["OPENAI_API_KEY"],
                 ),
             ],

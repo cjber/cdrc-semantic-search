@@ -1,7 +1,4 @@
-import logging
 import os
-import sys
-from statistics import mean
 from typing import Optional
 
 from llama_index import ServiceContext, VectorStoreIndex
@@ -10,7 +7,6 @@ from llama_index.prompts import PromptTemplate
 from llama_index.indices.query.schema import QueryBundle
 from llama_index.llms import OpenAI
 from llama_index.postprocessor.types import BaseNodePostprocessor
-from llama_index.response import Response
 from llama_index.schema import NodeWithScore
 
 from src.common.utils import Settings
@@ -34,7 +30,6 @@ class DocumentGroupingPostprocessor(BaseNodePostprocessor):
         out_nodes = []
         for group in nodes_by_document.values():
             content = "\n--------------------\n".join([n.get_content() for n in group])
-            # score = mean([n.score for n in group])
             score = max(n.score for n in group)
             group[0].node.text = content
             group[0].score = score
@@ -52,7 +47,7 @@ class LlamaIndexModel:
         response_mode: str,
         load_model: bool = True,
     ):
-        self.model = OpenAI() if load_model else None
+        self.model = OpenAI(model="gpt-3.5-turbo") if load_model else None
         self.top_k = top_k
         self.vector_store_query_mode = vector_store_query_mode
         self.alpha = alpha
@@ -70,7 +65,8 @@ class LlamaIndexModel:
     def build_index(self):
         self.service_context = ServiceContext.from_defaults(
             embed_model=OpenAIEmbedding(
-                mode=OpenAIEmbeddingMode.SIMILARITY_MODE,
+                mode=OpenAIEmbeddingMode.TEXT_SEARCH_MODE,
+                model="text-embedding-3-large",
                 api_key=os.environ["OPENAI_API_KEY"],
             ),
             llm=self.model,
@@ -110,7 +106,9 @@ class LlamaIndexModel:
 
         text_qa_template = PromptTemplate(self.prompt)
         response = self.response[response_num]
-        index = VectorStoreIndex(nodes=[response.node])
+        index = VectorStoreIndex(
+            nodes=[response.node], service_context=self.service_context
+        )
         query_engine = index.as_query_engine(text_qa_template=text_qa_template)
         response = query_engine.query(self.query)
         self.explained_response = response.response

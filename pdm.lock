@@ -5,7 +5,7 @@
 groups = ["default", "dev"]
 strategy = ["cross_platform"]
 lock_version = "4.4.1"
-content_hash = "sha256:406593fff8b5c81c087a52ac06bbd810e4b91a6654845f2ed00d271e7fce5039"
+content_hash = "sha256:56f0d26a30e05177bc9a0e08d22ec8594bf12285dfb855ef642a598eaf72268e"
 
 [[package]]
 name = "aiobotocore"

@@ -6,17 +6,18 @@ authors = [
     {name = "cjber", email = "cjberragan@gmail.com"},
 ]
 dependencies = [
-    "llama-index>=0.9.34",
-    "llama-hub>=0.0.73",
-    "pinecone-client>=3.0.1",
+    "llama-index>=0.9.43",
+    "llama-hub>=0.0.77",
+    "pinecone-client>=3.0.2",
     "requests>=2.31.0",
-    "fastapi>=0.109.0",
-    "polars>=0.20.5",
+    "fastapi>=0.109.1",
+    "polars>=0.20.6",
     "pydantic-settings>=2.1.0",
-    "seaborn>=0.13.1",
+    "seaborn>=0.13.2",
     "dateparser>=1.2.0",
-    "unstructured[all-docs]>=0.12.0",
+    "unstructured[all-docs]>=0.12.3",
     "gunicorn>=21.2.0",
+    "sourcery-cli>=1.15.0",
 ]
 requires-python = ">=3.11,<3.12"
 readme = "README.md"
@@ -24,11 +25,11 @@ license = {text = "MIT"}
 
 [tool.pdm.dev-dependencies]
 dev = [
-    "ipython>=8.20.0",
+    "ipython>=8.21.0",
     "ipdb>=0.13.13",
-    "dvc>=3.40.1",
+    "dvc>=3.43.1",
     "dvc-s3>=3.0.1",
     "pre-commit>=3.6.0",
-    "streamlit>=1.30.0",
-    "uvicorn>=0.26.0",
+    "streamlit>=1.31.0",
+    "uvicorn>=0.27.0.post1",
 ]

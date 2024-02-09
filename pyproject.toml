@@ -6,8 +6,8 @@ authors = [
     {name = "cjber", email = "cjberragan@gmail.com"},
 ]
 dependencies = [
-    "llama-index>=0.9.44",
-    "llama-hub>=0.0.77",
+    "llama-index>=0.9.45.post1",
+    "llama-hub>=0.0.78",
     "pinecone-client>=3.0.2",
     "requests>=2.31.0",
     "fastapi>=0.109.2",
@@ -33,4 +33,6 @@ dev = [
     "pre-commit>=3.6.0",
     "streamlit>=1.31.0",
     "sourcery-cli>=1.15.0",
+    "bitsandbytes>=0.42.0",
+    "accelerate>=0.27.0",
 ]

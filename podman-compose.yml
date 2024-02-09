@@ -1,0 +1,30 @@
+version: '3.8'
+services:
+  rebuild-datastore:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      always: true
+    volumes:
+      - ${PWD}/data:/root/search/data:z
+    userns: keep-id
+    devices:
+      - "nvidia.com/gpu=all"
+    security_opt:
+      - label=disable
+    command: pdm run python -m main
+    restart: "no"
+  evaluation:
+    build:
+      context: .
+      dockerfiel: Dockerfile
+      always: true
+    volumes:
+      - ${PWD}/data:/root/search/data:z
+    userns: keep-id
+    devices:
+      - "nvidia.com/gpu=all"
+    security_opt:
+      - label=disable
+    command: pdm run python -m src.evaluation
+    restart: "no"

@@ -30,16 +30,16 @@ def _add_metadata_to_document(doc_id: str) -> dict:
                 main_id = file_meta["parent_id"]
                 break
 
-    for catalogue_meta in catalogue_metadata:
-        if main_id == catalogue_meta["id"]:
+    iso_date = dateparser.parse(files_metadata[0]["created"]).isoformat()
+    for cm in catalogue_metadata:
+        if main_id == cm["id"]:
             return {
-                "title": catalogue_meta["title"],
-                "id": catalogue_meta["id"],
-                "url": catalogue_meta["url"],
-                "date_created": dateparser.parse(
-                    catalogue_metadata[0]["metadata_created"]
-                ).isoformat(),
+                "title": cm["title"],
+                "id": cm["id"],
+                "url": cm["url"],
+                "date_created": iso_date,
             }
+    raise ValueError(f"Metadata not found for document {doc_id}")
 
 
 class CreateDataStore:
@@ -50,8 +50,8 @@ class CreateDataStore:
         chunk_overlap: int,
         overwrite: bool,
         embed_dim: int,
-        profiles_dir: str = Paths.PROFILES_DIR,
-        data_dir: str = Paths.DATA_DIR,
+        profiles_dir: Path = Paths.PROFILES_DIR,
+        data_dir: Path = Paths.DATA_DIR,
         pipeline_storage: Path = Paths.PIPELINE_STORAGE,
     ):
         self.index_name = index_name
@@ -96,7 +96,7 @@ class CreateDataStore:
 
     def setup_directory_reader(self):
         reader = UnstructuredReader(
-            api=True, api_key=os.environ["UNSTRUCTURED_API_KEY"]
+            # api=True, api_key=os.environ["UNSTRUCTURED_API_KEY"]
         )
         self.dir_reader = SimpleDirectoryReader(
             self.profiles_dir,
@@ -145,9 +145,5 @@ class CreateDataStore:
 
 
 if __name__ == "__main__":
-    logging.basicConfig(
-        level=logging.ERROR, filename="logs/datastore.log", filemode="w"
-    )
-
     datastore = CreateDataStore(**Settings().datastore.model_dump())
     datastore.run()

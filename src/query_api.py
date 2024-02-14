@@ -18,7 +18,7 @@ class CDRCQuery:
         login_url: str,
         data_dir: Path = Paths.DATA_DIR,
         profiles_dir: Path = Paths.PROFILES_DIR,
-        login_details: dict = None,
+        login_details: dict[str, str | None] | None = None,
     ):
         if login_details is None:
             login_details = {
@@ -69,7 +69,7 @@ class CDRCQuery:
                 json.dump(file_names, f)
             return old_response != file_names
 
-    def get_metadata(self) -> list[dict]:
+    def get_metadata(self):
         self.files_metadata = []
         for item in self.catalogue_metadata:
             if "resources" not in item:
@@ -93,7 +93,7 @@ class CDRCQuery:
                     f"{re.sub('<[^<]+?>','', item['notes'])}"
                 )
 
-    def download_files(self) -> None:
+    def download_files(self):
         s = requests.Session()
         s.post(
             self.login_url,

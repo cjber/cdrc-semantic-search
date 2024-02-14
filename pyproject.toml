@@ -35,4 +35,7 @@ dev = [
     "sourcery-cli>=1.15.0",
     "bitsandbytes>=0.42.0",
     "accelerate>=0.27.0",
+    "mypy>=1.8.0",
+    "pip>=24.0",
+    "python-lsp-server>=1.10.0",
 ]

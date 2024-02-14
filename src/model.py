@@ -1,5 +1,5 @@
 import os
-from typing import Optional
+from typing import Any
 
 from llama_index import ServiceContext, VectorStoreIndex
 from llama_index.embeddings.openai import OpenAIEmbedding, OpenAIEmbeddingMode
@@ -15,11 +15,9 @@ from src.datastore import CreateDataStore
 
 class DocumentGroupingPostprocessor(BaseNodePostprocessor):
     def _postprocess_nodes(
-        self,
-        nodes: list[NodeWithScore],
-        query_bundle: Optional[QueryBundle],
+        self, nodes: list[NodeWithScore], query_bundle: QueryBundle | None = None
     ) -> list[NodeWithScore]:
-        nodes_by_document = {}
+        nodes_by_document: dict[str, Any] = {}
 
         for node in nodes:
             document_id = node.metadata["id"]
@@ -117,6 +115,6 @@ class LlamaIndexModel:
 if __name__ == "__main__":
     model = LlamaIndexModel(**Settings().model.model_dump())
     model.run("diabetes")
-    model.explain_dataset(2)
     model.processed_response
+    model.explain_dataset(2)
     model.explained_response

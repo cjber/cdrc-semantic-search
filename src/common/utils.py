@@ -1,9 +1,9 @@
 import logging
 import sys
+import tomllib
 import traceback
 from pathlib import Path
 
-import tomllib
 from dotenv import load_dotenv
 from pydantic import Field
 from pydantic_settings import BaseSettings

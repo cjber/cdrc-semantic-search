@@ -5,7 +5,7 @@
 groups = ["default", "dev"]
 strategy = ["cross_platform"]
 lock_version = "4.4.1"
-content_hash = "sha256:24dad16a7cd1f3c3ecbca6e125aa906239765969265c903585c1ce0556b980d2"
+content_hash = "sha256:af8dcd594bc00e91311b2835671d4152514dcbe34d1d886a9a24ff49bcb7aca0"
 
 [[package]]
 name = "accelerate"
@@ -499,6 +499,19 @@ files = [
 ]
 
 [[package]]
+name = "coloredlogs"
+version = "15.0.1"
+requires_python = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
+summary = "Colored terminal output for Python's logging module"
+dependencies = [
+    "humanfriendly>=9.1",
+]
+files = [
+    {file = "coloredlogs-15.0.1-py2.py3-none-any.whl", hash = "sha256:612ee75c546f53e92e70049c9dbfcc18c935a2b9a53b66085ce9ef6a6e5c0934"},
+    {file = "coloredlogs-15.0.1.tar.gz", hash = "sha256:7c991aa71a4577af2f82600d8f8f3a89f936baeaf9b50a9c197da014e5bf16b0"},
+]
+
+[[package]]
 name = "configobj"
 version = "5.0.8"
 requires_python = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
@@ -892,6 +905,23 @@ files = [
 ]
 
 [[package]]
+name = "effdet"
+version = "0.4.1"
+requires_python = ">=3.7"
+summary = "EfficientDet for PyTorch"
+dependencies = [
+    "omegaconf>=2.0",
+    "pycocotools>=2.0.2",
+    "timm>=0.9.2",
+    "torch>=1.12.1",
+    "torchvision",
+]
+files = [
+    {file = "effdet-0.4.1-py3-none-any.whl", hash = "sha256:10889a226228d515c948e3fcf811e64c0d78d7aa94823a300045653b9c284cb7"},
+    {file = "effdet-0.4.1.tar.gz", hash = "sha256:ac5589fd304a5650c201986b2ef5f8e10c111093a71b1c49fa6b8817710812b5"},
+]
+
+[[package]]
 name = "emoji"
 version = "2.10.0"
 requires_python = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
@@ -909,6 +939,16 @@ summary = "Discover and load entry points from installed packages."
 files = [
     {file = "entrypoints-0.4-py3-none-any.whl", hash = "sha256:f174b5ff827504fd3cd97cc3f8649f3693f51538c7e4bdf3ef002c8429d42f9f"},
     {file = "entrypoints-0.4.tar.gz", hash = "sha256:b706eddaa9218a19ebcd67b56818f05bb27589b1ca9e8d797b74affad4ccacd4"},
+]
+
+[[package]]
+name = "et-xmlfile"
+version = "1.1.0"
+requires_python = ">=3.6"
+summary = "An implementation of lxml.xmlfile for the standard library"
+files = [
+    {file = "et_xmlfile-1.1.0-py3-none-any.whl", hash = "sha256:a2ba85d1d6a74ef63837eed693bcb89c3f752169b0e3e7ae5b16ca5e1b3deada"},
+    {file = "et_xmlfile-1.1.0.tar.gz", hash = "sha256:8eb9e2bc2f8c97e37a2dc85a09ecdcdec9d8a396530a6d5a33b30b9a92da0c5c"},
 ]
 
 [[package]]
@@ -953,6 +993,15 @@ summary = "Infer file type and MIME type of any file/buffer. No external depende
 files = [
     {file = "filetype-1.2.0-py2.py3-none-any.whl", hash = "sha256:7ce71b6880181241cf7ac8697a2f1eb6a8bd9b429f7ad6d27b8db9ba5f1c2d25"},
     {file = "filetype-1.2.0.tar.gz", hash = "sha256:66b56cd6474bf41d8c54660347d37afcc3f7d1970648de365c102ef77548aadb"},
+]
+
+[[package]]
+name = "flatbuffers"
+version = "23.5.26"
+summary = "The FlatBuffers serialization format for Python"
+files = [
+    {file = "flatbuffers-23.5.26-py2.py3-none-any.whl", hash = "sha256:c0ff356da363087b915fde4b8b45bdda73432fc17cddb3c8157472eab1422ad1"},
+    {file = "flatbuffers-23.5.26.tar.gz", hash = "sha256:9ea1144cac05ce5d86e2859f431c6cd5e66cd9c78c558317c7955fb8d4c78d89"},
 ]
 
 [[package]]
@@ -1221,6 +1270,19 @@ files = [
 ]
 
 [[package]]
+name = "humanfriendly"
+version = "10.0"
+requires_python = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
+summary = "Human friendly output for text interfaces using Python"
+dependencies = [
+    "pyreadline3; sys_platform == \"win32\" and python_version >= \"3.8\"",
+]
+files = [
+    {file = "humanfriendly-10.0-py2.py3-none-any.whl", hash = "sha256:1697e1a8a8f550fd43c2865cd84542fc175a61dcb779b6fee18cf6b6ccba1477"},
+    {file = "humanfriendly-10.0.tar.gz", hash = "sha256:6b0b831ce8f15f7300721aa49829fc4e83921a9a301cc7f606be6686a2288ddc"},
+]
+
+[[package]]
 name = "hydra-core"
 version = "1.3.2"
 summary = "A framework for elegantly configuring complex applications"
@@ -1265,6 +1327,20 @@ dependencies = [
 files = [
     {file = "importlib_metadata-7.0.1-py3-none-any.whl", hash = "sha256:4805911c3a4ec7c3966410053e9ec6a1fecd629117df5adee56dfc9432a1081e"},
     {file = "importlib_metadata-7.0.1.tar.gz", hash = "sha256:f238736bb06590ae52ac1fab06a3a9ef1d8dce2b7a35b5ab329371d6c8f5d2cc"},
+]
+
+[[package]]
+name = "iopath"
+version = "0.1.10"
+requires_python = ">=3.6"
+summary = "A library for providing I/O abstraction."
+dependencies = [
+    "portalocker",
+    "tqdm",
+    "typing-extensions",
+]
+files = [
+    {file = "iopath-0.1.10.tar.gz", hash = "sha256:3311c16a4d9137223e20f141655759933e1eda24f8bff166af834af3c645ef01"},
 ]
 
 [[package]]
@@ -1468,6 +1544,45 @@ files = [
 ]
 
 [[package]]
+name = "layoutparser"
+version = "0.3.4"
+requires_python = ">=3.6"
+summary = "A unified toolkit for Deep Learning Based Document Image Analysis"
+dependencies = [
+    "iopath",
+    "numpy",
+    "opencv-python",
+    "pandas",
+    "pdf2image",
+    "pdfplumber",
+    "pillow",
+    "pyyaml>=5.1",
+    "scipy",
+]
+files = [
+    {file = "layoutparser-0.3.4-py3-none-any.whl", hash = "sha256:269aedfab8a0caa50aef8d0fa62740fbee1f2964880daae3a0e6a0415363126a"},
+    {file = "layoutparser-0.3.4.tar.gz", hash = "sha256:0dfb2194c36a5ad1075b8310f3cbc280c00306d1758cef127d20283f7ce085ea"},
+]
+
+[[package]]
+name = "layoutparser"
+version = "0.3.4"
+extras = ["layoutmodels", "tesseract"]
+requires_python = ">=3.6"
+summary = "A unified toolkit for Deep Learning Based Document Image Analysis"
+dependencies = [
+    "effdet",
+    "layoutparser==0.3.4",
+    "pytesseract",
+    "torch",
+    "torchvision",
+]
+files = [
+    {file = "layoutparser-0.3.4-py3-none-any.whl", hash = "sha256:269aedfab8a0caa50aef8d0fa62740fbee1f2964880daae3a0e6a0415363126a"},
+    {file = "layoutparser-0.3.4.tar.gz", hash = "sha256:0dfb2194c36a5ad1075b8310f3cbc280c00306d1758cef127d20283f7ce085ea"},
+]
+
+[[package]]
 name = "llama-hub"
 version = "0.0.78"
 requires_python = ">=3.8.1,<3.12"
@@ -1543,6 +1658,16 @@ files = [
     {file = "lxml-5.1.0-pp39-pypy39_pp73-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:5e53d7e6a98b64fe54775d23a7c669763451340c3d44ad5e3a3b48a1efbdc96f"},
     {file = "lxml-5.1.0-pp39-pypy39_pp73-win_amd64.whl", hash = "sha256:c3cd1fc1dc7c376c54440aeaaa0dcc803d2126732ff5c6b68ccd619f2e64be4f"},
     {file = "lxml-5.1.0.tar.gz", hash = "sha256:3eea6ed6e6c918e468e693c41ef07f3c3acc310b70ddd9cc72d9ef84bc9564ca"},
+]
+
+[[package]]
+name = "markdown"
+version = "3.5.2"
+requires_python = ">=3.8"
+summary = "Python implementation of John Gruber's Markdown."
+files = [
+    {file = "Markdown-3.5.2-py3-none-any.whl", hash = "sha256:d43323865d89fc0cb9b20c75fc8ad313af307cc087e84b657d9eec768eddeadd"},
+    {file = "Markdown-3.5.2.tar.gz", hash = "sha256:e1ac7b3dc550ee80e602e71c1d168002f062e49f1b11e26a36264dafd4df2ef8"},
 ]
 
 [[package]]
@@ -1649,6 +1774,19 @@ summary = "Python library for arbitrary-precision floating-point arithmetic"
 files = [
     {file = "mpmath-1.3.0-py3-none-any.whl", hash = "sha256:a0b2b9fe80bbcd81a6647ff13108738cfb482d481d826cc0e02f5b35e5c88d2c"},
     {file = "mpmath-1.3.0.tar.gz", hash = "sha256:7a28eb2a9774d00c7bc92411c19a89209d5da7c4c9a9e227be8330a23a25b91f"},
+]
+
+[[package]]
+name = "msg-parser"
+version = "1.2.0"
+requires_python = ">=3.4"
+summary = "This module enables reading, parsing and converting Microsoft Outlook MSG E-Mail files."
+dependencies = [
+    "olefile>=0.46",
+]
+files = [
+    {file = "msg_parser-1.2.0-py2.py3-none-any.whl", hash = "sha256:d47a2f0b2a359cb189fad83cc991b63ea781ecc70d91410324273fbf93e95375"},
+    {file = "msg_parser-1.2.0.tar.gz", hash = "sha256:0de858d4fcebb6c8f6f028da83a17a20fe01cdce67c490779cf43b3b0162aa66"},
 ]
 
 [[package]]
@@ -1903,6 +2041,16 @@ files = [
 ]
 
 [[package]]
+name = "olefile"
+version = "0.47"
+requires_python = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
+summary = "Python package to parse, read and write Microsoft OLE2 files (Structured Storage or Compound Document, Microsoft Office)"
+files = [
+    {file = "olefile-0.47-py2.py3-none-any.whl", hash = "sha256:543c7da2a7adadf21214938bb79c83ea12b473a4b6ee4ad4bf854e7715e13d1f"},
+    {file = "olefile-0.47.zip", hash = "sha256:599383381a0bf3dfbd932ca0ca6515acd174ed48870cbf7fee123d698c192c1c"},
+]
+
+[[package]]
 name = "omegaconf"
 version = "2.3.0"
 requires_python = ">=3.6"
@@ -1914,6 +2062,46 @@ dependencies = [
 files = [
     {file = "omegaconf-2.3.0-py3-none-any.whl", hash = "sha256:7b4df175cdb08ba400f45cae3bdcae7ba8365db4d165fc65fd04b050ab63b46b"},
     {file = "omegaconf-2.3.0.tar.gz", hash = "sha256:d5d4b6d29955cc50ad50c46dc269bcd92c6e00f5f90d23ab5fee7bfca4ba4cc7"},
+]
+
+[[package]]
+name = "onnx"
+version = "1.15.0"
+requires_python = ">=3.8"
+summary = "Open Neural Network Exchange"
+dependencies = [
+    "numpy",
+    "protobuf>=3.20.2",
+]
+files = [
+    {file = "onnx-1.15.0-cp311-cp311-macosx_10_12_universal2.whl", hash = "sha256:233ffdb5ca8cc2d960b10965a763910c0830b64b450376da59207f454701f343"},
+    {file = "onnx-1.15.0-cp311-cp311-macosx_10_12_x86_64.whl", hash = "sha256:51fa79c9ea9af033638ec51f9177b8e76c55fad65bb83ea96ee88fafade18ee7"},
+    {file = "onnx-1.15.0-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:f277d4861729f5253a51fa41ce91bfec1c4574ee41b5637056b43500917295ce"},
+    {file = "onnx-1.15.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:d8a7c94d2ebead8f739fdb70d1ce5a71726f4e17b3e5b8ad64455ea1b2801a85"},
+    {file = "onnx-1.15.0-cp311-cp311-win32.whl", hash = "sha256:17dcfb86a8c6bdc3971443c29b023dd9c90ff1d15d8baecee0747a6b7f74e650"},
+    {file = "onnx-1.15.0-cp311-cp311-win_amd64.whl", hash = "sha256:60a3e28747e305cd2e766e6a53a0a6d952cf9e72005ec6023ce5e07666676a4e"},
+    {file = "onnx-1.15.0.tar.gz", hash = "sha256:b18461a7d38f286618ca2a6e78062a2a9c634ce498e631e708a8041b00094825"},
+]
+
+[[package]]
+name = "onnxruntime"
+version = "1.15.1"
+summary = "ONNX Runtime is a runtime accelerator for Machine Learning models"
+dependencies = [
+    "coloredlogs",
+    "flatbuffers",
+    "numpy>=1.24.2",
+    "packaging",
+    "protobuf",
+    "sympy",
+]
+files = [
+    {file = "onnxruntime-1.15.1-cp311-cp311-macosx_10_15_x86_64.whl", hash = "sha256:652b2cb777f76446e3cc41072dd3d1585a6388aeff92b9de656724bc22e241e4"},
+    {file = "onnxruntime-1.15.1-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:89b86dbed15740abc385055a29c9673a212600248d702737ce856515bdeddc88"},
+    {file = "onnxruntime-1.15.1-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:ed5cdd9ee748149a57f4cdfa67187a0d68f75240645a3c688299dcd08742cc98"},
+    {file = "onnxruntime-1.15.1-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:2f748cce6a70ed38c19658615c55f4eedb9192765a4e9c4bd2682adfe980698d"},
+    {file = "onnxruntime-1.15.1-cp311-cp311-win32.whl", hash = "sha256:e0312046e814c40066e7823da58075992d51364cbe739eeeb2345ec440c3ac59"},
+    {file = "onnxruntime-1.15.1-cp311-cp311-win_amd64.whl", hash = "sha256:f0980969689cb956c22bd1318b271e1be260060b37f3ddd82c7d63bd7f2d9a79"},
 ]
 
 [[package]]
@@ -1933,6 +2121,43 @@ dependencies = [
 files = [
     {file = "openai-1.8.0-py3-none-any.whl", hash = "sha256:0f8f53805826103fdd8adaf379ad3ec23f9d867e698cbc14caf34b778d150175"},
     {file = "openai-1.8.0.tar.gz", hash = "sha256:93366be27802f517e89328801913d2a5ede45e3b86fdcab420385b8a1b88c767"},
+]
+
+[[package]]
+name = "opencv-python"
+version = "4.9.0.80"
+requires_python = ">=3.6"
+summary = "Wrapper package for OpenCV python bindings."
+dependencies = [
+    "numpy>=1.17.0; python_version >= \"3.7\"",
+    "numpy>=1.17.3; python_version >= \"3.8\"",
+    "numpy>=1.19.3; python_version >= \"3.6\" and platform_system == \"Linux\" and platform_machine == \"aarch64\"",
+    "numpy>=1.19.3; python_version >= \"3.9\"",
+    "numpy>=1.21.2; python_version >= \"3.10\"",
+    "numpy>=1.21.4; python_version >= \"3.10\" and platform_system == \"Darwin\"",
+    "numpy>=1.23.5; python_version >= \"3.11\"",
+]
+files = [
+    {file = "opencv-python-4.9.0.80.tar.gz", hash = "sha256:1a9f0e6267de3a1a1db0c54213d022c7c8b5b9ca4b580e80bdc58516c922c9e1"},
+    {file = "opencv_python-4.9.0.80-cp37-abi3-macosx_10_16_x86_64.whl", hash = "sha256:7e5f7aa4486651a6ebfa8ed4b594b65bd2d2f41beeb4241a3e4b1b85acbbbadb"},
+    {file = "opencv_python-4.9.0.80-cp37-abi3-macosx_11_0_arm64.whl", hash = "sha256:71dfb9555ccccdd77305fc3dcca5897fbf0cf28b297c51ee55e079c065d812a3"},
+    {file = "opencv_python-4.9.0.80-cp37-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:7b34a52e9da36dda8c151c6394aed602e4b17fa041df0b9f5b93ae10b0fcca2a"},
+    {file = "opencv_python-4.9.0.80-cp37-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:e4088cab82b66a3b37ffc452976b14a3c599269c247895ae9ceb4066d8188a57"},
+    {file = "opencv_python-4.9.0.80-cp37-abi3-win32.whl", hash = "sha256:dcf000c36dd1651118a2462257e3a9e76db789a78432e1f303c7bac54f63ef6c"},
+    {file = "opencv_python-4.9.0.80-cp37-abi3-win_amd64.whl", hash = "sha256:3f16f08e02b2a2da44259c7cc712e779eff1dd8b55fdb0323e8cab09548086c0"},
+]
+
+[[package]]
+name = "openpyxl"
+version = "3.1.2"
+requires_python = ">=3.6"
+summary = "A Python library to read/write Excel 2010 xlsx/xlsm files"
+dependencies = [
+    "et-xmlfile",
+]
+files = [
+    {file = "openpyxl-3.1.2-py2.py3-none-any.whl", hash = "sha256:f91456ead12ab3c6c2e9491cf33ba6d08357d802192379bb482f1033ade496f5"},
+    {file = "openpyxl-3.1.2.tar.gz", hash = "sha256:a6f5977418eff3b2d5500d54d9db50c8277a368436f4e4f8ddb1be3422870184"},
 ]
 
 [[package]]
@@ -2006,6 +2231,47 @@ files = [
 ]
 
 [[package]]
+name = "pdf2image"
+version = "1.17.0"
+summary = "A wrapper around the pdftoppm and pdftocairo command line tools to convert PDF to a PIL Image list."
+dependencies = [
+    "pillow",
+]
+files = [
+    {file = "pdf2image-1.17.0-py3-none-any.whl", hash = "sha256:ecdd58d7afb810dffe21ef2b1bbc057ef434dabbac6c33778a38a3f7744a27e2"},
+    {file = "pdf2image-1.17.0.tar.gz", hash = "sha256:eaa959bc116b420dd7ec415fcae49b98100dda3dd18cd2fdfa86d09f112f6d57"},
+]
+
+[[package]]
+name = "pdfminer-six"
+version = "20221105"
+requires_python = ">=3.6"
+summary = "PDF parser and analyzer"
+dependencies = [
+    "charset-normalizer>=2.0.0",
+    "cryptography>=36.0.0",
+]
+files = [
+    {file = "pdfminer.six-20221105-py3-none-any.whl", hash = "sha256:1eaddd712d5b2732f8ac8486824533514f8ba12a0787b3d5fe1e686cd826532d"},
+    {file = "pdfminer.six-20221105.tar.gz", hash = "sha256:8448ab7b939d18b64820478ecac5394f482d7a79f5f7eaa7703c6c959c175e1d"},
+]
+
+[[package]]
+name = "pdfplumber"
+version = "0.10.4"
+requires_python = ">=3.8"
+summary = "Plumb a PDF for detailed information about each char, rectangle, and line."
+dependencies = [
+    "Pillow>=9.1",
+    "pdfminer-six==20221105",
+    "pypdfium2>=4.18.0",
+]
+files = [
+    {file = "pdfplumber-0.10.4-py3-none-any.whl", hash = "sha256:c8f200259703324cd39a5c93b181a0d2370a6b2b6da670c117e75c3da6aca4a4"},
+    {file = "pdfplumber-0.10.4.tar.gz", hash = "sha256:1c83a4e1fe75525ce1f161fa55a8142209a2da69b45542ce2c45be879e804fd6"},
+]
+
+[[package]]
 name = "pexpect"
 version = "4.9.0"
 summary = "Pexpect allows easy control of interactive console applications."
@@ -2015,6 +2281,30 @@ dependencies = [
 files = [
     {file = "pexpect-4.9.0-py2.py3-none-any.whl", hash = "sha256:7236d1e080e4936be2dc3e326cec0af72acf9212a7e1d060210e70a47e253523"},
     {file = "pexpect-4.9.0.tar.gz", hash = "sha256:ee7d41123f3c9911050ea2c2dac107568dc43b2d3b0c7557a33212c398ead30f"},
+]
+
+[[package]]
+name = "pikepdf"
+version = "8.12.0"
+requires_python = ">=3.8"
+summary = "Read and write PDFs with Python, powered by qpdf"
+dependencies = [
+    "Deprecated",
+    "Pillow>=10.0.1",
+    "lxml>=4.8; python_version >= \"3.10\"",
+    "packaging",
+]
+files = [
+    {file = "pikepdf-8.12.0-cp311-cp311-macosx_10_9_x86_64.whl", hash = "sha256:c1e13a4f4c7a596ad4157b93453de4dfcb7abc14c58ce9ee110b0e2ee7a0813e"},
+    {file = "pikepdf-8.12.0-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:73fdaa359262feda7f62aa87bfb97c66f9a30d80bcb592d2c4c5e7714f2ab30e"},
+    {file = "pikepdf-8.12.0-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:ea368bb11c1b57b773f349e8a1283617a66227a628f94023bb4a16ed53a1adf3"},
+    {file = "pikepdf-8.12.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:19867ff1c4db1da7a74aad0fc9455a6ca1b7a45ee460c1e7fce1dd1962c0251d"},
+    {file = "pikepdf-8.12.0-cp311-cp311-musllinux_1_2_x86_64.whl", hash = "sha256:485760bb22bcf25f338ab7dc003e6b5f522783f5f00bab0079ea3383152b2d98"},
+    {file = "pikepdf-8.12.0-cp311-cp311-win_amd64.whl", hash = "sha256:93ba53c05d511a5e8a1d5ccf00b71a3c89e9285ec92e8f9a86995b022e667346"},
+    {file = "pikepdf-8.12.0-pp39-pypy39_pp73-macosx_10_9_x86_64.whl", hash = "sha256:75de10328d6558e7821aadabb63cadbb40eec3cdc407b01ef990760343ad4305"},
+    {file = "pikepdf-8.12.0-pp39-pypy39_pp73-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:c60e8b28b9e96137adc79eade42a764ff508291270e99ac84290808a85a12d94"},
+    {file = "pikepdf-8.12.0-pp39-pypy39_pp73-win_amd64.whl", hash = "sha256:54eeaeaa4bdca7320511f00f403ea1ae33ef2e006fd5b5c2b92d92ab7eb77641"},
+    {file = "pikepdf-8.12.0.tar.gz", hash = "sha256:b2d9957e188785a5913deedf6f12dc7eafb5764a3cc3996e044f0e9044b28889"},
 ]
 
 [[package]]
@@ -2048,6 +2338,40 @@ files = [
     {file = "pillow-10.2.0-pp39-pypy39_pp73-manylinux_2_28_x86_64.whl", hash = "sha256:d1b35bcd6c5543b9cb547dee3150c93008f8dd0f1fef78fc0cd2b141c5baf58a"},
     {file = "pillow-10.2.0-pp39-pypy39_pp73-win_amd64.whl", hash = "sha256:fe4c15f6c9285dc54ce6553a3ce908ed37c8f3825b5a51a15c91442bb955b868"},
     {file = "pillow-10.2.0.tar.gz", hash = "sha256:e87f0b2c78157e12d7686b27d63c070fd65d994e8ddae6f328e0dcf4a0cd007e"},
+]
+
+[[package]]
+name = "pillow-heif"
+version = "0.15.0"
+requires_python = ">=3.8"
+summary = "Python interface for libheif library"
+dependencies = [
+    "pillow>=9.2.0",
+]
+files = [
+    {file = "pillow_heif-0.15.0-cp311-cp311-macosx_10_10_x86_64.whl", hash = "sha256:a99ea7850963a0eace136dafa7bdc589f9ff49084815f1f6b23b47aba300ab7f"},
+    {file = "pillow_heif-0.15.0-cp311-cp311-macosx_12_0_arm64.whl", hash = "sha256:4e2905fe18040e7d2e97915eddf522007db222604b46c02bc3309ae7141d2c80"},
+    {file = "pillow_heif-0.15.0-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:984dbb5d09b30b6872474f12a7be7f2c33947184ef0e299d420118ad6c3deec8"},
+    {file = "pillow_heif-0.15.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:ad72544dd58ce43776102697ab8c42e866ab4a1fefee2c96d8024c2e3eb4a738"},
+    {file = "pillow_heif-0.15.0-cp311-cp311-musllinux_1_2_aarch64.whl", hash = "sha256:84051e503e610a6f0730f0302f94981d2098ba7d944d17707f216c3a880e1f0c"},
+    {file = "pillow_heif-0.15.0-cp311-cp311-musllinux_1_2_x86_64.whl", hash = "sha256:8c76ac217ccbbfc315dc8785a3f517f4e8e8161145d47a9449852c50ca7b9399"},
+    {file = "pillow_heif-0.15.0-cp311-cp311-win_amd64.whl", hash = "sha256:54a56b0956736b2e0726b38d8042beffdda2293af6aea7c026f67ce32f8151a1"},
+    {file = "pillow_heif-0.15.0-pp310-pypy310_pp73-macosx_10_10_x86_64.whl", hash = "sha256:1cb9a3f17ce6efd36c2a28970e15dc4b499c44f69ae4f25d509ef78f1d977017"},
+    {file = "pillow_heif-0.15.0-pp310-pypy310_pp73-macosx_12_0_arm64.whl", hash = "sha256:4c2e0bc5655daa3ff4a0708e9243ff76a1f8195080808ce1d716947738c3163a"},
+    {file = "pillow_heif-0.15.0-pp310-pypy310_pp73-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:2478cce1dd6319ac5015e820203f665152786cacac0c67d7346f585f87b8e4ec"},
+    {file = "pillow_heif-0.15.0-pp310-pypy310_pp73-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:cd8fa25a182847f01c273f1a5d3120bcc0f3d9c5bee70b99c754000f5a593dc8"},
+    {file = "pillow_heif-0.15.0-pp310-pypy310_pp73-win_amd64.whl", hash = "sha256:cd2aa9c489d9484fb8f2b0a82d8f0394e5856628290a4d85e1c58a0865f4ca23"},
+    {file = "pillow_heif-0.15.0-pp38-pypy38_pp73-macosx_10_10_x86_64.whl", hash = "sha256:c9ab847e931756d02433f12c73c5d65e5e9bd19e042655b149a0dab72f23dbc7"},
+    {file = "pillow_heif-0.15.0-pp38-pypy38_pp73-macosx_12_0_arm64.whl", hash = "sha256:dc9911450f3aeea183a4e3e7a771f5d3c38d7b3453c31019324f3e9cd905a23c"},
+    {file = "pillow_heif-0.15.0-pp38-pypy38_pp73-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:0dfe22c7939df165a43ba9109e5495744d39560dd9ee2b0edffa7c8e9e841468"},
+    {file = "pillow_heif-0.15.0-pp38-pypy38_pp73-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:004f189469b377f08fbc2c4d37481f0c3d24c52c40b6226cb03330d6f7637e86"},
+    {file = "pillow_heif-0.15.0-pp38-pypy38_pp73-win_amd64.whl", hash = "sha256:cad848cb3f737d35b93f6966ec0a689c0121b291083b3c5b9712c6b0949c3c9a"},
+    {file = "pillow_heif-0.15.0-pp39-pypy39_pp73-macosx_10_10_x86_64.whl", hash = "sha256:c651f45552851fd2910f3778020cb6e1d25464b12ad3370351d0265d75577c09"},
+    {file = "pillow_heif-0.15.0-pp39-pypy39_pp73-macosx_12_0_arm64.whl", hash = "sha256:105e5f4f9b91bf525dbb3cf794c452b19b9812364ec7904b58ac21a4889c709d"},
+    {file = "pillow_heif-0.15.0-pp39-pypy39_pp73-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:fc7d499c6256b5173744509340db27c1d69d899b3c6db52b0d092c704b2c36c2"},
+    {file = "pillow_heif-0.15.0-pp39-pypy39_pp73-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:ec15e68e6e238468aa3445eff1a25582c9637f21191e834b0ed4523009e62b28"},
+    {file = "pillow_heif-0.15.0-pp39-pypy39_pp73-win_amd64.whl", hash = "sha256:091da60c52f994cab75d9d7451241a39574a4dfa5ed6903020bdc8d112dacfd5"},
+    {file = "pillow_heif-0.15.0.tar.gz", hash = "sha256:97a3ad62515fa7945ff0d7e4951ea7375eed2d7dc1cc258f0585709df89517e3"},
 ]
 
 [[package]]
@@ -2108,6 +2432,19 @@ files = [
     {file = "polars-0.20.7-cp38-abi3-manylinux_2_24_aarch64.whl", hash = "sha256:ddff2fa419f15aa64ee23a94655fcb24b3e1b5c3eb30d124e3315deca2039a92"},
     {file = "polars-0.20.7-cp38-abi3-win_amd64.whl", hash = "sha256:f0928576a52eca47e14a8b98f4da22025b4b2fa32549f80f4d92c5187fd3f461"},
     {file = "polars-0.20.7.tar.gz", hash = "sha256:ec742fdf41e16ff699c043259ba94a11bbc2f7dcb978d768495db1ff2b3c5c20"},
+]
+
+[[package]]
+name = "portalocker"
+version = "2.8.2"
+requires_python = ">=3.8"
+summary = "Wraps the portalocker recipe for easy usage"
+dependencies = [
+    "pywin32>=226; platform_system == \"Windows\"",
+]
+files = [
+    {file = "portalocker-2.8.2-py3-none-any.whl", hash = "sha256:cfb86acc09b9aa7c3b43594e19be1345b9d16af3feb08bf92f23d4dce513a28e"},
+    {file = "portalocker-2.8.2.tar.gz", hash = "sha256:2b035aa7828e46c58e9b31390ee1f169b98e1066ab10b9a6a861fe7e25ee4f33"},
 ]
 
 [[package]]
@@ -2218,6 +2555,23 @@ files = [
     {file = "pyarrow-14.0.2-cp311-cp311-manylinux_2_28_x86_64.whl", hash = "sha256:32356bfb58b36059773f49e4e214996888eeea3a08893e7dbde44753799b2a02"},
     {file = "pyarrow-14.0.2-cp311-cp311-win_amd64.whl", hash = "sha256:52809ee69d4dbf2241c0e4366d949ba035cbcf48409bf404f071f624ed313a2b"},
     {file = "pyarrow-14.0.2.tar.gz", hash = "sha256:36cef6ba12b499d864d1def3e990f97949e0b79400d08b7cf74504ffbd3eb025"},
+]
+
+[[package]]
+name = "pycocotools"
+version = "2.0.7"
+requires_python = ">=3.5"
+summary = "Official APIs for the MS-COCO dataset"
+dependencies = [
+    "matplotlib>=2.1.0",
+    "numpy",
+]
+files = [
+    {file = "pycocotools-2.0.7-cp311-cp311-macosx_10_9_universal2.whl", hash = "sha256:623b941bbafecbfee574aedbf3cb257f7a879f4fdb79394e6d3fb9c76e7ad6cf"},
+    {file = "pycocotools-2.0.7-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:0ac4f30bac1503c780072053e6922971392fa3628b2e6967192bfca1f14736e2"},
+    {file = "pycocotools-2.0.7-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:121017ca87e2eec4e9081636d1a79519b50f473959defc5671c2d1ce0eec482e"},
+    {file = "pycocotools-2.0.7-cp311-cp311-win_amd64.whl", hash = "sha256:4a8ec6f439638120e11f49120e1ddb6c66e0b1f293d7884207d02703a73d25a1"},
+    {file = "pycocotools-2.0.7.tar.gz", hash = "sha256:da8b7815196eebf0adabf67fcc459126cbc6498bbc6ab1fd144c371465d86879"},
 ]
 
 [[package]]
@@ -2378,6 +2732,16 @@ files = [
 ]
 
 [[package]]
+name = "pypandoc"
+version = "1.12"
+requires_python = ">=3.6"
+summary = "Thin wrapper for pandoc."
+files = [
+    {file = "pypandoc-1.12-py3-none-any.whl", hash = "sha256:efb4f7d68ead8bec32e22b62f02d5608a1700978b51bfc4af286fd6acfe9d218"},
+    {file = "pypandoc-1.12.tar.gz", hash = "sha256:8f44740a9f074e121d81b489f073160421611d4ead62d1b306aeb11aab3c32df"},
+]
+
+[[package]]
 name = "pyparsing"
 version = "3.1.1"
 requires_python = ">=3.6.8"
@@ -2385,6 +2749,60 @@ summary = "pyparsing module - Classes and methods to define and execute parsing 
 files = [
     {file = "pyparsing-3.1.1-py3-none-any.whl", hash = "sha256:32c7c0b711493c72ff18a981d24f28aaf9c1fb7ed5e9667c9e84e3db623bdbfb"},
     {file = "pyparsing-3.1.1.tar.gz", hash = "sha256:ede28a1a32462f5a9705e07aea48001a08f7cf81a021585011deba701581a0db"},
+]
+
+[[package]]
+name = "pypdf"
+version = "4.0.1"
+requires_python = ">=3.6"
+summary = "A pure-python PDF library capable of splitting, merging, cropping, and transforming PDF files"
+files = [
+    {file = "pypdf-4.0.1-py3-none-any.whl", hash = "sha256:fe7c313c7e8074a516eae9d9df0111b7b9769f7a210479af7a342d27270ef81a"},
+    {file = "pypdf-4.0.1.tar.gz", hash = "sha256:871badcfe335dd68b6b563aa7646288c6b86f9ceecffb21e86341261d65d8173"},
+]
+
+[[package]]
+name = "pypdfium2"
+version = "4.27.0"
+requires_python = ">= 3.6"
+summary = "Python bindings to PDFium"
+files = [
+    {file = "pypdfium2-4.27.0-py3-none-macosx_10_13_x86_64.whl", hash = "sha256:2938f423c79b49df9057993f747e537a05b71bc2c847801ac743f27c3220d363"},
+    {file = "pypdfium2-4.27.0-py3-none-macosx_11_0_arm64.whl", hash = "sha256:f396941e070bf6c245890f2ffb2cb04f39585e3cda93ebb1648f1ed0e99b921f"},
+    {file = "pypdfium2-4.27.0-py3-none-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:4d593649fd787c4521f3b8e84892a070d62c19ae3dee7995f38e760e4e14c7c5"},
+    {file = "pypdfium2-4.27.0-py3-none-manylinux_2_17_armv7l.manylinux2014_armv7l.whl", hash = "sha256:abb16df75dd0ba1c92553bbc9127edce46d59008047bb68abbf002963495d561"},
+    {file = "pypdfium2-4.27.0-py3-none-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:69c76670e62db707fa5374eb8c71c2e9f9e4d6518707cd47725f7c2725129f8a"},
+    {file = "pypdfium2-4.27.0-py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:40fe503afef2a4c8180c75c1bb3c98eead4c60158b859c440c4c4bf4fa5b3ece"},
+    {file = "pypdfium2-4.27.0-py3-none-musllinux_1_1_aarch64.whl", hash = "sha256:bfeb8337c1435ecaa584649b21b691152e06be3b01db761a2cd863fb2fdfda04"},
+    {file = "pypdfium2-4.27.0-py3-none-musllinux_1_1_i686.whl", hash = "sha256:83c5c12714a5302b9947fe8fe97b003e9b934dec2529e5c10414d3ef5a3c8f19"},
+    {file = "pypdfium2-4.27.0-py3-none-musllinux_1_1_x86_64.whl", hash = "sha256:c85e6f4fe5475665237da8a698e92c68339bdbc3257e2bcb325feacde5873dbc"},
+    {file = "pypdfium2-4.27.0-py3-none-win32.whl", hash = "sha256:5c3413d4eeab8f2618b7af7d827dde5b7d40e752033c555e5889508b94f42090"},
+    {file = "pypdfium2-4.27.0-py3-none-win_amd64.whl", hash = "sha256:597d262152e4aff36f6b2a395826c74c28977055b3b7233963cc91b243c74c78"},
+    {file = "pypdfium2-4.27.0-py3-none-win_arm64.whl", hash = "sha256:ee4f4f433c9896953ef2ff8622a0912775b88380f91c6a2b8126fc5387d05620"},
+    {file = "pypdfium2-4.27.0.tar.gz", hash = "sha256:1ff6ac30b98850558c0d163e37fdb868f683b1b2e8ae734072138571a0546222"},
+]
+
+[[package]]
+name = "pyreadline3"
+version = "3.4.1"
+summary = "A python implementation of GNU readline."
+files = [
+    {file = "pyreadline3-3.4.1-py3-none-any.whl", hash = "sha256:b0efb6516fd4fb07b45949053826a62fa4cb353db5be2bbb4a7aa1fdd1e345fb"},
+    {file = "pyreadline3-3.4.1.tar.gz", hash = "sha256:6f3d1f7b8a31ba32b73917cefc1f28cc660562f39aea8646d30bd6eff21f7bae"},
+]
+
+[[package]]
+name = "pytesseract"
+version = "0.3.10"
+requires_python = ">=3.7"
+summary = "Python-tesseract is a python wrapper for Google's Tesseract-OCR"
+dependencies = [
+    "Pillow>=8.0.0",
+    "packaging>=21.3",
+]
+files = [
+    {file = "pytesseract-0.3.10-py3-none-any.whl", hash = "sha256:8f22cc98f765bf13517ead0c70effedb46c153540d25783e04014f28b55a5fc6"},
+    {file = "pytesseract-0.3.10.tar.gz", hash = "sha256:f1c3a8b0f07fd01a1085d451f5b8315be6eec1d5577a6796d46dc7a62bd4120f"},
 ]
 
 [[package]]
@@ -2398,6 +2816,20 @@ dependencies = [
 files = [
     {file = "python-dateutil-2.8.2.tar.gz", hash = "sha256:0123cacc1627ae19ddf3c27a5de5bd67ee4586fbdd6440d9748f8abb483d3e86"},
     {file = "python_dateutil-2.8.2-py2.py3-none-any.whl", hash = "sha256:961d03dc3453ebbc59dbdea9e4e11c5651520a876d0f4db161e8674aae935da9"},
+]
+
+[[package]]
+name = "python-docx"
+version = "1.1.0"
+requires_python = ">=3.7"
+summary = "Create, read, and update Microsoft Word .docx files."
+dependencies = [
+    "lxml>=3.1.0",
+    "typing-extensions",
+]
+files = [
+    {file = "python-docx-1.1.0.tar.gz", hash = "sha256:5829b722141cf1ab79aedf0c34d9fe9924b29764584c0f2164eb2b02dcdf17c9"},
+    {file = "python_docx-1.1.0-py3-none-any.whl", hash = "sha256:bac9773278098a1ddc43a52d84e22f5909c4a3080a624530b3ecb3771b07c6cd"},
 ]
 
 [[package]]
@@ -2458,6 +2890,30 @@ summary = "File type identification using libmagic"
 files = [
     {file = "python-magic-0.4.27.tar.gz", hash = "sha256:c1ba14b08e4a5f5c31a302b7721239695b2f0f058d125bd5ce1ee36b9d9d3c3b"},
     {file = "python_magic-0.4.27-py2.py3-none-any.whl", hash = "sha256:c212960ad306f700aa0d01e5d7a325d20548ff97eb9920dcd29513174f0294d3"},
+]
+
+[[package]]
+name = "python-multipart"
+version = "0.0.9"
+requires_python = ">=3.8"
+summary = "A streaming multipart parser for Python"
+files = [
+    {file = "python_multipart-0.0.9-py3-none-any.whl", hash = "sha256:97ca7b8ea7b05f977dc3849c3ba99d51689822fab725c3703af7c866a0c2b215"},
+    {file = "python_multipart-0.0.9.tar.gz", hash = "sha256:03f54688c663f1b7977105f021043b0793151e4cb1c1a9d4a11fc13d622c4026"},
+]
+
+[[package]]
+name = "python-pptx"
+version = "0.6.23"
+summary = "Generate and manipulate Open XML PowerPoint (.pptx) files"
+dependencies = [
+    "Pillow>=3.3.2",
+    "XlsxWriter>=0.5.7",
+    "lxml>=3.1.0",
+]
+files = [
+    {file = "python-pptx-0.6.23.tar.gz", hash = "sha256:587497ff28e779ab18dbb074f6d4052893c85dedc95ed75df319364f331fedee"},
+    {file = "python_pptx-0.6.23-py3-none-any.whl", hash = "sha256:dd0527194627a2b7cc05f3ba23ecaa2d9a0d5ac9b6193a28ed1b7a716f4217d4"},
 ]
 
 [[package]]
@@ -3094,6 +3550,74 @@ files = [
 ]
 
 [[package]]
+name = "timm"
+version = "0.9.12"
+requires_python = ">=3.7"
+summary = "PyTorch Image Models"
+dependencies = [
+    "huggingface-hub",
+    "pyyaml",
+    "safetensors",
+    "torch>=1.7",
+    "torchvision",
+]
+files = [
+    {file = "timm-0.9.12-py3-none-any.whl", hash = "sha256:2a828afac5b710a80ec66d0f85807e171e342faf5c0703b33102d8aa206f19dc"},
+    {file = "timm-0.9.12.tar.gz", hash = "sha256:9121d1cf320f7f32490d893340fd33117bda0a0270eb8282dfd52ae5fd3e1af6"},
+]
+
+[[package]]
+name = "tokenizers"
+version = "0.15.2"
+requires_python = ">=3.7"
+summary = ""
+dependencies = [
+    "huggingface-hub<1.0,>=0.16.4",
+]
+files = [
+    {file = "tokenizers-0.15.2-cp311-cp311-macosx_10_12_x86_64.whl", hash = "sha256:89cd1cb93e4b12ff39bb2d626ad77e35209de9309a71e4d3d4672667b4b256e7"},
+    {file = "tokenizers-0.15.2-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:cfed5c64e5be23d7ee0f0e98081a25c2a46b0b77ce99a4f0605b1ec43dd481fa"},
+    {file = "tokenizers-0.15.2-cp311-cp311-manylinux_2_12_i686.manylinux2010_i686.whl", hash = "sha256:a907d76dcfda37023ba203ab4ceeb21bc5683436ebefbd895a0841fd52f6f6f2"},
+    {file = "tokenizers-0.15.2-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:20ea60479de6fc7b8ae756b4b097572372d7e4032e2521c1bbf3d90c90a99ff0"},
+    {file = "tokenizers-0.15.2-cp311-cp311-manylinux_2_17_armv7l.manylinux2014_armv7l.whl", hash = "sha256:48e2b9335be2bc0171df9281385c2ed06a15f5cf121c44094338306ab7b33f2c"},
+    {file = "tokenizers-0.15.2-cp311-cp311-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl", hash = "sha256:112a1dd436d2cc06e6ffdc0b06d55ac019a35a63afd26475205cb4b1bf0bfbff"},
+    {file = "tokenizers-0.15.2-cp311-cp311-manylinux_2_17_s390x.manylinux2014_s390x.whl", hash = "sha256:4620cca5c2817177ee8706f860364cc3a8845bc1e291aaf661fb899e5d1c45b0"},
+    {file = "tokenizers-0.15.2-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:ccd73a82751c523b3fc31ff8194702e4af4db21dc20e55b30ecc2079c5d43cb7"},
+    {file = "tokenizers-0.15.2-cp311-cp311-musllinux_1_1_aarch64.whl", hash = "sha256:107089f135b4ae7817affe6264f8c7a5c5b4fd9a90f9439ed495f54fcea56fb4"},
+    {file = "tokenizers-0.15.2-cp311-cp311-musllinux_1_1_x86_64.whl", hash = "sha256:0ff110ecc57b7aa4a594396525a3451ad70988e517237fe91c540997c4e50e29"},
+    {file = "tokenizers-0.15.2-cp311-none-win32.whl", hash = "sha256:6d76f00f5c32da36c61f41c58346a4fa7f0a61be02f4301fd30ad59834977cc3"},
+    {file = "tokenizers-0.15.2-cp311-none-win_amd64.whl", hash = "sha256:cc90102ed17271cf0a1262babe5939e0134b3890345d11a19c3145184b706055"},
+    {file = "tokenizers-0.15.2-pp310-pypy310_pp73-macosx_10_12_x86_64.whl", hash = "sha256:6a9b648a58281c4672212fab04e60648fde574877d0139cd4b4f93fe28ca8944"},
+    {file = "tokenizers-0.15.2-pp310-pypy310_pp73-macosx_11_0_arm64.whl", hash = "sha256:7c7d18b733be6bbca8a55084027f7be428c947ddf871c500ee603e375013ffba"},
+    {file = "tokenizers-0.15.2-pp310-pypy310_pp73-manylinux_2_12_i686.manylinux2010_i686.whl", hash = "sha256:13ca3611de8d9ddfbc4dc39ef54ab1d2d4aaa114ac8727dfdc6a6ec4be017378"},
+    {file = "tokenizers-0.15.2-pp310-pypy310_pp73-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:237d1bf3361cf2e6463e6c140628e6406766e8b27274f5fcc62c747ae3c6f094"},
+    {file = "tokenizers-0.15.2-pp310-pypy310_pp73-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:67a0fe1e49e60c664915e9fb6b0cb19bac082ab1f309188230e4b2920230edb3"},
+    {file = "tokenizers-0.15.2-pp310-pypy310_pp73-musllinux_1_1_aarch64.whl", hash = "sha256:4e022fe65e99230b8fd89ebdfea138c24421f91c1a4f4781a8f5016fd5cdfb4d"},
+    {file = "tokenizers-0.15.2-pp310-pypy310_pp73-musllinux_1_1_x86_64.whl", hash = "sha256:d857be2df69763362ac699f8b251a8cd3fac9d21893de129bc788f8baaef2693"},
+    {file = "tokenizers-0.15.2-pp37-pypy37_pp73-macosx_10_12_x86_64.whl", hash = "sha256:708bb3e4283177236309e698da5fcd0879ce8fd37457d7c266d16b550bcbbd18"},
+    {file = "tokenizers-0.15.2-pp37-pypy37_pp73-manylinux_2_12_i686.manylinux2010_i686.whl", hash = "sha256:64c35e09e9899b72a76e762f9854e8750213f67567787d45f37ce06daf57ca78"},
+    {file = "tokenizers-0.15.2-pp37-pypy37_pp73-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:c1257f4394be0d3b00de8c9e840ca5601d0a4a8438361ce9c2b05c7d25f6057b"},
+    {file = "tokenizers-0.15.2-pp37-pypy37_pp73-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:02272fe48280e0293a04245ca5d919b2c94a48b408b55e858feae9618138aeda"},
+    {file = "tokenizers-0.15.2-pp37-pypy37_pp73-musllinux_1_1_aarch64.whl", hash = "sha256:dc3ad9ebc76eabe8b1d7c04d38be884b8f9d60c0cdc09b0aa4e3bcf746de0388"},
+    {file = "tokenizers-0.15.2-pp37-pypy37_pp73-musllinux_1_1_x86_64.whl", hash = "sha256:32e16bdeffa7c4f46bf2152172ca511808b952701d13e7c18833c0b73cb5c23f"},
+    {file = "tokenizers-0.15.2-pp38-pypy38_pp73-macosx_10_12_x86_64.whl", hash = "sha256:fb16ba563d59003028b678d2361a27f7e4ae0ab29c7a80690efa20d829c81fdb"},
+    {file = "tokenizers-0.15.2-pp38-pypy38_pp73-macosx_11_0_arm64.whl", hash = "sha256:2277c36d2d6cdb7876c274547921a42425b6810d38354327dd65a8009acf870c"},
+    {file = "tokenizers-0.15.2-pp38-pypy38_pp73-manylinux_2_12_i686.manylinux2010_i686.whl", hash = "sha256:1cf75d32e8d250781940d07f7eece253f2fe9ecdb1dc7ba6e3833fa17b82fcbc"},
+    {file = "tokenizers-0.15.2-pp38-pypy38_pp73-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:f1b3b31884dc8e9b21508bb76da80ebf7308fdb947a17affce815665d5c4d028"},
+    {file = "tokenizers-0.15.2-pp38-pypy38_pp73-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:b10122d8d8e30afb43bb1fe21a3619f62c3e2574bff2699cf8af8b0b6c5dc4a3"},
+    {file = "tokenizers-0.15.2-pp38-pypy38_pp73-musllinux_1_1_aarch64.whl", hash = "sha256:d88b96ff0fe8e91f6ef01ba50b0d71db5017fa4e3b1d99681cec89a85faf7bf7"},
+    {file = "tokenizers-0.15.2-pp38-pypy38_pp73-musllinux_1_1_x86_64.whl", hash = "sha256:37aaec5a52e959892870a7c47cef80c53797c0db9149d458460f4f31e2fb250e"},
+    {file = "tokenizers-0.15.2-pp39-pypy39_pp73-macosx_10_12_x86_64.whl", hash = "sha256:e2ea752f2b0fe96eb6e2f3adbbf4d72aaa1272079b0dfa1145507bd6a5d537e6"},
+    {file = "tokenizers-0.15.2-pp39-pypy39_pp73-macosx_11_0_arm64.whl", hash = "sha256:4b19a808d8799fda23504a5cd31d2f58e6f52f140380082b352f877017d6342b"},
+    {file = "tokenizers-0.15.2-pp39-pypy39_pp73-manylinux_2_12_i686.manylinux2010_i686.whl", hash = "sha256:64c86e5e068ac8b19204419ed8ca90f9d25db20578f5881e337d203b314f4104"},
+    {file = "tokenizers-0.15.2-pp39-pypy39_pp73-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:de19c4dc503c612847edf833c82e9f73cd79926a384af9d801dcf93f110cea4e"},
+    {file = "tokenizers-0.15.2-pp39-pypy39_pp73-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:ea09acd2fe3324174063d61ad620dec3bcf042b495515f27f638270a7d466e8b"},
+    {file = "tokenizers-0.15.2-pp39-pypy39_pp73-musllinux_1_1_aarch64.whl", hash = "sha256:cf27fd43472e07b57cf420eee1e814549203d56de00b5af8659cb99885472f1f"},
+    {file = "tokenizers-0.15.2-pp39-pypy39_pp73-musllinux_1_1_x86_64.whl", hash = "sha256:7ca22bd897537a0080521445d91a58886c8c04084a6a19e6c78c586e0cfa92a5"},
+    {file = "tokenizers-0.15.2.tar.gz", hash = "sha256:e6e9c6e019dd5484be5beafc775ae6c925f4c69a3487040ed09b45e13df2cb91"},
+]
+
+[[package]]
 name = "toml"
 version = "0.10.2"
 requires_python = ">=2.6, !=3.0.*, !=3.1.*, !=3.2.*"
@@ -3157,6 +3681,25 @@ files = [
 ]
 
 [[package]]
+name = "torchvision"
+version = "0.17.0"
+requires_python = ">=3.8"
+summary = "image and video datasets and models for torch deep learning"
+dependencies = [
+    "numpy",
+    "pillow!=8.3.*,>=5.3.0",
+    "requests",
+    "torch==2.2.0",
+]
+files = [
+    {file = "torchvision-0.17.0-cp311-cp311-macosx_10_13_x86_64.whl", hash = "sha256:10d276821f115fb369e6cf1f1b77b2cca60cda12cbb39a41513a9d3d0f2a93ae"},
+    {file = "torchvision-0.17.0-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:a3eef2daddadb5c21e802e0550dd7e3ee3d98c430f4aed212ae3ba0358558be1"},
+    {file = "torchvision-0.17.0-cp311-cp311-manylinux1_x86_64.whl", hash = "sha256:acc0d098ab8c295a750f0218bf5bf7bfc2f2c21f9c2fe3fc30b695cd94f4c759"},
+    {file = "torchvision-0.17.0-cp311-cp311-manylinux2014_aarch64.whl", hash = "sha256:3d2e9552d72e4037f2db6f7d97989a2e2f95763aa1861963a3faf521bb1610c4"},
+    {file = "torchvision-0.17.0-cp311-cp311-win_amd64.whl", hash = "sha256:f8e542cf71e1294fcb5635038eae6702df543dc90706f0836ec80e75efc511fc"},
+]
+
+[[package]]
 name = "tornado"
 version = "6.4"
 requires_python = ">= 3.8"
@@ -3196,6 +3739,28 @@ summary = "Traitlets Python configuration system"
 files = [
     {file = "traitlets-5.14.1-py3-none-any.whl", hash = "sha256:2e5a030e6eff91737c643231bfcf04a65b0132078dad75e4936700b213652e74"},
     {file = "traitlets-5.14.1.tar.gz", hash = "sha256:8585105b371a04b8316a43d5ce29c098575c2e477850b62b848b964f1444527e"},
+]
+
+[[package]]
+name = "transformers"
+version = "4.37.2"
+requires_python = ">=3.8.0"
+summary = "State-of-the-art Machine Learning for JAX, PyTorch and TensorFlow"
+dependencies = [
+    "filelock",
+    "huggingface-hub<1.0,>=0.19.3",
+    "numpy>=1.17",
+    "packaging>=20.0",
+    "pyyaml>=5.1",
+    "regex!=2019.12.17",
+    "requests",
+    "safetensors>=0.4.1",
+    "tokenizers<0.19,>=0.14",
+    "tqdm>=4.27",
+]
+files = [
+    {file = "transformers-4.37.2-py3-none-any.whl", hash = "sha256:595a8b12a1fcc4ad0ced49ce206c58e17be68c85d7aee3d7546d04a32c910d2e"},
+    {file = "transformers-4.37.2.tar.gz", hash = "sha256:f307082ae5d528b8480611a4879a4a11651012d0e9aaea3f6cf17219ffd95542"},
 ]
 
 [[package]]
@@ -3304,7 +3869,7 @@ files = [
 
 [[package]]
 name = "unstructured"
-version = "0.12.3"
+version = "0.12.4"
 requires_python = ">=3.9.0,<3.12"
 summary = "A library that prepares raw documents for downstream ML tasks."
 dependencies = [
@@ -3328,8 +3893,8 @@ dependencies = [
     "wrapt",
 ]
 files = [
-    {file = "unstructured-0.12.3-py3-none-any.whl", hash = "sha256:14d606b84eaea2283a755d559ec507a7abbe10cf5c26a18d78bccac17a816a94"},
-    {file = "unstructured-0.12.3.tar.gz", hash = "sha256:2b6c4e38f147170211df59d3d39585e834109832b9d8cd7a5e8db94b221a5a0b"},
+    {file = "unstructured-0.12.4-py3-none-any.whl", hash = "sha256:f1aa046297a3afba3aa16895e513aca6a93802ef73b7a18080656435c4deb217"},
+    {file = "unstructured-0.12.4.tar.gz", hash = "sha256:019cf52e9e2bfa286e61ffa0d7d336e1645280f9a0f165e697583143fcfe708a"},
 ]
 
 [[package]]
@@ -3356,6 +3921,71 @@ dependencies = [
 files = [
     {file = "unstructured-client-0.15.2.tar.gz", hash = "sha256:47a80d90abf214c0b695812ec5ef982d08b8ed7ffa84bc76cd208f8ddec9ba4c"},
     {file = "unstructured_client-0.15.2-py3-none-any.whl", hash = "sha256:0476ecc86a26709c768c4b03116e446646b192942e5dc6620a0e3845e0e28efc"},
+]
+
+[[package]]
+name = "unstructured-inference"
+version = "0.7.23"
+requires_python = ">=3.7.0"
+summary = "A library for performing inference using trained models."
+dependencies = [
+    "huggingface-hub",
+    "layoutparser[layoutmodels,tesseract]",
+    "onnx",
+    "onnxruntime<1.16",
+    "opencv-python!=4.7.0.68",
+    "python-multipart",
+    "rapidfuzz",
+    "transformers>=4.25.1",
+]
+files = [
+    {file = "unstructured_inference-0.7.23-py3-none-any.whl", hash = "sha256:f47d7e88dfcac910c5ad57580b132d0fe09d90e3a03908958621109f755e7f3e"},
+    {file = "unstructured_inference-0.7.23.tar.gz", hash = "sha256:b9cf691503accc78190c9a2bd65c446c870dc6936bbd93ba638807e9a69602fb"},
+]
+
+[[package]]
+name = "unstructured-pytesseract"
+version = "0.3.12"
+requires_python = ">=3.8"
+summary = "Python-tesseract is a python wrapper for Google's Tesseract-OCR"
+dependencies = [
+    "Pillow>=8.0.0",
+    "packaging>=21.3",
+]
+files = [
+    {file = "unstructured.pytesseract-0.3.12-py3-none-any.whl", hash = "sha256:6ed42530fc697bb08d1ae4884cc517ee808620c1c1414efe8d5d90334da068d3"},
+    {file = "unstructured.pytesseract-0.3.12.tar.gz", hash = "sha256:751a21d67b1f109036bf4daf796d3e04631697a355efd650f3373412b249de2e"},
+]
+
+[[package]]
+name = "unstructured"
+version = "0.12.4"
+extras = ["all-docs"]
+requires_python = ">=3.9.0,<3.12"
+summary = "A library that prepares raw documents for downstream ML tasks."
+dependencies = [
+    "markdown",
+    "msg-parser",
+    "networkx",
+    "onnx",
+    "openpyxl",
+    "pandas",
+    "pdf2image",
+    "pdfminer-six",
+    "pikepdf",
+    "pillow-heif",
+    "pypandoc",
+    "pypdf",
+    "python-docx",
+    "python-pptx<=0.6.23",
+    "unstructured-inference==0.7.23",
+    "unstructured-pytesseract>=0.3.12",
+    "unstructured==0.12.4",
+    "xlrd",
+]
+files = [
+    {file = "unstructured-0.12.4-py3-none-any.whl", hash = "sha256:f1aa046297a3afba3aa16895e513aca6a93802ef73b7a18080656435c4deb217"},
+    {file = "unstructured-0.12.4.tar.gz", hash = "sha256:019cf52e9e2bfa286e61ffa0d7d336e1645280f9a0f165e697583143fcfe708a"},
 ]
 
 [[package]]
@@ -3479,6 +4109,26 @@ files = [
     {file = "wrapt-1.16.0-cp311-cp311-win_amd64.whl", hash = "sha256:aefbc4cb0a54f91af643660a0a150ce2c090d3652cf4052a5397fb2de549cd89"},
     {file = "wrapt-1.16.0-py3-none-any.whl", hash = "sha256:6906c4100a8fcbf2fa735f6059214bb13b97f75b1a61777fcf6432121ef12ef1"},
     {file = "wrapt-1.16.0.tar.gz", hash = "sha256:5f370f952971e7d17c7d1ead40e49f32345a7f7a5373571ef44d800d06b1899d"},
+]
+
+[[package]]
+name = "xlrd"
+version = "2.0.1"
+requires_python = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, !=3.5.*"
+summary = "Library for developers to extract data from Microsoft Excel (tm) .xls spreadsheet files"
+files = [
+    {file = "xlrd-2.0.1-py2.py3-none-any.whl", hash = "sha256:6a33ee89877bd9abc1158129f6e94be74e2679636b8a205b43b85206c3f0bbdd"},
+    {file = "xlrd-2.0.1.tar.gz", hash = "sha256:f72f148f54442c6b056bf931dbc34f986fd0c3b0b6b5a58d013c9aef274d0c88"},
+]
+
+[[package]]
+name = "xlsxwriter"
+version = "3.1.9"
+requires_python = ">=3.6"
+summary = "A Python module for creating Excel XLSX files."
+files = [
+    {file = "XlsxWriter-3.1.9-py3-none-any.whl", hash = "sha256:b61c1a0c786f82644936c0936ec96ee96cd3afb9440094232f7faef9b38689f0"},
+    {file = "XlsxWriter-3.1.9.tar.gz", hash = "sha256:de810bf328c6a4550f4ffd6b0b34972aeb7ffcf40f3d285a0413734f9b63a929"},
 ]
 
 [[package]]

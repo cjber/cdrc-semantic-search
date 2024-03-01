@@ -17,7 +17,7 @@ services:
   evaluation:
     build:
       context: .
-      dockerfiel: Dockerfile
+      dockerfile: Dockerfile
       always: true
     volumes:
       - ${PWD}/data:/root/search/data:z

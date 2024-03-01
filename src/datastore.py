@@ -1,17 +1,17 @@
 import json
-import dateparser
 import logging
 import os
 import shutil
 from pathlib import Path
-from pinecone import Pinecone, PodSpec
 
+import dateparser
 from llama_hub.file.unstructured import UnstructuredReader
 from llama_index import SimpleDirectoryReader
 from llama_index.embeddings.openai import OpenAIEmbedding, OpenAIEmbeddingMode
 from llama_index.ingestion import IngestionPipeline
 from llama_index.text_splitter import SentenceSplitter
 from llama_index.vector_stores import PineconeVectorStore
+from pinecone import Pinecone, PodSpec
 
 from src.common.utils import Paths, Settings
 

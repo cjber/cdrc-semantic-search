@@ -5,9 +5,7 @@ import polars as pl
 
 if __name__ == "__main__":
     p = re.compile(r"https?:\/\/data.cdrc.ac.uk\/search\/type\/dataset\?query=\S*")
-    with open(
-        "./data/logs/url_column_accesslog_drupaldb_table_grep_search.csv", mode="r"
-    ) as f:
+    with open("./data/logs/url_column_accesslog_drupaldb_table_grep_search.csv") as f:
         file = f.read()
         query_matches = p.findall(file)
 
@@ -22,7 +20,7 @@ if __name__ == "__main__":
     ]
 
     p = re.compile(r'\[.*\]\s"GET\s\/search\/type\/dataset\?query=\S*')
-    with open("./data/logs/apache_access_grep_query.log", mode="r") as f:
+    with open("./data/logs/apache_access_grep_query.log") as f:
         file = f.read()
         date_matches = p.findall(file)
 

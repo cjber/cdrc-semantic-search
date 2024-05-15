@@ -1,5 +1,4 @@
 import polars as pl
-from tqdm import tqdm
 
 from src.common.utils import Settings
 from src.model import LlamaIndexModel

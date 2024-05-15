@@ -9,14 +9,14 @@ from llama_index.core import SimpleDirectoryReader
 from llama_index.core.ingestion import IngestionPipeline
 from llama_index.core.node_parser import SentenceSplitter
 from llama_index.embeddings.openai import OpenAIEmbedding, OpenAIEmbeddingMode
-from llama_index.readers.file import UnstructuredReader
 from llama_index.vector_stores.pinecone import PineconeVectorStore
+from llama_parse import LlamaParse
 from pinecone import Pinecone, PodSpec
 
 from src.common.utils import Paths, Settings
 
 
-def _add_metadata_to_document(doc_id: str) -> dict:
+def _add_metadata_to_document(doc_id: str) -> dict[str, str]:
     with open(Paths.DATA_DIR / "catalogue-metadata.json") as f:
         catalogue_metadata = json.load(f)
     with open(Paths.DATA_DIR / "files-metadata.json") as f:
@@ -30,7 +30,7 @@ def _add_metadata_to_document(doc_id: str) -> dict:
                 main_id = file_meta["parent_id"]
                 break
 
-    iso_date = dateparser.parse(files_metadata[0]["created"]).isoformat()
+    iso_date = dateparser.parse(files_metadata[0]["created"]).isoformat()  # type: ignore
     for cm in catalogue_metadata:
         if main_id == cm["id"]:
             return {
@@ -95,26 +95,17 @@ class CreateDataStore:
             )
 
     def setup_directory_reader(self):
-        reader = UnstructuredReader(
-            # api=True, api_key=os.environ["UNSTRUCTURED_API_KEY"]
-        )
+        pdf_reader = LlamaParse()
         self.dir_reader = SimpleDirectoryReader(
-            self.profiles_dir,
+            str(self.profiles_dir),
             recursive=True,
-            file_extractor={
-                ".pdf": reader,
-                ".docx": reader,
-                ".txt": reader,
-            },
+            file_extractor={".pdf": pdf_reader},
             file_metadata=lambda name: _add_metadata_to_document(Path(name).stem),
         )
 
     def setup_ingestion_pipeline(self):
         self.vector_store = PineconeVectorStore(
-            self.pc.Index(
-                self.index_name,
-                host="https://cdrc-index-afz2q2b.svc.gcp-starter.pinecone.io",
-            )
+            pinecone_index=self.pc.Index(self.index_name)
         )
         self.pipeline = IngestionPipeline(
             transformations=[

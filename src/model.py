@@ -1,4 +1,3 @@
-import os
 from typing import Any
 
 from llama_index.core import PromptTemplate, QueryBundle, VectorStoreIndex

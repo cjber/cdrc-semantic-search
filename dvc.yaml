@@ -9,7 +9,7 @@ stages:
     outs:
       - data/catalogue-metadata.json
       - data/files-metadata.json
-      - data/response.json
+      - data/file_list.json
       - data/profiles
   datastore:
     cmd: python -m src.datastore

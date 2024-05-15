@@ -5,7 +5,6 @@ from fastapi import Depends, FastAPI
 from src.common.utils import Settings
 from src.model import LlamaIndexModel
 
-
 app = FastAPI()
 model_instances = {}
 query_mapping = {}

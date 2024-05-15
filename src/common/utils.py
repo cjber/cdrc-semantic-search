@@ -1,7 +1,4 @@
-import logging
-import sys
 import tomllib
-import traceback
 from pathlib import Path
 
 from dotenv import load_dotenv

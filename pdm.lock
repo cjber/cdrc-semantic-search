@@ -5,7 +5,7 @@
 groups = ["default", "dev"]
 strategy = ["cross_platform", "inherit_metadata"]
 lock_version = "4.4.1"
-content_hash = "sha256:13f53f5f27e3231481ff6248df8c1383f65012d45aa48394cea40f6e78b03b17"
+content_hash = "sha256:cf453b8b255e43c5047c286a8f0d2386ac03a1ade64254e2180763f8a9e25f68"
 
 [[package]]
 name = "aiohttp"
@@ -1946,15 +1946,6 @@ groups = ["default"]
 files = [
     {file = "soupsieve-2.5-py3-none-any.whl", hash = "sha256:eaa337ff55a1579b6549dc679565eac1e3d000563bcb1c8ab0d0fefbc0c2cdc7"},
     {file = "soupsieve-2.5.tar.gz", hash = "sha256:5663d5a7b3bfaeee0bc4372e7fc48f9cff4940b3eec54a6451cc5299f1097690"},
-]
-
-[[package]]
-name = "sourcery-cli"
-version = "1.19.0"
-summary = "Magically refactor Python"
-groups = ["dev"]
-files = [
-    {file = "sourcery_cli-1.19.0-py2.py3-none-macosx_10_9_universal2.whl", hash = "sha256:ae04a9271328a5e7e052f0001f93425f2978e6e4e94f90610c68def3c62583e0"},
 ]
 
 [[package]]

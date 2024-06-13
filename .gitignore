@@ -3,6 +3,8 @@
 
 pipeline_storage/
 data/
+demos/
+tests/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

@@ -55,3 +55,5 @@ pdm install
    ```bash
    dvc repro
    ```
+
+> NOTE: This requires a Pinecone database and access to the CDRC catalogue.

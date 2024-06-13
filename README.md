@@ -8,6 +8,8 @@ The CDRC Semantic Search System is a project designed to enhance the search capa
 
 - **Semantic Search:** Utilizes advanced natural language processing techniques to understand the meaning behind user queries, enabling a more intuitive and precise search experience.
 
+- **Retrieval Augmented Generation:** Generates responses using GPT 3.5 turbo to explain the relevance of retrieved datasets.
+
 ## System Architecture
 
 The CDRC Semantic Search System follows a standard Retrieval Augmented Generation (RAG) architecture:

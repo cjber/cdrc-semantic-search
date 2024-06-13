@@ -7,9 +7,9 @@ if __name__ == "__main__":
     p = re.compile(r"https?:\/\/data.cdrc.ac.uk\/search\/type\/dataset\?query=\S*")
     with open("./data/logs/url_column_accesslog_drupaldb_table_grep_search.csv") as f:
         file = f.read()
-        query_matches = p.findall(file)
+        query_matches: list[str] = p.findall(file)
 
-    drupal_queries = [
+    drupal_queries: list[str] = [
         query.split("=")[1]
         .lower()
         .replace("%20", " ")
@@ -22,9 +22,9 @@ if __name__ == "__main__":
     p = re.compile(r'\[.*\]\s"GET\s\/search\/type\/dataset\?query=\S*')
     with open("./data/logs/apache_access_grep_query.log") as f:
         file = f.read()
-        date_matches = p.findall(file)
+        date_matches: list[str] = p.findall(file)
 
-    apache_queries = [
+    apache_queries: list[str] = [
         query.split("=")[1]
         .lower()
         .replace("%20", " ")

@@ -1,6 +1,6 @@
-from src.query_api import CDRCQuery
-from src.datastore import CreateDataStore
 from src.common.utils import Settings
+from src.datastore import CreateDataStore
+from src.query_api import CDRCQuery
 
 
 def main():

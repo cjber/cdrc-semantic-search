@@ -2,9 +2,9 @@ import matplotlib.pyplot as plt
 import polars as pl
 import seaborn as sns
 import torch
-from llama_index.evaluation import RelevancyEvaluator
-from llama_index.llms import HuggingFaceLLM
-from llama_index.prompts import PromptTemplate
+from llama_index.core.evaluation import RelevancyEvaluator
+from llama_index.llms.huggingface import HuggingFaceLLM
+from llama_index.core import PromptTemplate
 from tqdm import tqdm
 from transformers import BitsAndBytesConfig
 

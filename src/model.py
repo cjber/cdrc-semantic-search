@@ -1,13 +1,10 @@
-import os
 from typing import Any
 
-from llama_index import ServiceContext, VectorStoreIndex
+from llama_index.core import PromptTemplate, QueryBundle, VectorStoreIndex
+from llama_index.core.postprocessor.types import BaseNodePostprocessor
+from llama_index.core.schema import NodeWithScore
 from llama_index.embeddings.openai import OpenAIEmbedding, OpenAIEmbeddingMode
-from llama_index.prompts import PromptTemplate
-from llama_index.indices.query.schema import QueryBundle
-from llama_index.llms import OpenAI
-from llama_index.postprocessor.types import BaseNodePostprocessor
-from llama_index.schema import NodeWithScore
+from llama_index.llms.openai import OpenAI
 
 from src.common.utils import Settings
 from src.datastore import CreateDataStore
@@ -43,9 +40,12 @@ class LlamaIndexModel:
         alpha: float,
         prompt: str,
         response_mode: str,
-        load_model: bool = True,
     ):
-        self.model = OpenAI(model="gpt-3.5-turbo") if load_model else None
+        self.llm = OpenAI(model="gpt-3.5-turbo")
+        self.embed_model = OpenAIEmbedding(
+            mode=OpenAIEmbeddingMode.TEXT_SEARCH_MODE, model="text-embedding-3-large"
+        )
+
         self.top_k = top_k
         self.vector_store_query_mode = vector_store_query_mode
         self.alpha = alpha
@@ -61,19 +61,11 @@ class LlamaIndexModel:
         self.processed_response = self.process_response(self.response)
 
     def build_index(self):
-        self.service_context = ServiceContext.from_defaults(
-            embed_model=OpenAIEmbedding(
-                mode=OpenAIEmbeddingMode.TEXT_SEARCH_MODE,
-                model="text-embedding-3-large",
-                api_key=os.environ["OPENAI_API_KEY"],
-            ),
-            llm=self.model,
-        )
         docstore = CreateDataStore(**Settings().datastore.model_dump())
         docstore.setup_ingestion_pipeline()
         return VectorStoreIndex.from_vector_store(
             docstore.vector_store,
-            service_context=self.service_context,
+            embed_model=self.embed_model,
             show_progress=True,
             use_async=True,
         )
@@ -99,15 +91,15 @@ class LlamaIndexModel:
         return out
 
     def explain_dataset(self, response_num: int):
-        if not self.response:
+        if not self.response or (response_num > len(self.response) - 1):
             raise ValueError("No response to explain")
 
         text_qa_template = PromptTemplate(self.prompt)
         response = self.response[response_num]
-        index = VectorStoreIndex(
-            nodes=[response.node], service_context=self.service_context
+        index = VectorStoreIndex(nodes=[response.node], embed_model=self.embed_model)
+        query_engine = index.as_query_engine(
+            text_qa_template=text_qa_template, llm=self.llm
         )
-        query_engine = index.as_query_engine(text_qa_template=text_qa_template)
         response = query_engine.query(self.query)
         self.explained_response = response.response
 
@@ -116,5 +108,5 @@ if __name__ == "__main__":
     model = LlamaIndexModel(**Settings().model.model_dump())
     model.run("diabetes")
     model.processed_response
-    model.explain_dataset(2)
+    model.explain_dataset(0)
     model.explained_response

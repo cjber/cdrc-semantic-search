@@ -6,7 +6,9 @@ The CDRC Semantic Search System is a project designed to enhance the search capa
 
 ## Features
 
-- **Semantic Search:** Utilizes advanced natural language processing techniques to understand the meaning behind user queries, enabling a more intuitive and precise search experience.
+- **Semantic Search:** Embeds documents using OpenAI which are stored on Pinecone, allowing for semantic querying using cosine similarity.
+
+- **Retrieval Augmented Generation:** Generates responses using GPT 3.5 turbo to explain the relevance of retrieved datasets.
 
 - **Retrieval Augmented Generation:** Generates responses using GPT 3.5 turbo to explain the relevance of retrieved datasets.
 
@@ -15,6 +17,7 @@ The CDRC Semantic Search System is a project designed to enhance the search capa
 The CDRC Semantic Search System follows a standard Retrieval Augmented Generation (RAG) architecture:
 
 ![Credit to Heiko Hotz (https://towardsdatascience.com/rag-vs-finetuning-which-is-the-best-tool-to-boost-your-llm-application-94654b1eaba7)](https://miro.medium.com/v2/resize:fit:720/format:webp/1*Jq9bEbitg1Pv4oASwEQwJg.png)
+
 _Credit to Heiko Hotz (https://towardsdatascience.com/rag-vs-finetuning-which-is-the-best-tool-to-boost-your-llm-application-94654b1eaba7)_
 
 ## Installation
@@ -52,7 +55,3 @@ pdm install
    ```bash
    dvc repro
    ```
-
----
-
-**Note:** The CDRC Semantic Search System is an ongoing project, and we appreciate your feedback and support in making it a valuable tool for researchers at the Centre for Consumer Data Research.

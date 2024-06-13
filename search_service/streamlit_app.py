@@ -40,7 +40,7 @@ def main():
             else:
                 responses.append(None)
 
-        for res, meta in zip(responses, metadata.values()):
+        for res, meta in zip(responses, metadata.values(), strict=False):
             st.subheader(meta["title"])
             if res:
                 summary, relevance = res.split("Summary: ")[1].split("Relevance: ")
